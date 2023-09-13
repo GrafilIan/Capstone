@@ -1,0 +1,65 @@
+h2 {
+  font-weight: bold;
+  color: blue;
+}
+
+.image-preview {
+  margin-top: 10px;
+}
+
+#profile_image_preview {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.announcement-image {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 150px; /* You can adjust this value */
+}
+
+.list-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-column {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px; /* Add padding around the forms */
+    box-sizing: border-box;
+}
+
+.form-column {
+    flex: 1;
+    padding: 0 10px; /* Add some spacing between columns */
+    box-sizing: border-box;
+}
+
+.create-button {
+    display: block;
+    margin-top: 10px; /* Add spacing between the button and forms */
+}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Delete {{ item_type }}{% endblock %}
+
+{% block content %}
+{% load static %}
+    <h1>Delete {{ item_type }}</h1>
+    <p>Are you sure you want to delete the following {{ item_type|lower }}?</p>
+    <p>{{ item }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <a href="{% url 'announcement_list' %}">Cancel</a>
+    </form>
+    <a href="{% url 'announcement_list' %}">Back to {{ item_type }} List</a>
+{% endblock %}

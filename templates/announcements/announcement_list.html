@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Announcement List{% endblock %}
+{% load static %}
+{% block content %}
+   <h1>Announcement List</h1>
+    <button class="create-button" onclick="window.location.href='{% url 'create_announcement' %}'">Create Announcement</button>
+
+    <div class="list-container">
+        <div class="list-column">
+            <h2>Announcements</h2>
+            <ul>
+               {% for announcement in announcements %}
+                   {% if announcement.announcement_list %}
+                       <li>News Update: {{ announcement.announcement_list }}</li>
+                       {% if announcement.image_announcement %}
+                           <img src="{{ announcement.image_announcement.url|safe }}" alt="Announcement Image" class="announcement-image">
+                       {% endif %}
+                       {% if announcement.document_announcement %}
+                           <a href="{{ announcement.document_announcement.url|safe }}" target="_blank">View Document</a>
+                       {% else %}
+                           <p>No document available.</p>
+                       {% endif %}
+                       <a href="{% url 'delete_item' 'announcement' announcement.id %}">Delete</a>
+                   {% endif %}
+               {% endfor %}
+           </ul>
+        </div>
+        <div class="list-column">
+            <h2>Recommendation</h2>
+            <ul>
+               {% for recommendation in recommendations %}
+                   {% if recommendation.recommendation_list %}
+                       <li>Recommendation: {{ recommendation.recommendation_list }}</li>
+                       {% if recommendation.image_recommendation %}
+                           <img src="{{ recommendation.image_recommendation.url|safe }}" alt="Recommendation Image" class="announcement-image">
+                       {% endif %}
+                       {% if recommendation.document_recommendation %}
+                           <a href="{{ recommendation.document_recommendation.url|safe }}" target="_blank">View Document</a>
+                       {% else %}
+                           <p>No document available.</p>
+                       {% endif %}
+                       <a href="{% url 'delete_item' 'recommendation' recommendation.id %}">Delete</a>
+                   {% endif %}
+               {% endfor %}
+           </ul>
+        </div>
+    </div>
+{% endblock %}

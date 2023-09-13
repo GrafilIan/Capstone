@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Create Announcement{% endblock %}
+{% load static %}
+{% block content %}
+    <h1>Create Announcement</h1>
+    <div class="form-container">
+        <div class="form-column">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ announcement_form.announcement_list.label_tag }}
+                {{ announcement_form.announcement_list }}
+                <br>
+                <label for="{{ announcement_form.image_announcement.id }}">Image</label>
+                {{ announcement_form.image_announcement }}
+                <br>
+                <label for="{{ announcement_form.document_announcement.id }}">Document</label>
+                {{ announcement_form.document_announcement }}
+            # the form is not enclosed to further use the button below.
+        </div>
+
+        <div class="form-column">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ recommendation_form.recommendation_list.label_tag }}
+                {{ recommendation_form.recommendation_list }}
+                <br>
+                <label for="{{ recommendation_form.image_recommendation.id }}">Image</label>
+                {{ recommendation_form.image_recommendation }}
+                <br>
+                <label for="{{ recommendation_form.document_recommendation.id }}">Document</label>
+                {{ recommendation_form.document_recommendation }}
+            <button type="submit" name="all_submit">Post All</button>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
