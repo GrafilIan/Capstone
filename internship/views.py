@@ -75,6 +75,11 @@ def delete_item(request, item_type, item_id):
 def time_in_out(request):
     if request.method == 'POST':
         form = TimeRecordForm(request.POST)
+
+        # If "Time Out" button is clicked, mark the hidden field as not required
+        if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
+            form.fields['is_time_in'].required = False
+
         if form.is_valid():
             is_time_in = form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
@@ -85,3 +90,13 @@ def time_in_out(request):
 
     time_records = TimeRecord.objects.all().order_by('-timestamp')
     return render(request, 'DTR/time_in_out.html', {'form': form, 'time_records': time_records})
+
+
+
+
+
+def clear_history(request):
+    if request.method == 'POST':
+        TimeRecord.objects.all().delete()
+
+    return redirect('time_in_out')
