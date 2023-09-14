@@ -77,7 +77,8 @@ def time_in_out(request):
         form = TimeRecordForm(request.POST)
         if form.is_valid():
             is_time_in = form.cleaned_data['is_time_in']
-            TimeRecord.objects.create(is_time_in=is_time_in)
+            action = 'Time In' if is_time_in else 'Time Out'
+            TimeRecord.objects.create(is_time_in=is_time_in, action=action)
             return redirect('time_in_out')
     else:
         form = TimeRecordForm()

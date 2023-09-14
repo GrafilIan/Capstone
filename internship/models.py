@@ -65,7 +65,7 @@ class intern(AbstractUser):
 class TimeRecord(models.Model):
     timestamp = models.DateTimeField(default=now)
     is_time_in = models.BooleanField(default=True)
-
+    action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
 #-----Time Record/end-----#
 
 
