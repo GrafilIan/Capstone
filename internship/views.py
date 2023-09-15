@@ -6,7 +6,7 @@ from .forms import AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
-
+from .forms import InternshipCalendarForm
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
@@ -110,3 +110,22 @@ def clear_history(request):
         TimeRecord.objects.all().delete()
 
     return redirect('time_in_out')
+
+
+def create_calendar(request):
+    if request.method == 'POST':
+        form = InternshipCalendarForm(request.POST)
+        if form.is_valid():
+            calendar = form.save(commit=False)
+            calendar.user = request.user
+            calendar.save()
+            return redirect('view_calendar')
+    else:
+        form = InternshipCalendarForm()
+
+    return render(request, 'calendar_app/create_calendar.html', {'form': form})
+
+
+def view_calendar(request):
+    calendars = InternshipCalendar.objects.filter(user=request.user)
+    return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})

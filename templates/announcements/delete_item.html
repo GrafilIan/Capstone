@@ -10,7 +10,7 @@
     <form method="post">
         {% csrf_token %}
         <button type="submit">Delete</button>
-        <a href="{% url 'announcement_list' %}">Cancel</a>
+        <a href="{% url 'announcement_list' %}"> <button class="custom-button"> Cancel </button></a>
     </form>
     <a href="{% url 'announcement_list' %}">Back to {{ item_type }} List</a>
 {% endblock %}

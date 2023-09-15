@@ -24,6 +24,25 @@ class Recommendation(models.Model):
 
 #-----Announcement Section/end-----#
 
+
+#-----Calendar Setup-----#
+
+class InternshipCalendar(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    starting_month = models.IntegerField()
+    starting_date = models.IntegerField()
+    ending_month = models.IntegerField()
+    ending_date = models.IntegerField()
+    weekly_workshift = models.CharField(max_length=100)
+    timeshift = models.CharField(max_length=100)
+    rest_days = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"Calendar for {self.user}"
+
+#-----Calendar Setup/end-----#
+
+
 #-----Records Table-----#
 
 

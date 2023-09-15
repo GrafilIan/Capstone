@@ -3,6 +3,7 @@ from django import forms
 from .models import intern
 from .models import Announcement
 from .models import Recommendation
+from .models import InternshipCalendar
 from .models import TimeRecord
 
 class CustomUserCreationForm(UserCreationForm):
@@ -49,3 +50,8 @@ class RecommendationForm(forms.ModelForm):
 
 class TimeRecordForm(forms.Form):
     is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
+
+class InternshipCalendarForm(forms.ModelForm):
+    class Meta:
+        model = InternshipCalendar
+        exclude = ['user']

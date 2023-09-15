@@ -10,4 +10,6 @@ urlpatterns = [
     path('clear_history/', views.clear_history, name='clear_history'),
     path('delete_all_announcement/', views.delete_all_announcement, name='delete_all_announcement'),
     path('delete_all_recommendation/', views.delete_all_recommendation, name='delete_all_recommendation'),
+    path('create_calendar/', views.create_calendar, name='create_calendar'),
+    path('view_calendar/', views.view_calendar, name='view_calendar'),
 ]
