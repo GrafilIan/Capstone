@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}View Calendar{% endblock %}
+{% load static %}
+{% block content %}
+ <h1>Your Internship Calendars</h1>
+    <ul>
+        {% for calendar in calendars %}
+            <li>
+                <strong>Starting Month:</strong> {{ calendar.starting_month }}<br>
+                <strong>Starting Date:</strong> {{ calendar.starting_date }}<br>
+                <strong>Ending Month:</strong> {{ calendar.ending_month }}<br>
+                <strong>Ending Date:</strong> {{ calendar.ending_date }}<br>
+                <strong>Weekly Workshift:</strong> {{ calendar.weekly_workshift }}<br>
+                <strong>Timeshift:</strong> {{ calendar.timeshift }}<br>
+                <strong>Rest Days:</strong> {{ calendar.rest_days }}<br>
+            </li>
+        {% empty %}
+            <li>No calendars saved yet.</li>
+        {% endfor %}
+    </ul>
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+{% endblock %}

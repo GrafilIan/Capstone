@@ -7,6 +7,7 @@ from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
 from .forms import InternshipCalendarForm
+from .models import InternshipCalendar
 
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm

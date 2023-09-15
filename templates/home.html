@@ -4,14 +4,19 @@
 {% load static %}
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
+  <script>
+    window.location.href = "{% url 'create_calendar' %}";
+  </script>
+
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a> <!--url of other html file-->
   <a href="{% url 'signup' %}">Sign Up</a>
   <a href="{% url 'create_announcement' %}">Create Announcement</a>
-  <a href="{% url 'time_in_out' %}">Add Time Record</a>
+  <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
+  <a href="{% url 'create_calendar' %}">Create Calendar</a>
+  <a href="{% url 'view_calendar' %}">View Calendar</a>
 
 {% endif %}
 {% endblock %}
