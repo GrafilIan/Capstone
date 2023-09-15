@@ -12,4 +12,5 @@ urlpatterns = [
     path('delete_all_recommendation/', views.delete_all_recommendation, name='delete_all_recommendation'),
     path('create_calendar/', views.create_calendar, name='create_calendar'),
     path('view_calendar/', views.view_calendar, name='view_calendar'),
+    path('clear_setup/', views.clear_setup, name='clear_setup'),
 ]

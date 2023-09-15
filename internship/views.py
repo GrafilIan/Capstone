@@ -120,6 +120,10 @@ def create_calendar(request):
             calendar = form.save(commit=False)
             calendar.user = request.user
             calendar.save()
+
+            # Set a session variable to indicate calendar setup is complete
+            request.session['calendar_setup_complete'] = True
+
             return redirect('view_calendar')
     else:
         form = InternshipCalendarForm()
@@ -128,5 +132,18 @@ def create_calendar(request):
 
 
 def view_calendar(request):
-    calendars = InternshipCalendar.objects.filter(user=request.user)
-    return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})
+    # Check if the session variable is set to True
+    if request.session.get('calendar_setup_complete', False):  # Default to False if the variable is not set
+        # Display the list of saved calendars
+        calendars = InternshipCalendar.objects.filter(user=request.user)
+        return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})
+
+    # If the session variable is not set to True, redirect to create_calendar
+    return redirect('create_calendar')
+
+
+def clear_setup(request):
+    if request.method == 'POST':
+        InternshipCalendar.objects.all().delete()
+
+    return redirect('view_calendar')
