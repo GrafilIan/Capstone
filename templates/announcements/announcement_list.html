@@ -9,6 +9,10 @@
     <div class="list-container">
         <div class="list-column">
             <h2>Announcements</h2>
+            <form method="post" action="{% url 'delete_all_announcement' %}">
+                {% csrf_token %}
+                <button type="submit">Delete All Announcement</button>
+            </form>
             <ul>
                {% for announcement in announcements %}
                    {% if announcement.announcement_list %}
@@ -21,13 +25,18 @@
                        {% else %}
                            <p>No document available.</p>
                        {% endif %}
-                       <a href="{% url 'delete_item' 'announcement' announcement.id %}">Delete</a>
+                       <a href="{% url 'delete_item' 'announcement' announcement.id %}"><button> Delete </button></a>
                    {% endif %}
                {% endfor %}
            </ul>
+
         </div>
         <div class="list-column">
             <h2>Recommendation</h2>
+            <form method="post" action="{% url 'delete_all_recommendation' %}">
+                {% csrf_token %}
+                <button type="submit">Delete Recommendation</button>
+            </form>
             <ul>
                {% for recommendation in recommendations %}
                    {% if recommendation.recommendation_list %}
@@ -40,10 +49,11 @@
                        {% else %}
                            <p>No document available.</p>
                        {% endif %}
-                       <a href="{% url 'delete_item' 'recommendation' recommendation.id %}">Delete</a>
+                       <a href="{% url 'delete_item' 'recommendation' recommendation.id %}"><button> Delete </button></a>
                    {% endif %}
                {% endfor %}
            </ul>
         </div>
+
     </div>
 {% endblock %}

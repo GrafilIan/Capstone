@@ -13,8 +13,9 @@ h2 {
 }
 
 button {
-    background-color: #4CAF50; /* Green */
+    background-color: green; /* Green */
     border: none;
+    border-radius: 5px;
     color: white;
     padding: 15px 32px;
     text-align: center;

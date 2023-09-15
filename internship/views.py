@@ -70,7 +70,17 @@ def delete_item(request, item_type, item_id):
 
     return render(request, 'announcements/delete_item.html', context)
 
+def delete_all_announcement(request):
+    if request.method == 'POST':
+        Announcement.objects.all().delete()
 
+    return redirect('announcement_list')
+
+def delete_all_recommendation(request):
+    if request.method == 'POST':
+        Recommendation.objects.all().delete()
+
+    return redirect('announcement_list')
 
 def time_in_out(request):
     if request.method == 'POST':
