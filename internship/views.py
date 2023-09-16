@@ -9,8 +9,8 @@ from .forms import TimeRecordForm
 from .models import InternshipCalendar
 from .forms import InternshipCalendarForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login as auth_login
 from django.contrib import messages
+from django.contrib.auth import login
 
 def signup(request):
     if request.method == 'POST':
@@ -202,4 +202,4 @@ def your_login_view(request):
     else:
         form = AuthenticationForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
