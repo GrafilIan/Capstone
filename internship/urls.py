@@ -12,5 +12,7 @@ urlpatterns = [
     path('create_calendar/', views.create_calendar, name='create_calendar'),
     path('view_calendar/', views.view_calendar, name='view_calendar'),
     path('clear_setup/', views.clear_setup, name='clear_setup'),
+    path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
+    path('login/', views.your_login_view, name='login'),
 
 ]

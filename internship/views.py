@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login
+from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 from .forms import AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
@@ -7,7 +8,9 @@ from .models import intern, TimeRecord
 from .forms import TimeRecordForm
 from .models import InternshipCalendar
 from .forms import InternshipCalendarForm
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login
+from django.contrib import messages
 
 def signup(request):
     if request.method == 'POST':
@@ -152,6 +155,51 @@ def clear_setup(request):
 
     return redirect('view_calendar')
 
+@login_required  # This ensures that the user is logged in
+def redirect_to_calendar(request):
+    # Check if the user has calendar records
+    has_calendars = InternshipCalendar.objects.filter(user=request.user).exists()
+
+    if has_calendars:
+        # User has calendars, redirect to view_calendar.html
+        return redirect('view_calendar')
+    else:
+        # User doesn't have calendars, redirect to create_calendar.html
+        return redirect('create_calendar')
 
 
+def your_login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            # Extract username and password from the form
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
 
+            # Use authenticate to check credentials
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+
+                # Check if the user has calendar records
+                has_calendars = InternshipCalendar.objects.filter(user=user).exists()
+
+                print("has_calendars:", has_calendars)
+                print("Number of calendar records:", InternshipCalendar.objects.filter(user=user).count())
+
+                if has_calendars:
+                    # User has calendars, redirect to view_calendar
+                    return redirect('view_calendar')
+                else:
+                    # User doesn't have calendars, redirect to create_calendar
+                    return redirect('create_calendar')
+            else:
+                # Authentication failed
+                messages.error(request, 'Invalid username or password. Please try again.')
+
+    # If GET request or login failed, render the login form
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})

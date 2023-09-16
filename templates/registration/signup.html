@@ -102,4 +102,26 @@
 
     <button type="submit">Sign up</button>
 </form>
+
+<script>
+    // JavaScript code to handle image preview
+    document.querySelector('#{{ form.profile_image.id_for_label }}').addEventListener('change', function () {
+        const fileInput = this;
+        const imagePreview = document.querySelector('#image-preview');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+        }
+    });
+</script>
 {% endblock %}

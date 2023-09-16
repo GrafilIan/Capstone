@@ -1,14 +1,22 @@
 {% extends "base.html" %}
-
 {% block title %}Home{% endblock %}
 {% load static %}
 {% block content %}
 
-  <p>Home Page</p>
-  <a href="{% url 'login' %}">Log In</a> <br>
-  <a href="{% url 'signup' %}">Sign Up</a> <br>
-  <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
-  <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
-  <a href="{% url 'create_calendar' %}">Create Calendar</a> <br>
-  <a href="{% url 'view_calendar' %}">View Calendar</a> <br>
+<p>Home Page</p>
+
+{% if user.is_authenticated %}
+    {% if calendars_exist %}
+        <p>You already have calendar records. <a href="{% url 'view_calendar' %}">View Calendar</a></p>
+    {% else %}
+        <p><a href="{% url 'create_calendar' %}">Create Calendar</a></p>
+    {% endif %}
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+{% else %}
+    <a href="{% url 'login' %}">Log In</a> <br>
+    <a href="{% url 'signup' %}">Sign Up</a> <br>
+    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
+    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
+{% endif %}
+
 {% endblock %}
