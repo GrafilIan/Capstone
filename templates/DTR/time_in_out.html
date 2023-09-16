@@ -21,6 +21,10 @@
         {% csrf_token %}
         <button type="submit">Clear History</button>
     </form>
+
+    <br> <br>
     <a href="{% url 'login' %}">Log In</a> <br>
-    <a href="{% url 'signup' %}">Sign Up</a>
+    <a href="{% url 'signup' %}">Sign Up</a> <br>
+    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
+    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
 {% endblock %}
