@@ -3,20 +3,12 @@
 {% block title %}Home{% endblock %}
 {% load static %}
 {% block content %}
-{% if user.is_authenticated %}
-  {% if not request.session.calendar_setup_complete %}
-    <script>
-      window.location.href = "{% url 'create_calendar' %}";
-    </script>
-  {% endif %}
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
+
+  <p>Home Page</p>
   <a href="{% url 'login' %}">Log In</a> <br>
   <a href="{% url 'signup' %}">Sign Up</a> <br>
   <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
   <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
   <a href="{% url 'create_calendar' %}">Create Calendar</a> <br>
   <a href="{% url 'view_calendar' %}">View Calendar</a> <br>
-{% endif %}
 {% endblock %}

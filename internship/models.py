@@ -72,8 +72,8 @@ class TimeRecord(models.Model):
     action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
 #-----Time Record/end-----#
 
+#-----CalendarSetup-----#
 
-#-----Calendar Setup-----#
 
 class InternshipCalendar(models.Model):
     user = models.ForeignKey(intern, on_delete=models.CASCADE)
@@ -87,5 +87,5 @@ class InternshipCalendar(models.Model):
 
     def __str__(self):
         return f"Calendar for {self.user}"
+#-----CalendarSetup/end-----#
 
-#-----Calendar Setup/end-----#

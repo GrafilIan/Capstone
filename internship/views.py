@@ -1,18 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 from .forms import AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
-from .forms import InternshipCalendarForm
 from .models import InternshipCalendar
+from .forms import InternshipCalendarForm
 
-class SignUpView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
-    template_name = "registration/signup.html"
+
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')
+    else:
+        form = CustomUserCreationForm()
+
+    return render(request, 'registration/signup.html', {'form': form})
+
 
 def create_announcement(request):
     if request.method == 'POST':
@@ -124,26 +132,26 @@ def create_calendar(request):
             # Set a session variable to indicate calendar setup is complete
             request.session['calendar_setup_complete'] = True
 
+            # Redirect to view_calendar with a success message
             return redirect('view_calendar')
     else:
         form = InternshipCalendarForm()
 
+    # Pass the form to the template
     return render(request, 'calendar_app/create_calendar.html', {'form': form})
 
-
 def view_calendar(request):
-    # Check if the session variable is set to True
-    if request.session.get('calendar_setup_complete', False):  # Default to False if the variable is not set
-        # Display the list of saved calendars
-        calendars = InternshipCalendar.objects.filter(user=request.user)
-        return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})
+    # Retrieve the user's calendar records
+    calendars = InternshipCalendar.objects.filter(user=request.user)
 
-    # If the session variable is not set to True, redirect to create_calendar
-    return redirect('create_calendar')
-
+    return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})
 
 def clear_setup(request):
     if request.method == 'POST':
         InternshipCalendar.objects.all().delete()
 
     return redirect('view_calendar')
+
+
+
+

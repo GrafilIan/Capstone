@@ -7,68 +7,99 @@
 {% load static %}
 <h2>Sign Up</h2>
 <form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-
-  <div class="form-group">
-    <label for="id_username">Username:</label>
-    <input type="text" name="username" id="id_username">
-  </div>
-
-  <div class="form-group">
-    <label for="id_email">Email:</label>
-    <input type="email" name="email" id="id_email">
-  </div>
-
-  <div class="form-group">
-    <label for="id_student_id">Student ID:</label>
-    <input type="text" name="student_id" id="id_student_id">
-  </div>
-
-  <div class="form-group">
-        <label for="id_course">Course:</label>
-        <input type="text" name="course" id="id_course">
-    </div>
-
-  <div class="form-group">
-        <label for="id_company_name">Company Name:</label>
-        <input type="text" name="company_name" id="id_company_name">
-    </div>
-
-  <div class="form-group">
-        <label for="id_contact_num">Contact Number:</label>
-        <input type="tel" name="contact_num" id="id_contact_num">
-    </div>
-
-  <div class="form-group">
-        <label for="id_address">Address:</label>
-        <input type="text" name="address" id="id_address">
-    </div>
-
-  <div class="form-group">
-        <label for="profile_image">Profile Image:</label>
-        <input type="file" name="profile_image" id="profile_image">
-
-    </div>
-        <img id="profile_image_preview" src="#" alt="Ay ambot"> <br>
-
+    {% csrf_token %}
     <div class="form-group">
-        <label for="id_password1">Password:</label>
-        <input type="password" name="password1" id="id_password1">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="alert alert-danger">
+                {{ form.username.errors }}
+            </div>
+        {% endif %}
     </div>
-
     <div class="form-group">
-        <label for="id_password2">Confirm Password:</label>
-        <input type="password" name="password2" id="id_password2">
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="alert alert-danger">
+                {{ form.email.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.student_id.id_for_label }}">Student ID</label>
+        {{ form.student_id }}
+        {% if form.student_id.errors %}
+            <div class="alert alert-danger">
+                {{ form.student_id.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.course.id_for_label }}">Course</label>
+        {{ form.course }}
+        {% if form.course.errors %}
+            <div class="alert alert-danger">
+                {{ form.course.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.company_name.id_for_label }}">Company Name</label>
+        {{ form.company_name }}
+        {% if form.company_name.errors %}
+            <div class="alert alert-danger">
+                {{ form.company_name.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.contact_num.id_for_label }}">Contact Number</label>
+        {{ form.contact_num }}
+        {% if form.contact_num.errors %}
+            <div class="alert alert-danger">
+                {{ form.contact_num.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.address.id_for_label }}">Address</label>
+        {{ form.address }}
+        {% if form.address.errors %}
+            <div class="alert alert-danger">
+                {{ form.address.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.profile_image.id_for_label }}">Profile Image</label>
+        {{ form.profile_image }}
+        {% if form.profile_image.errors %}
+            <div class="alert alert-danger">
+                {{ form.profile_image.errors }}
+            </div>
+        {% endif %}
+        <img id="image-preview" src="" alt="Image Preview" style="max-width: 200px; display: none;">
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password1.id_for_label }}">Password</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="alert alert-danger">
+                {{ form.password1.errors }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.password2.id_for_label }}">Password confirmation</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="alert alert-danger">
+                {{ form.password2.errors }}
+            </div>
+        {% endif %}
     </div>
 
-
-  <!-- Repeat for other fields -->
-
-  <button type="submit">Sign Up</button>
+    <button type="submit">Sign up</button>
 </form>
-
-
-<script src="{% static 'js/image_preview.js' %}"></script>
 {% endblock %}
-
-

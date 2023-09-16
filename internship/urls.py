@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import SignUpView
 from . import views
 urlpatterns = [
-    path("signup/", SignUpView.as_view(), name="signup"),
+    path('signup/', views.signup, name='signup'),
     path('create/', views.create_announcement, name='create_announcement'),
     path('list/', views.announcement_list, name='announcement_list'),
     path('delete/<str:item_type>/<int:item_id>/', views.delete_item, name='delete_item'),
@@ -13,4 +12,5 @@ urlpatterns = [
     path('create_calendar/', views.create_calendar, name='create_calendar'),
     path('view_calendar/', views.view_calendar, name='view_calendar'),
     path('clear_setup/', views.clear_setup, name='clear_setup'),
+
 ]
