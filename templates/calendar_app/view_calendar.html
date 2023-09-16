@@ -23,6 +23,7 @@
             <li>No calendars saved yet.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
     <a href="{% url 'announcement_list' %}">Go to Announcement</a>
 {% endblock %}

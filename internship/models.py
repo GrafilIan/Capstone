@@ -67,6 +67,7 @@ class intern(AbstractUser):
 #-----Time Record-----#
 
 class TimeRecord(models.Model):
+    intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
     timestamp = models.DateTimeField(default=now)
     is_time_in = models.BooleanField(default=True)
     action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')

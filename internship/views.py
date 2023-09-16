@@ -94,6 +94,8 @@ def delete_all_recommendation(request):
 
     return redirect('announcement_list')
 
+
+@login_required
 def time_in_out(request):
     if request.method == 'POST':
         form = TimeRecordForm(request.POST)
@@ -105,12 +107,12 @@ def time_in_out(request):
         if form.is_valid():
             is_time_in = form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
-            TimeRecord.objects.create(is_time_in=is_time_in, action=action)
+            TimeRecord.objects.create(intern_user=request.user, is_time_in=is_time_in, action=action)
             return redirect('time_in_out')
     else:
         form = TimeRecordForm()
 
-    time_records = TimeRecord.objects.all().order_by('-timestamp')
+    time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
     return render(request, 'DTR/time_in_out.html', {'form': form, 'time_records': time_records})
 
 
