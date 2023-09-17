@@ -11,6 +11,8 @@ from .forms import InternshipCalendarForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
+from .models import InternCalendar, DailyAccomplishmentReport
+from .forms import InternCalendarForm, DailyAccomplishmentReportForm
 
 def signup(request):
     if request.method == 'POST':
@@ -205,3 +207,34 @@ def your_login_view(request):
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+
+def create_internship_calendar(request):
+    if request.method == 'POST':
+        form = InternCalendarForm(request.POST)
+        if form.is_valid():
+            calendar = form.save(commit=False)
+            calendar.user = request.user
+            calendar.save()
+            return redirect('calendar_detail', pk=calendar.pk)
+    else:
+        form = InternCalendarForm()
+    return render(request, 'internship_calendar/create_calendar.html', {'form': form})
+
+def calendar_detail(request, pk):
+    calendar = InternCalendar.objects.get(pk=pk)
+    reports = DailyAccomplishmentReport.objects.filter(internship_calendar=calendar)
+    return render(request, 'internship_calendar/calendar_detail.html', {'calendar': calendar, 'reports': reports})
+
+def create_daily_report(request, calendar_pk):
+    calendar = InternCalendar.objects.get(pk=calendar_pk)
+    if request.method == 'POST':
+        form = DailyAccomplishmentReportForm(request.POST, request.FILES)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.internship_calendar = calendar
+            report.save()
+            return redirect('calendar_detail', pk=calendar.pk)
+    else:
+        form = DailyAccomplishmentReportForm()
+    return render(request, 'internship_calendar/create_daily_report.html', {'form': form, 'calendar': calendar})
