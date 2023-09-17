@@ -11,7 +11,8 @@ from .forms import InternshipCalendarForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
-
+from .models import InternshipCalendars
+from .forms import InternshipCalendarsForm
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -205,3 +206,25 @@ def your_login_view(request):
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+def calendar_list(request):
+    calendars = InternshipCalendars.objects.filter(user=request.user)
+    return render(request, 'internship_calendar/calendar_list.html', {'calendars': calendars})
+
+def create_calendars(request):
+    if request.method == 'POST':
+        form = InternshipCalendarsForm(request.POST)
+        if form.is_valid():
+            calendar = form.save(commit=False)
+            calendar.user = request.user
+            calendar.save()
+            calendar.calculate_submission_bins()  # Calculate submission bins
+            return redirect('calendar_list')
+    else:
+        form = InternshipCalendarsForm()
+    return render(request, 'internship_calendar/create_calendars.html', {'form': form})
+
+def view_calendars(request, calendar_id):
+    calendar = get_object_or_404(InternshipCalendars, id=calendar_id, user=request.user)
+    reports = calendar.accomplishmentreport_set.all()
+    return render(request, 'internship_calendar/view_calendars.html', {'calendar': calendar, 'reports': reports})

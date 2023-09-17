@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
+from datetime import timedelta
 
 
 #-----Announcement Section-----#
@@ -95,6 +96,14 @@ class InternshipCalendars(models.Model):
     start_month = models.DateField()
     end_month = models.DateField()
 
+    def calculate_submission_bins(self):
+        # Calculate the number of days between start_month and end_month
+        days_difference = (self.end_month - self.start_month).days
+
+        # Create daily submission bins for each day in the internship period
+        for i in range(days_difference + 1):
+            submission_date = self.start_month + timedelta(days=i)
+            AccomplishmentReport.objects.create(calendar=self, submission_date=submission_date)
     def __str__(self):
         return f"{self.user}'s Internship Calendar"
 
