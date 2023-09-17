@@ -90,5 +90,20 @@ class InternshipCalendar(models.Model):
         return f"Calendar for {self.user}"
 #-----CalendarSetup/end-----#
 
+class InternsCalendar(models.Model):
+    user = models.ForeignKey(intern, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
 
+    def __str__(self):
+        return f"{self.user.username}'s Internship Calendar"
+
+class DailyAccomplishment(models.Model):
+    calendar = models.ForeignKey(InternshipCalendar, on_delete=models.CASCADE)
+    date = models.DateField()
+    text_submission = models.TextField(blank=True)
+    document_submission = models.FileField(upload_to='documents/', blank=True)
+
+    def __str__(self):
+        return f"Accomplishment for {self.date}"
 
