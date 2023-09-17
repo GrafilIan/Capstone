@@ -7,11 +7,13 @@ from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
 from .models import InternshipCalendar
-from .forms import InternshipCalendarForm
+from .forms import InternshipCalendarForm, InternsCalendarForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
-
+from .models import InternsCalendar, DailyAccomplishment
+from .forms import DailyAccomplishmentForm
+from datetime import timedelta
 
 def signup(request):
     if request.method == 'POST':
@@ -208,3 +210,70 @@ def your_login_view(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
+def internship_calendar_view(request):
+    # Retrieve the user's internship calendar
+    calendar = InternsCalendar.objects.get(user=request.user)
+    daily_accomplishments = DailyAccomplishment.objects.filter(calendar=calendar)
+
+    context = {
+        'calendar': calendar,
+        'daily_accomplishments': daily_accomplishments,
+    }
+    return render(request, 'internship_calendar/calendar.html', context)
+
+def add_daily_accomplishment(request):
+    # Retrieve the user's internship calendar
+    calendar = InternsCalendar.objects.get(user=request.user)
+
+    # Calculate the number of days in the internship calendar
+    num_days = (calendar.end_date - calendar.start_date).days + 1
+
+    # Initialize a list to store daily accomplishment forms
+    daily_accomplishment_forms = []
+
+    if request.method == 'POST':
+        # Handle form submission for each day
+        for i in range(num_days):
+            date = calendar.start_date + timedelta(days=i)
+            form = DailyAccomplishmentForm(request.POST, request.FILES, prefix=str(date))
+
+            if form.is_valid():
+                accomplishment = form.save(commit=False)
+                accomplishment.calendar = calendar
+                accomplishment.date = date
+                accomplishment.save()
+                daily_accomplishment_forms.append(form)
+            else:
+                daily_accomplishment_forms.append(form)
+
+        return redirect('internship_calendar')
+    else:
+        # Create a form for each day in the calendar
+        for i in range(num_days):
+            date = calendar.start_date + timedelta(days=i)
+            form = DailyAccomplishmentForm(prefix=str(date))
+            daily_accomplishment_forms.append(form)
+
+    context = {
+        'daily_accomplishment_forms': daily_accomplishment_forms,
+    }
+    return render(request, 'internship_calendar/add_accomplishment.html', context)
+
+
+@login_required
+def setup_internship_calendar(request):
+    user = request.user
+    if request.method == 'POST':
+        form = InternsCalendarForm(request.POST)
+        if form.is_valid():
+            calendar = form.save(commit=False)
+            calendar.user = user
+            calendar.save()
+            return redirect('internship_calendar')
+    else:
+        form = InternsCalendarForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'internship_calendar/setup_calendar.html', context)

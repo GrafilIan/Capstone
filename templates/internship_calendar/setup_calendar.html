@@ -1,0 +1,13 @@
+<!-- internship_calendar/templates/internship_calendar/setup_calendar.html -->
+{% extends "base.html" %}
+
+{% block title %}Setup Internship Calendar{% endblock %}
+
+{% block content %}
+    <h2>Setup Internship Calendar</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

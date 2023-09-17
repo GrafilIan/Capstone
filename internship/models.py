@@ -99,7 +99,7 @@ class InternsCalendar(models.Model):
         return f"{self.user.username}'s Internship Calendar"
 
 class DailyAccomplishment(models.Model):
-    calendar = models.ForeignKey(InternshipCalendar, on_delete=models.CASCADE)
+    calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE)
     date = models.DateField()
     text_submission = models.TextField(blank=True)
     document_submission = models.FileField(upload_to='documents/', blank=True)
