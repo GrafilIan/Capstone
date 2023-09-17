@@ -14,6 +14,8 @@ from django.contrib.auth import login
 from .models import InternCalendar, DailyAccomplishmentReport
 from .forms import InternCalendarForm, DailyAccomplishmentReportForm
 from datetime import timedelta
+from datetime import datetime
+
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
-
+from datetime import datetime
 
 #-----Announcement Section-----#
 
@@ -99,7 +99,7 @@ class InternCalendar(models.Model):
 
 class DailyAccomplishmentReport(models.Model):
     internship_calendar = models.ForeignKey(InternCalendar, on_delete=models.CASCADE)
-    date = models.DateField()
+    date = models.DateField(default=now)
     order = models.PositiveIntegerField(default=0)
     text_report = models.TextField(blank=True, null=True)
     document_report = models.FileField(upload_to='documents/', blank=True, null=True)
