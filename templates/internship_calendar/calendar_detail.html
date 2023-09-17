@@ -7,7 +7,7 @@
   <ul>
     {% for report in reports %}
       <li>
-        Date: {{ report.date }}
+        Date: {{ calendar.start_month + timedelta(days=report.order-1) }}
         <a href="{{ report.document_report.url }}" download>Download Report</a>
         <p>{{ report.text_report }}</p>
       </li>

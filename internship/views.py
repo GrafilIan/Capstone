@@ -13,7 +13,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from .models import InternCalendar, DailyAccomplishmentReport
 from .forms import InternCalendarForm, DailyAccomplishmentReportForm
-
+from datetime import timedelta
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -145,7 +145,7 @@ def create_calendar(request):
         form = InternshipCalendarForm()
 
     # Pass the form to the template
-    return render(request, 'calendar_app/create_calendar.html', {'form': form})
+    return render(request, 'calendar_app/set_up_calendar.html', {'form': form})
 
 def view_calendar(request):
     # Retrieve the user's calendar records
@@ -168,7 +168,7 @@ def redirect_to_calendar(request):
         # User has calendars, redirect to view_calendar.html
         return redirect('view_calendar')
     else:
-        # User doesn't have calendars, redirect to create_calendar.html
+        # User doesn't have calendars, redirect to set_up_calendar.html
         return redirect('create_calendar')
 
 
@@ -216,10 +216,16 @@ def create_internship_calendar(request):
             calendar = form.save(commit=False)
             calendar.user = request.user
             calendar.save()
+            # Calculate the number of days between start and end months
+            num_days = (calendar.end_month - calendar.start_month).days + 1
+            # Create submission bins
+            for i in range(num_days):
+                report = DailyAccomplishmentReport(internship_calendar=calendar, order=i+1)
+                report.save()
             return redirect('calendar_detail', pk=calendar.pk)
     else:
         form = InternCalendarForm()
-    return render(request, 'internship_calendar/create_calendar.html', {'form': form})
+    return render(request, 'internship_calendar/set_up_calendar.html', {'form': form})
 
 def calendar_detail(request, pk):
     calendar = InternCalendar.objects.get(pk=pk)

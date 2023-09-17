@@ -100,5 +100,6 @@ class InternCalendar(models.Model):
 class DailyAccomplishmentReport(models.Model):
     internship_calendar = models.ForeignKey(InternCalendar, on_delete=models.CASCADE)
     date = models.DateField()
+    order = models.PositiveIntegerField(default=0)
     text_report = models.TextField(blank=True, null=True)
     document_report = models.FileField(upload_to='documents/', blank=True, null=True)

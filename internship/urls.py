@@ -17,7 +17,7 @@ urlpatterns = [
     path('clear_setup/', views.clear_setup, name='clear_setup'),
     path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
     path('login/', views.your_login_view, name='login'),
-    path('create-calendar/', views.create_internship_calendar, name='create_calendar'),
+    path('create-calendar/', views.create_internship_calendar, name='set_up_calendar'),
     path('calendar/<int:pk>/', views.calendar_detail, name='calendar_detail'),
     path('calendar/<int:calendar_pk>/create-daily-report/', views.create_daily_report, name='create_daily_report'),
 
