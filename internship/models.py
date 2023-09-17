@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
-from datetime import timedelta
 
 
 #-----Announcement Section-----#
@@ -91,25 +90,13 @@ class InternshipCalendar(models.Model):
         return f"Calendar for {self.user}"
 #-----CalendarSetup/end-----#
 
-class InternshipCalendars(models.Model):
+class DailyAccomplishmentBin(models.Model):
     user = models.ForeignKey(intern, on_delete=models.CASCADE)
-    start_month = models.DateField()
-    end_month = models.DateField()
-
-    def calculate_submission_bins(self):
-        # Calculate the number of days between start_month and end_month
-        days_difference = (self.end_month - self.start_month).days
-
-        # Create daily submission bins for each day in the internship period
-        for i in range(days_difference + 1):
-            submission_date = self.start_month + timedelta(days=i)
-            AccomplishmentReport.objects.create(calendar=self, submission_date=submission_date)
-    def __str__(self):
-        return f"{self.user}'s Internship Calendar"
-
-class AccomplishmentReport(models.Model):
-    calendar = models.ForeignKey(InternshipCalendars, on_delete=models.CASCADE)
-    submission_date = models.DateField()
+    calendar = models.ForeignKey(InternshipCalendar, on_delete=models.CASCADE)
+    bin_number = models.PositiveIntegerField()
+    document = models.FileField(upload_to='daily_accomplishment/')
+    submission_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Accomplishment Report for {self.calendar.user} on {self.submission_date}"
+        return f"Report Bin {self.bin_number} for {self.user} - Calendar {self.calendar}"
+
