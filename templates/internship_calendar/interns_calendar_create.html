@@ -5,6 +5,8 @@
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
+  <p><strong>Number of Submission Bins:</strong> {{ interns_calendar.num_submission_bins }}</p>
   <button type="submit">Submit</button>
 </form>
+<p><a href="{% url 'daily_accomplishment_create' %}">Submit Daily Accomplishment</a></p>
 {% endblock %}

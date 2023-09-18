@@ -1,15 +1,33 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
-<h2>Internship Calendar</h2>
-{% if interns_calendar %}
-  <p><strong>User:</strong> {{ interns_calendar.user }}</p>
-  <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
-  <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
-  <p><strong>Number of Days:</strong> {{ interns_calendar.get_number_of_days }}</p>
-  <p><a href="{% url 'daily_accomplishment_create' %}">Submit Daily Accomplishment</a></p>
-{% else %}
-  <p>No internship calendar has been set up.</p>
-  <p><a href="{% url 'interns_calendar_create' %}">Create Internship Calendar</a></p>
-{% endif %}
+  <h2>Internship Calendar</h2>
+  <p>Start Month: {{ interns_calendar.start_month|date:"Y-m-d" }}</p>
+  <p>End Month: {{ interns_calendar.end_month|date:"Y-m-d" }}</p>
+  <h3>Daily Accomplishment Reports</h3>
+  <ul>
+    {% for accomplishment in accomplishments %}
+      <li>
+        Date: {{ accomplishment.date|date:"Y-m-d" }}
+        <p>{{ accomplishment.text_submission }}</p>
+      </li>
+    {% empty %}
+      <li>No reports available.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'daily_accomplishment_create' %}">Add Daily Report</a>
+  <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a>
+
+  <!-- Generate submission bins based on the number of days -->
+  <h3>Submission Bins</h3>
+  <ul>
+    {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
+      <li>
+        Submission Bin {{ adjusted_bin_number }}
+        <br>
+        Date: {{ bin_date|date:"Y-m-d" }}
+        <br>
+        <a href="{% url 'daily_accomplishment_create' %}">Add Daily Report</a>
+      </li><br>
+    {% endfor %}
+  </ul>
 {% endblock %}

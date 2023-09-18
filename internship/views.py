@@ -212,15 +212,19 @@ def interns_calendar_create(request):
     if request.method == 'POST':
         form = InternsCalendarForm(request.POST)
         if form.is_valid():
+            # Save the form and setup calendar
             interns_calendar = form.save(commit=False)
             interns_calendar.user = request.user  # Assuming user is authenticated
             interns_calendar.save()
-            return redirect('daily_accomplishment_create')
+
+            # Redirect to the calendar_view page
+            return redirect('calendar_view')
 
     else:
         form = InternsCalendarForm()
 
     return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
+
 
 def daily_accomplishment_create(request):
     user = request.user  # Assuming user is authenticated
@@ -228,15 +232,12 @@ def daily_accomplishment_create(request):
     if request.method == 'POST':
         form = DailyAccomplishmentForm(request.POST, request.FILES)
         if form.is_valid():
-            # Check if the selected date is within the calendar range
-            date = form.cleaned_data['date']
-            if interns_calendar and interns_calendar.start_month <= date <= interns_calendar.end_month:
-                daily_accomplishment = form.save(commit=False)
-                daily_accomplishment.interns_calendar = interns_calendar
-                daily_accomplishment.save()
-                return redirect('calendar_view')
-            else:
-                form.add_error('date', 'Selected date is outside the calendar range.')
+            daily_accomplishment = form.save(commit=False)
+            daily_accomplishment.interns_calendar = interns_calendar
+            daily_accomplishment.save()
+
+            # Redirect to the calendar_view page
+            return redirect('calendar_view')
 
     else:
         form = DailyAccomplishmentForm()
@@ -244,5 +245,36 @@ def daily_accomplishment_create(request):
     return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form})
 
 def calendar_view(request):
-    interns_calendar = InternsCalendar.objects.filter(user=request.user).last()
-    return render(request, 'internship_calendar/calendar_view.html', {'interns_calendar': interns_calendar})
+    user = request.user  # Assuming user is authenticated
+    interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
+    if interns_calendar:
+        # Calculate the start date for the submission bins
+        start_date = interns_calendar.start_month
+        submission_bins = range(1, interns_calendar.num_submission_bins + 1)
+
+        # Create a list of dates for the submission bins
+        bin_dates = [start_date + timedelta(days=i) for i in range(interns_calendar.num_submission_bins)]
+
+        # Adjust the submission bin numbers by subtracting 1
+        adjusted_submission_bins = [bin_number - 1 for bin_number in submission_bins]
+
+        # Combine bins with adjusted bin numbers and dates
+        submission_bins_with_dates = zip(submission_bins, adjusted_submission_bins, bin_dates)
+
+        # Retrieve daily accomplishments related to this calendar
+        accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar)
+
+        context = {
+            'interns_calendar': interns_calendar,
+            'accomplishments': accomplishments,
+            'submission_bins_with_dates': submission_bins_with_dates,
+        }
+
+        return render(request, 'internship_calendar/calendar_view.html', context)
+
+    # Handle the case when there's no calendar set up
+    context = {
+        'message': 'No calendar set up. Please create a calendar.',
+    }
+    return render(request, 'internship_calendar/calendar_view.html', context)
