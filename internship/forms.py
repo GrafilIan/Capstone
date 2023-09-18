@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
+from .models import DailyAccomplishment
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         label="Password",
@@ -51,3 +52,7 @@ class   InternshipCalendarForm(forms.ModelForm):
         model = InternshipCalendar
         exclude = ['user']
 
+class DailyAccomplishmentForm(forms.ModelForm):
+    class Meta:
+        model = DailyAccomplishment
+        fields = ['date', 'text_submission', 'document_submission']
