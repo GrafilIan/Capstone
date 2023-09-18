@@ -11,7 +11,9 @@ from .forms import InternshipCalendarForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
-
+from .models import InternsCalendar, DailyAccomplishment
+from .forms import InternsCalendarForm, DailyAccomplishmentForm
+from datetime import timedelta
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -205,3 +207,42 @@ def your_login_view(request):
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+def interns_calendar_create(request):
+    if request.method == 'POST':
+        form = InternsCalendarForm(request.POST)
+        if form.is_valid():
+            interns_calendar = form.save(commit=False)
+            interns_calendar.user = request.user  # Assuming user is authenticated
+            interns_calendar.save()
+            return redirect('daily_accomplishment_create')
+
+    else:
+        form = InternsCalendarForm()
+
+    return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
+
+def daily_accomplishment_create(request):
+    user = request.user  # Assuming user is authenticated
+    interns_calendar = InternsCalendar.objects.filter(user=user).last()
+    if request.method == 'POST':
+        form = DailyAccomplishmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Check if the selected date is within the calendar range
+            date = form.cleaned_data['date']
+            if interns_calendar and interns_calendar.start_month <= date <= interns_calendar.end_month:
+                daily_accomplishment = form.save(commit=False)
+                daily_accomplishment.interns_calendar = interns_calendar
+                daily_accomplishment.save()
+                return redirect('calendar_view')
+            else:
+                form.add_error('date', 'Selected date is outside the calendar range.')
+
+    else:
+        form = DailyAccomplishmentForm()
+
+    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form})
+
+def calendar_view(request):
+    interns_calendar = InternsCalendar.objects.filter(user=request.user).last()
+    return render(request, 'internship_calendar/calendar_view.html', {'interns_calendar': interns_calendar})

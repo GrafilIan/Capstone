@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
-
+from datetime import timedelta
 
 #-----Announcement Section-----#
 
@@ -94,6 +94,15 @@ class InternsCalendar(models.Model):
     user = models.ForeignKey(intern, on_delete=models.CASCADE)
     start_month = models.DateField()
     end_month = models.DateField()
+    num_submission_bins = models.PositiveIntegerField(default=0)  # Default value of 0
+
+    def update_num_submission_bins(self):
+        # Calculate and update the number of submission bins
+        self.num_submission_bins = (self.end_month - self.start_month).days + 1
+
+    def save(self, *args, **kwargs):
+        self.update_num_submission_bins()  # Update num_submission_bins before saving
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"InternsCalendar for {self.user}"

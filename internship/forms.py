@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
-from .models import DailyAccomplishment
+from .models import InternsCalendar, DailyAccomplishment
+
 class CustomUserCreationForm(UserCreationForm):
     password1 = forms.CharField(
         label="Password",
@@ -47,12 +48,25 @@ class RecommendationForm(forms.ModelForm):
 class TimeRecordForm(forms.Form):
     is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
 
-class   InternshipCalendarForm(forms.ModelForm):
+class InternshipCalendarForm(forms.ModelForm):
     class Meta:
         model = InternshipCalendar
         exclude = ['user']
+
+class InternsCalendarForm(forms.ModelForm):
+    class Meta:
+        model = InternsCalendar
+        fields = ['start_month', 'end_month']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.update_num_submission_bins()  # Update num_submission_bins before saving
+        if commit:
+            instance.save()
+        return instance
 
 class DailyAccomplishmentForm(forms.ModelForm):
     class Meta:
         model = DailyAccomplishment
         fields = ['date', 'text_submission', 'document_submission']
+
