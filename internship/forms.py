@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
 from .models import InternsCalendar, DailyAccomplishment

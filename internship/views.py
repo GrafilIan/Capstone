@@ -174,8 +174,6 @@ def redirect_to_calendar(request):
 
 
 def your_login_view(request):
-    error_message = None
-
     if request.method == 'POST':
         auth_form = AuthenticationForm(request, data=request.POST)
         if auth_form.is_valid():
@@ -192,9 +190,6 @@ def your_login_view(request):
                 # Check if the user has calendar records
                 has_calendars = InternshipCalendar.objects.filter(user=user).exists()
 
-                print("has_calendars:", has_calendars)
-                print("Number of calendar records:", InternshipCalendar.objects.filter(user=user).count())
-
                 if has_calendars:
                     # User has calendars, redirect to view_calendar
                     return redirect('view_calendar')
@@ -202,15 +197,14 @@ def your_login_view(request):
                     # User doesn't have calendars, redirect to create_calendar
                     return redirect('create_calendar')
             else:
-                # Authentication failed
-                error_message = "Incorrect username or password."
-                return render(request, 'login.html', {'error_message': error_message})
-
-    # If GET request or login failed, render the login form
+                # Authentication failed for wrong password
+                messages.error(request, 'Incorrect password. Please try again.')
+                auth_form.add_error('password', 'Incorrect password. Please try again.')
     else:
         auth_form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'auth_form': auth_form})
+
 
 def interns_calendar_create(request):
     if request.method == 'POST':

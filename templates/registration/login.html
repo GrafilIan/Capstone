@@ -1,16 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %}Log In{% endblock %}
-{% load static %}
+
 {% block content %}
 <h2>Log In</h2>
-
-<!-- Display error message if authentication fails -->
-{% if error_message %}
-  <div class="alert alert-danger" role="alert">
-  {{ error_message }}
-  </div>
-{% endif %}
 
 <form method="post">
   {% csrf_token %}
@@ -26,6 +19,13 @@
     <label for="{{ auth_form.password.id_for_label }}">Password</label>
     {{ auth_form.password }}
   </div>
+
+  <!-- Display the error message -->
+  {% if auth_form.errors %}
+    <div class="text-danger">
+      {{ auth_form.errors.password }}
+    </div>
+  {% endif %}
 
   <button type="submit">Log In</button>
 </form>

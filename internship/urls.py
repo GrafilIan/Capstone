@@ -4,6 +4,7 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('signup/', views.signup, name='signup'),
+    path('login/', views.your_login_view, name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('create/', views.create_announcement, name='create_announcement'),
     path('list/', views.announcement_list, name='announcement_list'),
@@ -16,7 +17,6 @@ urlpatterns = [
     path('view_calendar/', views.view_calendar, name='view_calendar'),
     path('clear_setup/', views.clear_setup, name='clear_setup'),
     path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
-    path('login/', views.your_login_view, name='login'),
     path('interns-calendar-create/', views.interns_calendar_create, name='interns_calendar_create'),
     path('internship/daily-accomplishment-create/<str:date>/', views.daily_accomplishment_create, name='daily_accomplishment_create'),
     path('calendar-view/', views.calendar_view, name='calendar_view'),
