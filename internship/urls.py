@@ -18,6 +18,6 @@ urlpatterns = [
     path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
     path('login/', views.your_login_view, name='login'),
     path('interns-calendar-create/', views.interns_calendar_create, name='interns_calendar_create'),
-    path('daily-accomplishment-create/', views.daily_accomplishment_create, name='daily_accomplishment_create'),
+    path('internship/daily-accomplishment-create/<str:date>/', views.daily_accomplishment_create, name='daily_accomplishment_create'),
     path('calendar-view/', views.calendar_view, name='calendar_view'),
 ]

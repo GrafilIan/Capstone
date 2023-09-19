@@ -1,22 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
   <h2>Internship Calendar</h2>
-  <p>Start Month: {{ interns_calendar.start_month|date:"Y-m-d" }}</p>
-  <p>End Month: {{ interns_calendar.end_month|date:"Y-m-d" }}</p>
-  <h3>Daily Accomplishment Reports</h3>
-  <ul>
-    {% for accomplishment in accomplishments %}
-      <li>
-        Date: {{ accomplishment.date|date:"Y-m-d" }}
-        <p>{{ accomplishment.text_submission }}</p>
-      </li>
-    {% empty %}
-      <li>No reports available.</li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'daily_accomplishment_create' %}">Add Daily Report</a>
-  <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a>
-
+  <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
+  <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
+  <a href="{% url 'view_calendar' %}">Go to View Calendar</a>
   <!-- Generate submission bins based on the number of days -->
   <h3>Submission Bins</h3>
   <ul>
@@ -24,10 +11,30 @@
       <li>
         Submission Bin {{ adjusted_bin_number }}
         <br>
-        Date: {{ bin_date|date:"Y-m-d" }}
+        Date: {{ bin_date|date:"F d, Y" }}
         <br>
-        <a href="{% url 'daily_accomplishment_create' %}">Add Daily Report</a>
-      </li><br>
+        <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
+
+        <!-- Display daily accomplishment reports for this date -->
+        <ul>
+          {% for accomplishment in accomplishments %}
+            {% if accomplishment.date|date:"F d, Y" == bin_date|date:"F d, Y" %}
+              <li>
+                Date: {{ accomplishment.date|date:"F d, Y" }}
+                <p>{{ accomplishment.text_submission }}</p>
+                {% if accomplishment.document_submission %}
+                  <a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a>
+                {% endif %}
+              </li>
+            {% endif %}
+          {% empty %}
+            <li>No reports available.</li>
+          {% endfor %}
+        </ul>
+      </li>
     {% endfor %}
   </ul>
+  <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a>
+
+
 {% endblock %}

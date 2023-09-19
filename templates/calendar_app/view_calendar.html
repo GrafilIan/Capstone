@@ -33,6 +33,14 @@
     <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
     <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
     <a href="{% url 'logout' %}">Logout</a> <br><br>
-    <p><a href="{% url 'interns_calendar_create' %}">Create Internship Calendar</a></p>
-    <p><a href="{% url 'daily_accomplishment_create' %}">Submit Daily Accomplishment</a></p>
+    <a href="{% url 'interns_calendar_create' %}">Create Internship Calendar</a> <br>
+    <a href="{% url 'calendar_view' %}">Go to Calendar View</a>
+
+      <ul>
+        {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
+            <li>
+                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

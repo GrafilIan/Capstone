@@ -109,9 +109,11 @@ class InternsCalendar(models.Model):
 
 class DailyAccomplishment(models.Model):
     interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE)
+    submitted_by = models.ForeignKey(intern, on_delete=models.CASCADE, default=1)
     date = models.DateField()
     text_submission = models.TextField()
-    document_submission = models.FileField(upload_to='documents/')
+    document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
+
 
     def __str__(self):
         return f"Accomplishment for {self.interns_calendar.user} on {self.date}"

@@ -21,6 +21,7 @@ def signup(request):
             user = form.save()
             login(request, user)
             return redirect('home')
+
     else:
         form = CustomUserCreationForm()
 
@@ -173,12 +174,14 @@ def redirect_to_calendar(request):
 
 
 def your_login_view(request):
+    error_message = None
+
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
+        auth_form = AuthenticationForm(request, data=request.POST)
+        if auth_form.is_valid():
             # Extract username and password from the form
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = auth_form.cleaned_data.get('username')
+            password = auth_form.cleaned_data.get('password')
 
             # Use authenticate to check credentials
             user = authenticate(request, username=username, password=password)
@@ -200,13 +203,14 @@ def your_login_view(request):
                     return redirect('create_calendar')
             else:
                 # Authentication failed
-                messages.error(request, 'Invalid username or password. Please try again.')
+                error_message = "Incorrect username or password."
+                return render(request, 'login.html', {'error_message': error_message})
 
     # If GET request or login failed, render the login form
     else:
-        form = AuthenticationForm()
+        auth_form = AuthenticationForm()
 
-    return render(request, 'registration/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'auth_form': auth_form})
 
 def interns_calendar_create(request):
     if request.method == 'POST':
@@ -226,7 +230,7 @@ def interns_calendar_create(request):
     return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
 
 
-def daily_accomplishment_create(request):
+def daily_accomplishment_create(request, date=None):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
     if request.method == 'POST':
@@ -234,13 +238,15 @@ def daily_accomplishment_create(request):
         if form.is_valid():
             daily_accomplishment = form.save(commit=False)
             daily_accomplishment.interns_calendar = interns_calendar
+            daily_accomplishment.date = date
+            daily_accomplishment.submitted_by = user
             daily_accomplishment.save()
 
             # Redirect to the calendar_view page
             return redirect('calendar_view')
 
     else:
-        form = DailyAccomplishmentForm()
+        form = DailyAccomplishmentForm(initial={'date': date})
 
     return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form})
 

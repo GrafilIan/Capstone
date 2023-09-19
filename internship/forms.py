@@ -17,13 +17,29 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = intern
-        fields = ("username", "email", "student_id", "course", "company_name", "contact_num", "address", "profile_image")
+        fields = ("first_name",
+                  "last_name",
+                  "username",
+                  "email",
+                  "student_id",
+                  "course",
+                  "company_name",
+                  "contact_num",
+                  "address",
+                  "profile_image")
 
 class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = intern
-        fields = ("username", "email", "student_id", "course", "company_name", "contact_num", "address", "profile_image")
+        fields = ("username",
+                  "email",
+                  "student_id",
+                  "course",
+                  "company_name",
+                  "contact_num",
+                  "address",
+                  "profile_image")
 
 
 class AnnouncementForm(forms.ModelForm):
@@ -70,3 +86,6 @@ class DailyAccomplishmentForm(forms.ModelForm):
         model = DailyAccomplishment
         fields = ['date', 'text_submission', 'document_submission']
 
+    def __init__(self, *args, **kwargs):
+        super(DailyAccomplishmentForm, self).__init__(*args, **kwargs)
+        self.fields['text_submission'].required = False

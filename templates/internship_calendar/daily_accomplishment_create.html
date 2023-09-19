@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Create Daily Accomplishment Report for {{ selected_date|date:"Y-m-d" }}</h2>
+  <h2>Create Daily Accomplishment Report for {{ selected_date|date:"F d, Y" }}</h2>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
