@@ -13,11 +13,9 @@ urlpatterns = [
     path('clear_history/', views.clear_history, name='clear_history'),
     path('delete_all_announcement/', views.delete_all_announcement, name='delete_all_announcement'),
     path('delete_all_recommendation/', views.delete_all_recommendation, name='delete_all_recommendation'),
-    path('create_calendar/', views.create_calendar, name='create_calendar'),
-    path('view_calendar/', views.view_calendar, name='view_calendar'),
-    path('clear_setup/', views.clear_setup, name='clear_setup'),
     path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
     path('interns-calendar-create/', views.interns_calendar_create, name='interns_calendar_create'),
     path('internship/daily-accomplishment-create/<str:date>/', views.daily_accomplishment_create, name='daily_accomplishment_create'),
     path('calendar-view/', views.calendar_view, name='calendar_view'),
+    path('test_messages/', views.test_messages, name='test_messages'),
 ]

@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm
-from .forms import AnnouncementForm, RecommendationForm
+from .forms import CustomUserCreationForm, AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
-from .models import InternshipCalendar
-from .forms import InternshipCalendarForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
@@ -38,7 +35,6 @@ def create_announcement(request):
                 announcement = announcement_form.save()
                 recommendation = recommendation_form.save()
                 return redirect('announcement_list')
-
 
     else:
         announcement_form = AnnouncementForm(prefix='announcement')
@@ -119,9 +115,6 @@ def time_in_out(request):
     return render(request, 'DTR/time_in_out.html', {'form': form, 'time_records': time_records})
 
 
-
-
-
 def clear_history(request):
     if request.method == 'POST':
         TimeRecord.objects.all().delete()
@@ -129,48 +122,20 @@ def clear_history(request):
     return redirect('time_in_out')
 
 
-def create_calendar(request):
-    if request.method == 'POST':
-        form = InternshipCalendarForm(request.POST)
-        if form.is_valid():
-            calendar = form.save(commit=False)
-            calendar.user = request.user
-            calendar.save()
-
-            # Set a session variable to indicate calendar setup is complete
-            request.session['calendar_setup_complete'] = True
-
-            # Redirect to view_calendar with a success message
-            return redirect('view_calendar')
-    else:
-        form = InternshipCalendarForm()
-
-    # Pass the form to the template
-    return render(request, 'calendar_app/create_calendar.html', {'form': form})
-
-def view_calendar(request):
-    # Retrieve the user's calendar records
-    calendars = InternshipCalendar.objects.filter(user=request.user)
-
-    return render(request, 'calendar_app/view_calendar.html', {'calendars': calendars})
-
-def clear_setup(request):
-    if request.method == 'POST':
-        InternshipCalendar.objects.all().delete()
-
-    return redirect('view_calendar')
 
 @login_required  # This ensures that the user is logged in
 def redirect_to_calendar(request):
     # Check if the user has calendar records
-    has_calendars = InternshipCalendar.objects.filter(user=request.user).exists()
+    has_calendars = InternsCalendarForm.objects.filter(user=request.user).exists()
 
     if has_calendars:
         # User has calendars, redirect to view_calendar.html
-        return redirect('view_calendar')
+        return redirect('calendar_view')
     else:
         # User doesn't have calendars, redirect to set_up_calendar.html
-        return redirect('create_calendar')
+        messages.info(request, 'Please set up your calendar.')
+        request.session['redirect_to_create_calendar'] = True
+        return redirect('interns_calendar_create')
 
 
 def your_login_view(request):
@@ -188,18 +153,24 @@ def your_login_view(request):
                 auth_login(request, user)
 
                 # Check if the user has calendar records
-                has_calendars = InternshipCalendar.objects.filter(user=user).exists()
+                has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
 
                 if has_calendars:
                     # User has calendars, redirect to view_calendar
-                    return redirect('view_calendar')
+                    return redirect('calendar_view')
                 else:
-                    # User doesn't have calendars, redirect to create_calendar
-                    return redirect('create_calendar')
+                    # User doesn't have calendars, check the session variable
+                    if request.session.get('redirect_to_create_calendar'):
+                        messages.info(request, 'Please set up your calendar.')
+                        del request.session['redirect_to_create_calendar']  # Remove the session variable
+                        return redirect('interns_calendar_create')
+                    else:
+                        # No session variable, redirect to some other page
+                        return redirect('some_other_page')
             else:
                 # Authentication failed for wrong password
                 messages.error(request, 'Incorrect password. Please try again.')
-                auth_form.add_error('password', 'Incorrect password. Please try again.')
+
     else:
         auth_form = AuthenticationForm()
 
@@ -278,3 +249,11 @@ def calendar_view(request):
         'message': 'No calendar set up. Please create a calendar.',
     }
     return render(request, 'internship_calendar/calendar_view.html', context)
+
+def test_messages(request):
+    messages.success(request, 'This is a success message.')
+    messages.error(request, 'This is an error message.')
+    messages.warning(request, 'This is a warning message.')
+    messages.info(request, 'This is an info message.')
+
+    return render(request, 'internship_calendar/test_messages.html')

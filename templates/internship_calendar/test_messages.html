@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Test Messages{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mt-5">Test Messages</h2>
+
+  {% if messages %}
+    <div class="alert alert-success mt-3">
+      <strong>Success:</strong>
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          {{ message }}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="alert alert-danger mt-3">
+      <strong>Error:</strong>
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+          {{ message }}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="alert alert-warning mt-3">
+      <strong>Warning:</strong>
+      {% for message in messages %}
+        {% if message.tags == 'warning' %}
+          {{ message }}
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="alert alert-info mt-3">
+      <strong>Info:</strong>
+      {% for message in messages %}
+        {% if message.tags == 'info' %}
+          {{ message }}
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info mt-3">
+      No messages to display.
+    </div>
+  {% endif %}
+
+  <p class="mt-4"><a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a></p>
+</div>
+{% endblock %}

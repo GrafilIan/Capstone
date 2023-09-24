@@ -9,24 +9,25 @@
   {% csrf_token %}
 
   <!-- Username Field -->
-  <div class="form-group">
-    <label for="{{ auth_form.username.id_for_label }}">Username</label>
-    {{ auth_form.username }}
-  </div>
-
-  <!-- Password Field -->
-  <div class="form-group">
-    <label for="{{ auth_form.password.id_for_label }}">Password</label>
-    {{ auth_form.password }}
-  </div>
-
-  <!-- Display the error message -->
-  {% if auth_form.errors %}
-    <div class="text-danger">
-      {{ auth_form.errors.password }}
+    <div class="form-group">
+      <label for="{{ auth_form.username.id_for_label }}">Username</label>
+      {{ auth_form.username }}
     </div>
-  {% endif %}
 
+    <!-- Password Field -->
+    <div class="form-group">
+      <label for="{{ auth_form.password.id_for_label }}">Password</label>
+      {{ auth_form.password }}
+    </div>
+  {% if auth_form.errors %}
+    <div class="alert alert-danger mt-3">
+      <strong>Error:</strong> Invalid username or password.
+    </div>
+
+
+  {% endif %}
+<br>
   <button type="submit">Log In</button>
 </form>
+
 {% endblock %}

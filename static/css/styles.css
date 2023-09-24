@@ -25,7 +25,18 @@ h2 {
   color: black;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
+ista {
+    background-color: green; /* Green */
+    border: none;
+    border-radius: 7px;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 
+}
 button {
     background-color: green; /* Green */
     border: none;

@@ -3,15 +3,16 @@
   <h2>Internship Calendar</h2>
   <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
   <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
-  <a href="{% url 'view_calendar' %}">Go to View Calendar</a>
+  <a href="{% url 'logout' %}">Log Out</a> <br>
   <!-- Generate submission bins based on the number of days -->
   <h3>Submission Bins</h3>
+  <div class="lista">
   <ul>
     {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
       <li>
         Submission Bin {{ adjusted_bin_number }}
         <br>
-        Date: {{ bin_date|date:"F d, Y" }}
+          Date: {{ bin_date|date:"F d, Y" }}
         <br>
         <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
 
@@ -34,7 +35,10 @@
       </li>
     {% endfor %}
   </ul>
-  <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a>
+    </div>
+  <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
+<a href="{% url 'time_in_out' %}">Add Time Record</a> <br><br>
+
 
 
 {% endblock %}

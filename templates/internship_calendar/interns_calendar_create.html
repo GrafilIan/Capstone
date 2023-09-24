@@ -8,12 +8,16 @@
   <p><strong>Number of Submission Bins:</strong> {{ interns_calendar.num_submission_bins }}</p>
   <button type="submit">Submit</button>
 </form>
-      <ul>
-        {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
-            <li>
-                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <p><a href="{% url 'calendar_view' %}">Go to Calendar View</a></p>
+<ul>
+    {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
+        <li>
+            <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
+        </li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'calendar_view' %}">Go to Calendar View</a></p>
+{% if request.session.redirect_to_create_calendar %}
+  <!-- Display a message indicating that the user needs to set up their calendar -->
+  <p>Please set up your calendar.</p>
+  {% endif %}
 {% endblock %}

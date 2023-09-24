@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Announcement List{% endblock %}
+{% load static %}
+
+{% block content %}
+    <h1>Announcement List</h1>
+    
+    <ul>
+        {% for announcement in announcements %}
+            <li>
+                <strong>{{ announcement.title }}</strong><br>
+                {{ announcement.content|linebreaks }}
+                <!-- Include other fields you want to display -->
+
+                <!-- You can add additional conditional logic here to display buttons if needed -->
+            </li>
+        {% endfor %}
+        
+        {% for recommendation in recommendations %}
+            <li>
+                <strong>{{ recommendation.title }}</strong><br>
+                {{ recommendation.content|linebreaks }}
+                <!-- Include other fields you want to display -->
+
+                <!-- You can add additional conditional logic here to display buttons if needed -->
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <br>
+    
+    <a href="{% url 'login' %}">Log In</a> <br>
+    <a href="{% url 'signup' %}">Sign Up</a> <br>
+    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
+    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
+    
+    {# Include any other links or content specific to interns here if needed #}
+{% endblock %}
