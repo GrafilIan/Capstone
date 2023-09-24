@@ -1,30 +1,30 @@
 {% extends "base.html" %}
-
-{% block title %}Time Record{% endblock %}
 {% load static %}
+{% block title %}Time Record{% endblock %}
 {% block content %}
- <h1>Time In/Out Management System</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit" name="is_time_in" value="on">Time In</button>
-        <button type="submit" name="is_time_in" value="false">Time Out</button>
-    </form>
-        <h2>History:</h2>
-        <ul>
-            {% for record in time_records %}
-                 <li>{{ record.timestamp }} - {{ record.action }}</li>
-            {% endfor %}
-        </ul>
+<h1>Time In/Out Management System</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" name="is_time_in" value="on">Time In</button>
+    <button type="submit" name="is_time_in" value="false">Time Out</button>
+    <button type="submit" name="record_history" value="true">Record History</button> <!-- New button for recording history -->
+</form>
+<h2>History:</h2>
+<ul>
+    {% for record in time_records %}
+        <li>{{ record.timestamp }} - {{ record.action }}</li>
+    {% endfor %}
+</ul>
 
-    <form method="post" action="{% url 'clear_history' %}">
-        {% csrf_token %}
-        <button type="submit">Clear History</button>
-    </form>
+<form method="post" action="{% url 'clear_history' %}">
+    {% csrf_token %}
+    <button type="submit">Clear History</button>
+</form>
 
-    <br> <br>
-    <a href="{% url 'login' %}">Log In</a> <br>
-    <a href="{% url 'signup' %}">Sign Up</a> <br>
-    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
-    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
+<br> <br>
+<a href="{% url 'login' %}">Log In</a> <br>
+<a href="{% url 'signup' %}">Sign Up</a> <br>
+<a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
+<a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
 {% endblock %}
