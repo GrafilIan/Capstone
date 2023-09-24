@@ -119,3 +119,21 @@ class DailyAccomplishment(models.Model):
         return f"Accomplishment for {self.interns_calendar.user} on {self.date}"
 
 
+### For Uploading Requirements ###
+
+class Document(models.Model):
+    REQUIREMENT_CHOICES = [
+        ('Acceptance Form for OJT', 'Acceptance Form for OJT'),
+        ('Internship Agreement', 'Internship Agreement'),
+        ('Merit of Rating', 'Merit of Rating'),
+        # Add more choices as needed
+    ]
+
+    user = models.ForeignKey(intern, on_delete=models.CASCADE)
+    requirement = models.CharField(max_length=100, choices=REQUIREMENT_CHOICES)
+    document_image = models.ImageField(upload_to='documents/')
+
+    def __str__(self):
+        return f"{self.requirement} - {self.id}"
+
+### End ###

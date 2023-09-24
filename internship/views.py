@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from .models import InternsCalendar, DailyAccomplishment
 from .forms import InternsCalendarForm, DailyAccomplishmentForm
 from datetime import timedelta
+
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
@@ -99,7 +100,6 @@ def time_in_out(request):
     if request.method == 'POST':
         form = TimeRecordForm(request.POST)
 
-        # If "Time Out" button is clicked, mark the hidden field as not required
         if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
             form.fields['is_time_in'].required = False
 
@@ -107,12 +107,26 @@ def time_in_out(request):
             is_time_in = form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
             TimeRecord.objects.create(intern_user=request.user, is_time_in=is_time_in, action=action)
-            return redirect('time_in_out')
+
+            # Set a success message
+            messages.success(request, 'Time Record saved successfully.')
+
+            if 'record_history' in request.POST:
+                # Redirect to the page where you can view the saved history
+                return redirect('view_time_records')
+
     else:
         form = TimeRecordForm()
 
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
     return render(request, 'DTR/time_in_out.html', {'form': form, 'time_records': time_records})
+
+
+@login_required
+def view_time_records(request):
+    time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
+
+    return render(request, 'DTR/view_time_records.html', {'time_records': time_records})
 
 
 def clear_history(request):
@@ -152,6 +166,10 @@ def your_login_view(request):
             if user is not None:
                 auth_login(request, user)
 
+                if user.is_superuser:
+                    # Superuser, redirect to some other page for superusers
+                    return redirect('time_in_out')  # Replace 'superuser_dashboard' with your desired URL name
+
                 # Check if the user has calendar records
                 has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
 
@@ -166,7 +184,7 @@ def your_login_view(request):
                         return redirect('interns_calendar_create')
                     else:
                         # No session variable, redirect to some other page
-                        return redirect('some_other_page')
+                        return redirect('interns_calendar_create')
             else:
                 # Authentication failed for wrong password
                 messages.error(request, 'Incorrect password. Please try again.')

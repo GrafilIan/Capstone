@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}View Time Records{% endblock %}
+
+{% block content %}
+  <h1>Time Record History</h1>
+  
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+  <h2>Time Record History:</h2>
+  <ul>
+    {% for record in time_records %}
+      <li>{{ record.timestamp }} - {{ record.action }}</li>
+    {% empty %}
+      <li>No time records available.</li>
+    {% endfor %}
+  </ul>
+  
+  <a href="{% url 'time_in_out' %}">Back to Time In/Out</a>
+  
+{% endblock %}
