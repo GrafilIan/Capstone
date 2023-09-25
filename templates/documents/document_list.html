@@ -1,24 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Uploaded Documents for {{ requirement }}</h2>
+<h2>Uploaded Documents</h2>
 
-<ul>
+<div class="filter-section">
+  <label for="requirement-filter">Filter by Requirement:</label>
+  <select id="requirement-filter" class="form-control">
+    <option value="">All</option>
+    <option value="Acceptance Form for OJT">Acceptance Form for OJT</option>
+      <option value="Internship Agreement">Internship Agreement</option>
+      <option value="Merit of Rating">Merit of Rating</option>
+      <option value="Student INFO Sheet">Student Information Sheet</option>
+      <option value="Supervisor Feedback Form">Supervisor Feedback Form</option>
+      <option value="Student Feedback Form">Student Feedback Form</option>
+      <option value="Parent Consent">Parent Consent</option>
+      <option value="Barangay Clearance">Barangay Clearance</option>
+      <option value="Police Clearance">Police Clearance</option>
+      <option value="Parent ID">Parent ID</option>
+      <option value="Medical Certificate">Medical Certificate</option>
+      <option value="Cedula">Cedula</option>
+    <!-- Add more options as needed -->
+  </select>
+</div>
+
+<ul class="document-list">
   {% for document in documents %}
-  <li>
+  <li class="document-item" data-requirement="{{ document.requirement }}">
     <strong>Requirement:</strong> {{ document.requirement }}<br>
     <strong>Document:</strong> {{ document.document_image.name }}<br>
     <button class="preview-button" data-image="{{ document.document_image.url }}">Toggle Image Preview</button>
-    <div class="image-preview" style="display: none;"></div>
+    <div class="image-preview" style="display: none;">
+      <img src="{{ document.document_image.url }}" alt="Image Preview" style="max-width: 200px;">
+    </div>
   </li>
   {% empty %}
-  <li>No documents have been uploaded for {{ requirement }} yet.</li>
+  <li>No documents have been uploaded yet.</li>
   {% endfor %}
 </ul>
 
-<a href="{% url 'upload_document' %}">Upload a New Document</a>
+<a href="{% url 'upload_document' %}">Upload a New Document</a> <br>
+<a href="{% url 'home' %}">Home</a>
 
 <script>
+document.getElementById('requirement-filter').addEventListener('change', function() {
+  var selectedRequirement = this.value;
+  var documentItems = document.querySelectorAll('.document-item');
+
+  documentItems.forEach(function(item) {
+    var requirement = item.getAttribute('data-requirement');
+    if (selectedRequirement === '' || requirement === selectedRequirement) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+});
+
 document.querySelectorAll('.preview-button').forEach(function(button) {
   button.addEventListener('click', function() {
     var imageUrl = this.getAttribute('data-image');
@@ -26,7 +63,8 @@ document.querySelectorAll('.preview-button').forEach(function(button) {
 
     // Toggle the display property
     if (previewDiv.style.display === 'none' || previewDiv.style.display === '') {
-      previewDiv.innerHTML = '<img src="' + imageUrl + '" alt="Image Preview" />';
+      // Display the image with a maximum width of 200px
+      previewDiv.innerHTML = '<img src="' + imageUrl + '" alt="Image Preview" style="max-width: 200px;">';
       previewDiv.style.display = 'block';
     } else {
       previewDiv.innerHTML = '';

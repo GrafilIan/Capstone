@@ -11,7 +11,16 @@
       <option value="Acceptance Form for OJT">Acceptance Form for OJT</option>
       <option value="Internship Agreement">Internship Agreement</option>
       <option value="Merit of Rating">Merit of Rating</option>
-      <!-- Add more options as needed -->
+      <option value="Student INFO Sheet">Student Information Sheet</option>
+      <option value="Supervisor Feedback Form">Supervisor Feedback Form</option>
+      <option value="Student Feedback Form">Student Feedback Form</option>
+      <option value="Parent Consent">Parent Consent</option>
+      <option value="Barangay Clearance">Barangay Clearance</option>
+      <option value="Police Clearance">Police Clearance</option>
+      <option value="Parent ID">Parent ID</option>
+      <option value="Medical Certificate">Medical Certificate</option>
+      <option value="Cedula">Cedula</option>
+
     </select>
   </div>
   <div class="form-group">
@@ -25,8 +34,8 @@
   <button type="submit" class="btn btn-primary">Upload</button>
 </form>
 
-<a href="{% url 'document_list' %}">View Uploaded Documents</a>
-
+<a href="{% url 'document_list' %}">View Uploaded Documents</a> <br>
+<a href="{% url 'home' %}">Home</a>
 <script>
 // JavaScript code to handle image preview
 document.getElementById('document_image').addEventListener('change', function() {
