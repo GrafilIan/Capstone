@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import login
 from .models import InternsCalendar, DailyAccomplishment
 from .forms import InternsCalendarForm, DailyAccomplishmentForm
+from .models import Document
 from datetime import timedelta
 
 def signup(request):
@@ -275,3 +276,18 @@ def test_messages(request):
     messages.info(request, 'This is an info message.')
 
     return render(request, 'internship_calendar/test_messages.html')
+
+@login_required
+def upload_document(request):
+    if request.method == 'POST':
+        requirement = request.POST['requirement']
+        document_image = request.FILES['document_image']
+        Document.objects.create(user=request.user, requirement=requirement, document_image=document_image)
+        return redirect('document_list')
+    return render(request, 'documents/upload_document.html')
+
+
+@login_required
+def document_list(request):
+    documents = Document.objects.filter(user=request.user)
+    return render(request, 'documents/document_list.html', {'documents': documents})

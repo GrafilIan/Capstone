@@ -19,4 +19,6 @@ urlpatterns = [
     path('internship/daily-accomplishment-create/<str:date>/', views.daily_accomplishment_create, name='daily_accomplishment_create'),
     path('calendar-view/', views.calendar_view, name='calendar_view'),
     path('test_messages/', views.test_messages, name='test_messages'),
+    path('documents/', views.document_list, name='document_list'),
+    path('upload/', views.upload_document, name='upload_document'),
 ]

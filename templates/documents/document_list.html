@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Uploaded Documents for {{ requirement }}</h2>
+
+<ul>
+  {% for document in documents %}
+  <li>
+    <strong>Requirement:</strong> {{ document.requirement }}<br>
+    <strong>Document:</strong> {{ document.document_image.name }}<br>
+    <button class="preview-button" data-image="{{ document.document_image.url }}">Toggle Image Preview</button>
+    <div class="image-preview" style="display: none;"></div>
+  </li>
+  {% empty %}
+  <li>No documents have been uploaded for {{ requirement }} yet.</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'upload_document' %}">Upload a New Document</a>
+
+<script>
+document.querySelectorAll('.preview-button').forEach(function(button) {
+  button.addEventListener('click', function() {
+    var imageUrl = this.getAttribute('data-image');
+    var previewDiv = this.nextElementSibling;
+
+    // Toggle the display property
+    if (previewDiv.style.display === 'none' || previewDiv.style.display === '') {
+      previewDiv.innerHTML = '<img src="' + imageUrl + '" alt="Image Preview" />';
+      previewDiv.style.display = 'block';
+    } else {
+      previewDiv.innerHTML = '';
+      previewDiv.style.display = 'none';
+    }
+  });
+});
+</script>
+{% endblock %}
