@@ -21,4 +21,5 @@ urlpatterns = [
     path('test_messages/', views.test_messages, name='test_messages'),
     path('documents/', views.document_list, name='document_list'),
     path('upload/', views.upload_document, name='upload_document'),
+    path('Login/', views.loginnn, name='Login'),
 ]

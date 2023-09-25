@@ -291,3 +291,6 @@ def upload_document(request):
 def document_list(request):
     documents = Document.objects.filter(user=request.user)
     return render(request, 'documents/document_list.html', {'documents': documents})
+
+def loginnn(request):
+    return render(request, 'Login.html')
