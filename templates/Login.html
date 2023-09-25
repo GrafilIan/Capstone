@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Log in | Bulan Campus
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- Your custom content goes here -->
+        
+        <!--------------------Text---------------------------->
+        <div class="text-one">
+            <p>SORSOGON STATE UNIVERSITY-BULAN CAMPUS</p>
+        </div>
+        <div class="text-two">
+            <p>INTERNSHIP MONITORING SYSTEM</p>
+        </div>
+        <!--------------------Text---------------------------->
+
+        <!---------------------University Logo--------------------------->
+        <section class="mt-10">
+            <img src="{% static 'images/Revised-SSU-Logo.png' %}" class="img-fluid" alt="SSU Logo">
+        </section>
+        <!---------------------University Logo--------------------------->
+
+        <!---------------------Rectangle Container------------------>
+        <div class="rectangle">
+            <form>
+                <div class="input-field">
+                    <input type="text" class="input" placeholder="Username" required>
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-field">
+                    <input type="password" class="input" placeholder="Password" required>
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="click">
+                    <button type="submit" class="submit-login">Log-in</button>
+                </div>
+            </form>
+                
+            <div class="sign-up"><a href="InternRegister.html">
+                <button>Sign-up</button>
+            </a></div>
+
+            <div class="bottom">
+                <div class="left">
+                    <input type="checkbox" id="check">
+                    <label for="check">Remember Me</label>
+                </div>
+                <div class="right">
+                    <label><a href="#">Forgot Password?</a></label>
+                </div>
+            </div>
+        </div>
+        <!---------------------Rectangle Container------------------>
+    </div>
+{% endblock %}

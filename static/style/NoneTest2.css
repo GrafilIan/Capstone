@@ -1,0 +1,156 @@
+*{
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    background-image: url("library.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+
+    .img-fluid {
+        position: fixed;
+        width: 120px;
+        height: 120px;
+        top: 25px;
+        left: 530px;
+        display: flex;
+        z-index: 1;
+    }
+
+    .rectangle {
+        position: fixed;
+        width: 1000px;
+        height: 500px;
+        margin-top: 80px;
+        margin-left: 50px;
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.671);
+    }
+
+    .text-one{
+        position: fixed;
+        display: flex;
+        z-index: 1;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 0px;
+        color: #8e0d0d;
+        top: 170px;
+        left: 250px;
+        font-size: 30px;
+    }
+
+    .text-two{
+        position: fixed;
+        display: flex;
+        z-index: 1;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 0px;
+        color: #8e0d0d;
+        top: 200px;
+        left: 390px;
+        font-size: 25px;
+    }
+
+    .input-field1{
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        top: 210px;
+        left: -150px;
+        font-style: normal;
+        font-size: 15px;
+    } 
+    .input-field2{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 600px;
+        top: -275px;
+        left: 340px;
+        font-style: normal;
+        font-size: 15px;
+    } 
+    .row {
+        margin-right: -5px; 
+        margin-bottom: 10px;
+    }  
+    .input1{
+        position: relative;
+        top: -40px;
+        height: 30px;
+        width: 80%;
+        left: 330px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        color: #000000;
+        padding: 0 10px 0 10px;
+    }
+    .input-field{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        font-size: 15px;
+    }
+    .input{
+        position: relative;
+        top: 180px;
+        height: 30px;
+        width: 30%;
+        left: 165px;
+        border: none;
+        outline: none;
+        border-radius: 20px;
+        color: #000000;
+        padding: 0 10px 0 10px;
+    }
+    .submit{
+        position: relative;
+        border: none;
+        border-radius: 30px;
+        font-size: 15px;
+        height: 35px;
+        top: 50px;
+        left: 510px;
+        outline: none;
+        width: 80px;
+        background: rgba(9, 190, 9, 0.7);
+        cursor: pointer;
+        transition: .3s;
+    }
+    .submit:hover{
+        box-shadow: 1px 5px 7px 1px rgba(105, 98, 98, 0.765);
+    }
+    
+    .login{
+        position: relative;
+        border: none;
+        border-radius: 30px;
+        font-size: 15px;
+        height: 35px;
+        top: 75px;
+        left: 510px;
+        outline: none;
+        width: 80px;
+        background: rgba(9, 190, 9, 0.7);
+        cursor: pointer;
+        transition: .3s;
+    }
+    .login:hover{
+        box-shadow: 1px 5px 7px 1px rgba(105, 98, 98, 0.765);
+    }
+
+    p{
+        padding-top: 265px;
+        padding-left: 175px;
+    }
+
+}
