@@ -9,7 +9,18 @@ body{
     background-position: center;
 
 }
+.messages .error {
+  position: relative;
+  background-color: #f44336; /* Red background color */
+  color: white; /* White text color */
+  padding: 10px;
+  top: 160px;
+  left: 0px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 16px;
 
+}
 /* Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) {
 
@@ -61,7 +72,9 @@ body{
     }
     
     .click{
-        margin-left: -40px;
+        position: relative;
+        top: -20px;
+        left: -50px;
     }
     .submit-login{
         position: relative;
@@ -129,13 +142,13 @@ body{
         left: 415px;
     }
     .sign-up button{
-        position: absolute;
+        position: relative;
         border: none;
         border-radius: 30px;
         font-size: 15px;
         height: 45px;
-        top: 320px;
-        left: 410px;
+        top: 126px;
+        left: 400px;
         outline: none;
         width: 100px;
         background: rgba(30, 164, 17, 0.847);

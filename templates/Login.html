@@ -1,13 +1,18 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block title %}
-    Log in | Bulan Campus
-{% endblock %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style/Login.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Log in | Bulan Campus</title>
+</head>
+<body>
     <div class="container">
         <!-- Your custom content goes here -->
-        
+
         <!--------------------Text---------------------------->
         <div class="text-one">
             <p>SORSOGON STATE UNIVERSITY-BULAN CAMPUS</p>
@@ -25,20 +30,32 @@
 
         <!---------------------Rectangle Container------------------>
         <div class="rectangle">
-            <form>
+            <form method="post" action="{% url 'loginnn' %}">
+                {% csrf_token %}
+
                 <div class="input-field">
-                    <input type="text" class="input" placeholder="Username" required>
+                    <input for="{{ auth_form.username.id_for_label }}" type="text" class="input" placeholder="Username" name="username" required>
                     <i class="bx bx-user"></i>
                 </div>
                 <div class="input-field">
-                    <input type="password" class="input" placeholder="Password" required>
+                    <input for="{{ auth_form.password.id_for_label }}" type="password" class="input" placeholder="Password" name="password" required>
                     <i class="bx bx-lock-alt"></i>
+
                 </div>
+
+                {% if auth_form.errors %}
+                  <div class="messages">
+                    <div class="error">
+                      <strong>Error:</strong> Invalid username or password.
+                    </div>
+                  </div>
+                {% endif %}
+
                 <div class="click">
                     <button type="submit" class="submit-login">Log-in</button>
                 </div>
             </form>
-                
+
             <div class="sign-up"><a href="InternRegister.html">
                 <button>Sign-up</button>
             </a></div>
@@ -55,4 +72,5 @@
         </div>
         <!---------------------Rectangle Container------------------>
     </div>
-{% endblock %}
+</body>
+</html>

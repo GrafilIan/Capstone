@@ -152,8 +152,7 @@ def redirect_to_calendar(request):
         request.session['redirect_to_create_calendar'] = True
         return redirect('interns_calendar_create')
 
-
-def your_login_view(request):
+def loginnn(request):
     if request.method == 'POST':
         auth_form = AuthenticationForm(request, data=request.POST)
         if auth_form.is_valid():
@@ -193,7 +192,8 @@ def your_login_view(request):
     else:
         auth_form = AuthenticationForm()
 
-    return render(request, 'registration/login.html', {'auth_form': auth_form})
+    return render(request, 'Login.html', {'auth_form': auth_form})
+
 
 
 def interns_calendar_create(request):
@@ -292,5 +292,3 @@ def document_list(request):
     documents = Document.objects.filter(user=request.user)
     return render(request, 'documents/document_list.html', {'documents': documents})
 
-def loginnn(request):
-    return render(request, 'Login.html')

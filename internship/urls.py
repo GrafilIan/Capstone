@@ -4,7 +4,7 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('signup/', views.signup, name='signup'),
-    path('login/', views.your_login_view, name='login'),
+    path('Login/', views.loginnn, name='loginnn'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('create/', views.create_announcement, name='create_announcement'),
     path('list/', views.announcement_list, name='announcement_list'),
@@ -21,5 +21,5 @@ urlpatterns = [
     path('test_messages/', views.test_messages, name='test_messages'),
     path('documents/', views.document_list, name='document_list'),
     path('upload/', views.upload_document, name='upload_document'),
-    path('Login/', views.loginnn, name='Login'),
+
 ]
