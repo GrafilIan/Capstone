@@ -30,7 +30,7 @@
 
         <!---------------------Rectangle Container------------------>
         <div class="rectangle">
-            <form method="post" action="{% url 'loginnn' %}">
+            <form method="post" action="{% url 'Login' %}">
                 {% csrf_token %}
 
                 <div class="input-field">
@@ -56,7 +56,7 @@
                 </div>
             </form>
 
-            <div class="sign-up"><a href="InternRegister.html">
+            <div class="sign-up"><a href="{% url 'InternRegister' %}">
                 <button>Sign-up</button>
             </a></div>
 

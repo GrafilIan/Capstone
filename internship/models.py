@@ -37,6 +37,8 @@ class Recommendation(models.Model):
 
 class intern(AbstractUser):
     student_id = models.CharField(max_length=200, verbose_name='Student ID', null=True)
+    middle_name = models.CharField(max_length=200, verbose_name='Middle Name', null=True)
+    suffix = models.CharField(max_length=200, verbose_name='suffix', null=True)
     course = models.CharField(max_length=200, verbose_name='Course', null=True)
     company_name = models.CharField(max_length=200, verbose_name='Company', null=True)
     contact_num = models.CharField(max_length=200, verbose_name='Contact Number', null=True)

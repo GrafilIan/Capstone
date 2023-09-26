@@ -13,7 +13,7 @@ from .forms import InternsCalendarForm, DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
 
-def signup(request):
+def InternRegister(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
@@ -24,7 +24,7 @@ def signup(request):
     else:
         form = CustomUserCreationForm()
 
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'registration/InternRegister.html', {'form': form})
 
 
 def create_announcement(request):

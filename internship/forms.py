@@ -18,7 +18,9 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = intern
         fields = ("first_name",
+                  "middle_name",
                   "last_name",
+                  "suffix",
                   "username",
                   "email",
                   "student_id",

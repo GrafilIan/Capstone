@@ -95,13 +95,13 @@ body{
     }
 
     .bottom{
-        position: fixed;
+        position: absolute;
         display: flex;
         flex-direction: row;
         justify-content:space-around;
         font-size: small;
-        margin-top: 480px;
-        margin-left: 110px;
+        bottom: 10px;
+        left: -210px;
     }
 
     .left{
@@ -109,11 +109,13 @@ body{
         color: white;
         z-index: 1;
         margin-left: 400px;
+        white-space: nowrap;
     }
 
     .right{
         z-index: 1;
         margin-left: 130px;
+        white-space: nowrap;
     }
 
     .text-one{
