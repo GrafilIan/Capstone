@@ -40,10 +40,10 @@
                         <input for="{{ form.last_name.id_for_label }}" type="text" class="input1" placeholder="Last Name" required>
                     </div>
                     <div class="row">
-                        <input type="text" class="input1" placeholder="Middle Initial" required>
+                        <input for="{{ form.middle_name.id_for_label }}" type="text" class="input1" placeholder="Middle Initial" required>
                     </div>
                     <div class="row">
-                        <input for="{{ form.username.id_for_label }}" type="text" class="input1" placeholder="Username" required>
+                        <input for="{{ form.suffix.id_for_label }}" type="text" class="input1" placeholder="Suffix">
                     </div>
                 </div>
 
@@ -64,14 +64,19 @@
                 </div>
 
                 <div class="input-field">
-                    <input type="text" class="input" placeholder="Position" required>
+                    <input for="{{ form.company_name.id_for_label }}" type="text" class="input" placeholder="Position" required>
                 </div>
 
                 <div class="input-field">
                     <input for="{{ form.address.id_for_label }}" type="text" class="input" placeholder="Address" required>
                 </div>
 
+
                 <div class="input-field2">
+                    <div class="input-field">
+                        <input for="{{ form.username.id_for_label }}" type="text" class="input" placeholder="Username" required>
+                    </div>
+
                     <div class="input-field">
                         <input for="{{ form.password1.id_for_label }} type="password" class="input" placeholder="Password" required>
                     </div>

@@ -41,6 +41,7 @@ class intern(AbstractUser):
     suffix = models.CharField(max_length=200, verbose_name='suffix', null=True)
     course = models.CharField(max_length=200, verbose_name='Course', null=True)
     company_name = models.CharField(max_length=200, verbose_name='Company', null=True)
+    position = models.CharField(max_length=200, verbose_name='Position', null=True)
     contact_num = models.CharField(max_length=200, verbose_name='Contact Number', null=True)
     address = models.CharField(max_length=200, verbose_name='Address', null=True)
     profile_image = models.ImageField(upload_to='profile_images/', default='images/default_profile_image.png')
