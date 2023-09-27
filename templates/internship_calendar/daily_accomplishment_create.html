@@ -5,6 +5,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
+    <button type="submit" name="rest_day" value="true">Rest Day</button>
   </form>
   <a href="{% url 'calendar_view' %}">Back to Calendar</a>
 {% endblock %}

@@ -1,18 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-  <h1>Internship Calendar</h1>
+  <h2>Internship Calendar</h2>
+  <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
+  <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
+  <a href="{% url 'logout' %}">Log Out</a> <br>
 
-  {% if interns_calendar %}
-    <h2>Your Calendar</h2>
-    <ul>
-      {% for week_number, bins_in_week in submission_bins_with_dates.items %}
-        <li>
-          <h3>Week {{ week_number }}</h3>
-          <ul>
-            {% for bin_number, adjusted_bin_number, bin_date in bins_in_week %}
-              <li>
-                Submission Bin {{ bin_number }} (Date: {{ bin_date|date:"F d, Y" }})
-                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
+  <!-- Display messages -->
+
+
+  <!-- Generate submission bins based on the number of days -->
+  <h3>Submission Bins</h3>
+  <div class="submission-bins">
+    {% if messages %}
+                    <ul class="messages">
+                      {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+    <ul class="bins-list">
+      {% for week in weeks %}
+        <li class="week-item">
+          {{ week.week_number }}
+          <ul class="bins-in-week">
+            {% for bin_date in week.bin_dates %}
+              <li class="bin-item">
+                Day {{ forloop.counter }}
+                <br>
+                {{ bin_date|date:"F d" }}
+                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Report</a>
                 <!-- Display daily accomplishment reports for this date -->
                 <ul class="accomplishments-list">
                   {% for accomplishment in accomplishments %}
@@ -34,9 +51,7 @@
         </li>
       {% endfor %}
     </ul>
-  {% else %}
-    <p>{{ message }}</p>
-  {% endif %}
+  </div>
 
   <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
   <a href="{% url 'time_in_out' %}">Add Time Record</a> <br><br>
@@ -45,15 +60,37 @@
 
   <!-- CSS to ensure 7 bins per row -->
   <style>
-    ul {
-      list-style-type: none;
-      padding: 0;
+    .submission-bins ul.bins-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
     }
-    .submission-bins h3 {
-      margin-top: 20px;
+    .submission-bins ul.bins-list > li {
+      flex-basis: 100%;
+      margin-bottom: 20px; /* Adjust the margin between weeks as needed */
     }
-    .accomplishments-list {
-      margin-left: 20px;
+    .week-item {
+      font-weight: bold;
+    }
+    .bins-in-week {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .bins-in-week > li {
+      flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
+      margin-bottom: 10px; /* Adjust the margin between bins as needed */
+    }
+    .success {
+        background-color: #4CAF50;
+        color: #FFFFFF;
+    }
+
+    /* Styling for error messages */
+    .error {
+        background-color: #FF5733;
+        color: #FFFFFF;
     }
   </style>
+</div>
 {% endblock %}

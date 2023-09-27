@@ -1,0 +1,10 @@
+.success {
+    background-color: #4CAF50;
+    color: #FFFFFF;
+}
+
+/* Styling for error messages */
+.error {
+    background-color: #FF5733;
+    color: #FFFFFF;
+}

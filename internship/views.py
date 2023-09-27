@@ -13,9 +13,6 @@ from .forms import InternsCalendarForm, DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
 from django.utils.timezone import now
-from itertools import groupby
-from operator import attrgetter
-
 def InternRegister(request):
     if request.method == 'POST':
         # Get the data from the POST request
@@ -253,14 +250,24 @@ def interns_calendar_create(request):
 def daily_accomplishment_create(request, date=None):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
     if request.method == 'POST':
         form = DailyAccomplishmentForm(request.POST, request.FILES)
         if form.is_valid():
-            daily_accomplishment = form.save(commit=False)
-            daily_accomplishment.interns_calendar = interns_calendar
-            daily_accomplishment.date = date
-            daily_accomplishment.submitted_by = user
-            daily_accomplishment.save()
+            # Check if the "Rest Day" button is clicked
+            if 'rest_day' in request.POST:
+                # Handle the rest day logic here, e.g., set a flag in the calendar
+                interns_calendar.is_rest_day = True
+                interns_calendar.save()
+                messages.success(request, "This is a rest day.")
+
+            else:
+                daily_accomplishment = form.save(commit=False)
+                daily_accomplishment.interns_calendar = interns_calendar
+                daily_accomplishment.date = date
+                daily_accomplishment.submitted_by = user
+                daily_accomplishment.save()
+                messages.success(request, "Daily accomplishment report submitted.")
 
             # Redirect to the calendar_view page
             return redirect('calendar_view')
@@ -268,7 +275,7 @@ def daily_accomplishment_create(request, date=None):
     else:
         form = DailyAccomplishmentForm(initial={'date': date})
 
-    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form})
+    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form, 'date': date})
 
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
@@ -279,25 +286,37 @@ def calendar_view(request):
         start_date = interns_calendar.start_month
         submission_bins = range(1, interns_calendar.num_submission_bins + 1)
 
-        # Create a list of dates for the submission bins
-        bin_dates = [start_date + timedelta(days=i) for i in range(interns_calendar.num_submission_bins)]
+        # Calculate the end date based on the calendar settings
+        end_date = interns_calendar.end_month
 
-        # Adjust the submission bin numbers by subtracting 1
-        adjusted_submission_bins = [bin_number - 1 for bin_number in submission_bins]
+        # Create a list of weeks and their submission bins
+        weeks = []
+        current_week_start = start_date
+        current_week_number = 1
+        bin_dates = []
 
-        # Combine bins with adjusted bin numbers and dates
-        submission_bins_with_dates = zip(submission_bins, adjusted_submission_bins, bin_dates)
+        for bin_number in submission_bins:
+            bin_date = start_date + timedelta(days=bin_number - 1)
+            bin_dates.append(bin_date)
 
-        # Group submission bins by weeks
-        submission_bins_grouped_by_weeks = {}
-        for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates:
-            week_number = bin_date.isocalendar()[1]  # Get the ISO week number
-            if week_number not in submission_bins_grouped_by_weeks:
-                submission_bins_grouped_by_weeks[week_number] = []
-            submission_bins_grouped_by_weeks[week_number].append((bin_number, adjusted_bin_number, bin_date))
+            if bin_date >= end_date:
+                break
 
-        # Sort the grouped bins by week number
-        sorted_submission_bins_grouped_by_weeks = dict(sorted(submission_bins_grouped_by_weeks.items()))
+            if len(bin_dates) == 7:
+                weeks.append({
+                    'week_number': f'WEEK {current_week_number}',
+                    'bin_dates': bin_dates,
+                })
+                current_week_start = bin_date + timedelta(days=1)
+                bin_dates = []
+                current_week_number += 1
+
+        # If there are remaining bins, add them to the last week
+        if bin_dates:
+            weeks.append({
+                'week_number': f'WEEK {current_week_number}',
+                'bin_dates': bin_dates,
+            })
 
         # Retrieve daily accomplishments related to this calendar
         accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar)
@@ -305,7 +324,7 @@ def calendar_view(request):
         context = {
             'interns_calendar': interns_calendar,
             'accomplishments': accomplishments,
-            'submission_bins_with_dates': sorted_submission_bins_grouped_by_weeks,
+            'weeks': weeks,
         }
 
         return render(request, 'internship_calendar/calendar_view.html', context)
