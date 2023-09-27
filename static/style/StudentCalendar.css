@@ -1,5 +1,5 @@
 /*Google Fonts Import Link*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');*/
 
 *{
     margin: 0;
@@ -393,6 +393,23 @@ h2{
     margin-top: 160px;
 }
 
+/* CSS for the green button */
+.green-button {
+    background-color: #4CAF50; /* Green background color */
+    border: none; /* Remove border */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding to add some space around the text */
+    text-align: center; /* Center-align the text */
+    text-decoration: none; /* Remove underlines for links */
+    display: inline-block; /* Display as inline block, so it takes only the necessary width */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+}
+
+/* Hover effect for the button */
+.green-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
 
 
 

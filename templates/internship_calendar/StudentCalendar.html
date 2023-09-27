@@ -1,11 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard Panel | Bulan Campus</title>
-    <link rel="stylesheet" href="style/StudentCalendar.css">
-
+    <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
     <!-------Boxicons CDN link----->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -14,7 +14,7 @@
     
     <div class="sidebar">
         <div class="logo-details">
-            <img src="images/Revised-SSU-Logo.png" alt="logo">
+            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
             <span class="logo_name">Sorsogon State University - Bulan Campus</span>
         </div>
 
@@ -25,7 +25,7 @@
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="StudentDashboard.html">Dashboard</a></li>
+                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
                 </ul>
             </li>
             <li>
@@ -72,7 +72,7 @@
             <li>
         <div class="profile-details">
             <div class="profile-content">
-                <a href="#"><img src="images/PicsArt_08-23-11.10.20.jpg" alt="profile"></a>
+                <a href="#"><img src="{% static 'images/PicsArt_08-23-11.10.20.jpg' %}" alt="profile"></a>
             </div>
             <div class="name-job">
                 <div class="profile_name">Dela Cruz Juanna</div>
@@ -139,9 +139,10 @@
 
 
 
-    
+
 
     <script>
+
         let arrow = document.querySelectorAll(".arrow");
         for (var i = 0; i < arrow.length; i++) {
             arrow[i].addEventListener("click", (e)=>{
@@ -160,7 +161,7 @@
     </script>
 
         
-    <script src="script/StudentCalendar.js"></script>
+    <script src="{% static 'script/StudentCalendar.js' %}"></script>
 
 </body>
 </html>

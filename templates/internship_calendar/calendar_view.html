@@ -1,4 +1,14 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'style/calendar_view.css' %}">
+  <title>Add Daily Report</title>
+
+</head>
+<body>
 {% block content %}
   <h2>Internship Calendar</h2>
   <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
@@ -10,15 +20,16 @@
   <div class="submission-bins">
     <ul class="bins-list">
       {% for week in weeks %}
+      <h3 class="week"> {{ week.week_number }} </h3>
         <li class="week-item">
-          {{ week.week_number }}
+
           <ul class="bins-in-week">
             {% for bin_date in week.bin_dates %}
               <li class="bin-item">
-                Day {{ forloop.counter }}
+                <p class="day"> Day {{ forloop.counter }} </p>
                 <br>
-                {{ bin_date|date:"F d" }}
-                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Report</a>
+                <p class="month"> {{ bin_date|date:"F d" }} </p>
+                <a href="{% url 'daily_accomplishment_create' date=bin_date %}"><button class="green-button"> Add </button></a>
                 <!-- Display daily accomplishment reports for this date -->
                 <ul class="accomplishments-list">
                   {% for accomplishment in accomplishments %}
@@ -79,3 +90,4 @@
   </style>
 </div>
 {% endblock %}
+</body>

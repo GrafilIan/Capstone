@@ -363,3 +363,5 @@ def document_list(request):
     documents = Document.objects.filter(user=request.user)
     return render(request, 'documents/document_list.html', {'documents': documents})
 
+def my_view(request):
+    return render(request, 'internship_calendar/StudentCalendar.html')

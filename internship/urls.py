@@ -22,4 +22,6 @@ urlpatterns = [
     path('documents/', views.document_list, name='document_list'),
     path('upload/', views.upload_document, name='upload_document'),
 
+    path('', views.my_view, name='StudentCalendar'),
+
 ]

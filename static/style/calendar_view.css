@@ -1,0 +1,99 @@
+.day{
+    position: relative;
+    top: -5px;
+    left: 0px;
+    color: white;
+    font-size: 11px;
+
+}
+
+.month{
+    position: relative;
+    top: -20px;
+    font-size: 10px
+
+}
+
+.bins-list {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.bin-item {
+    position: relative;
+    top: -20px;
+    left: 0px;
+    text-align: center;
+    width: calc(20.28% - 10px); /* Adjust this width to make the items smaller */
+    margin-right: -0px; /* Adjust this margin to control the spacing between items */
+}
+
+.bins-in-week {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* Adjust this property to distribute items as needed */
+}
+
+.bins-in-week > li {
+  flex: 0 0 calc(14.28% - 10px); /* Adjust this width to make the items smaller */
+  margin-right: 10px; /* Adjust the margin between bins as needed */
+  margin-bottom: 10px; /* Adjust the margin between bins as needed */
+  height: 30px;
+}
+
+.bins-in-week > li:nth-child(7n) {
+  margin-right: 0; /* Remove the right margin for every 7th item to maintain 7 bins per row */
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 5px;
+    padding-right: 5px;
+   }
+
+.week {
+    color: white;
+    position: relative;
+    top: -5px;
+
+}
+/* CSS for the green button */
+.green-button {
+    position: relative;
+    top: -60px;
+    background-color: #4CAF50; /* Green background color */
+    border: none; /* Remove border */
+    color: white; /* Text color */
+    padding-right: 25px; /* Adjust padding to control button size */
+    padding-left: 25px;
+    text-align: center; /* Center-align the text */
+    text-decoration: none; /* Remove underlines for links */
+    display: inline-block; /* Display as inline block, so it takes only the necessary width */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to a pointer on hover */
+    font-size: 10px;
+    margin-right: -2px; /* Add margin to the right of the buttons to control spacing */
+    white-space: nowrap; /* Prevent line breaks */
+}
+/* Hover effect for the button */
+.green-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.submission-bins {
+    background-color: #a80000;
+    border-radius: 15px 15px 15px 15px;
+    padding: 0px;
+    width: 600px;
+}
+
+.week-item {
+    background-color: #ffff;
+    border-radius: 5px 5px 5px 5px;
+    padding: 0px;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+.week-item > li{
+    hieght: 10px;
+
+}
