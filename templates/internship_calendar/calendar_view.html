@@ -1,24 +1,13 @@
 {% extends "base.html" %}
-{% load static %}
 {% block content %}
   <h2>Internship Calendar</h2>
   <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
   <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
   <a href="{% url 'logout' %}">Log Out</a> <br>
 
-  <!-- Display messages -->
-
-
   <!-- Generate submission bins based on the number of days -->
   <h3>Submission Bins</h3>
   <div class="submission-bins">
-    {% if messages %}
-                    <ul class="messages">
-                      {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
     <ul class="bins-list">
       {% for week in weeks %}
         <li class="week-item">
@@ -34,8 +23,8 @@
                 <ul class="accomplishments-list">
                   {% for accomplishment in accomplishments %}
                     {% if accomplishment.date|date:"F d, Y" == bin_date|date:"F d, Y" %}
-                      <li class="accomplishment-item">
-                        Date: {{ accomplishment.date|date:"F d, Y" }}
+                      <li class="accomplishment-item{% if accomplishment.is_rest_day %} rest-day{% endif %}">
+                        Rest Day
                         <p>{{ accomplishment.text_submission }}</p>
                         {% if accomplishment.document_submission %}
                           <a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a>
@@ -81,15 +70,11 @@
       flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
       margin-bottom: 10px; /* Adjust the margin between bins as needed */
     }
-    .success {
-        background-color: #4CAF50;
-        color: #FFFFFF;
-    }
 
-    /* Styling for error messages */
-    .error {
-        background-color: #FF5733;
-        color: #FFFFFF;
+    /* Style for rest days */
+    .rest-day {
+      background-color: #FF5733; /* Adjust the background color as needed */
+      color: #FFFFFF; /* Text color for rest days */
     }
   </style>
 </div>

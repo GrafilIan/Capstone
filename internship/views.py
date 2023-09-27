@@ -256,11 +256,16 @@ def daily_accomplishment_create(request, date=None):
         if form.is_valid():
             # Check if the "Rest Day" button is clicked
             if 'rest_day' in request.POST:
-                # Handle the rest day logic here, e.g., set a flag in the calendar
-                interns_calendar.is_rest_day = True
-                interns_calendar.save()
-                messages.success(request, "This is a rest day.")
-
+                # Handle the rest day logic here
+                # Create a new DailyAccomplishment instance and set is_rest_day to True
+                daily_accomplishment = DailyAccomplishment(
+                    interns_calendar=interns_calendar,
+                    date=date,
+                    submitted_by=user,
+                    is_rest_day=True  # Set the rest day flag
+                )
+                daily_accomplishment.save()
+                messages.success(request, "This day is marked as a rest day.")
             else:
                 daily_accomplishment = form.save(commit=False)
                 daily_accomplishment.interns_calendar = interns_calendar
