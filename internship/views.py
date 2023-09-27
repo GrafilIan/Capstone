@@ -13,6 +13,9 @@ from .forms import InternsCalendarForm, DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
 from django.utils.timezone import now
+from itertools import groupby
+from operator import attrgetter
+
 def InternRegister(request):
     if request.method == 'POST':
         # Get the data from the POST request
@@ -285,13 +288,24 @@ def calendar_view(request):
         # Combine bins with adjusted bin numbers and dates
         submission_bins_with_dates = zip(submission_bins, adjusted_submission_bins, bin_dates)
 
+        # Group submission bins by weeks
+        submission_bins_grouped_by_weeks = {}
+        for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates:
+            week_number = bin_date.isocalendar()[1]  # Get the ISO week number
+            if week_number not in submission_bins_grouped_by_weeks:
+                submission_bins_grouped_by_weeks[week_number] = []
+            submission_bins_grouped_by_weeks[week_number].append((bin_number, adjusted_bin_number, bin_date))
+
+        # Sort the grouped bins by week number
+        sorted_submission_bins_grouped_by_weeks = dict(sorted(submission_bins_grouped_by_weeks.items()))
+
         # Retrieve daily accomplishments related to this calendar
         accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar)
 
         context = {
             'interns_calendar': interns_calendar,
             'accomplishments': accomplishments,
-            'submission_bins_with_dates': submission_bins_with_dates,
+            'submission_bins_with_dates': sorted_submission_bins_grouped_by_weeks,
         }
 
         return render(request, 'internship_calendar/calendar_view.html', context)

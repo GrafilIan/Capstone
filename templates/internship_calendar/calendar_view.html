@@ -1,46 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Internship Calendar</h2>
-  <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
-  <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
-  <a href="{% url 'logout' %}">Log Out</a> <br>
+  <h1>Internship Calendar</h1>
 
-  <!-- Generate submission bins based on the number of days -->
-  <h3>Submission Bins</h3>
-  <div class="submission-bins">
-    <ul class="bins-list">
-
-      {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
-        {% if forloop.first or bin_date.day == 1 %}
-
-        {% endif %}
-        <li class="bin-item">
-          Day {{ bin_number }}
-          <br>
-          Date: {{ bin_date|date:"F d, Y" }}
-          <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
-          <!-- Display daily accomplishment reports for this date -->
-          <ul class="accomplishments-list">
-            {% for accomplishment in accomplishments %}
-              {% if accomplishment.date|date:"F d, Y" == bin_date|date:"F d, Y" %}
-                <li class="accomplishment-item">
-                  Date: {{ accomplishment.date|date:"F d, Y" }}
-                  <p>{{ accomplishment.text_submission }}</p>
-                  {% if accomplishment.document_submission %}
-                    <a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a>
-                  {% endif %}
-                </li>
-              {% endif %}
-            {% empty %}
+  {% if interns_calendar %}
+    <h2>Your Calendar</h2>
+    <ul>
+      {% for week_number, bins_in_week in submission_bins_with_dates.items %}
+        <li>
+          <h3>Week {{ week_number }}</h3>
+          <ul>
+            {% for bin_number, adjusted_bin_number, bin_date in bins_in_week %}
+              <li>
+                Submission Bin {{ bin_number }} (Date: {{ bin_date|date:"F d, Y" }})
+                <a href="{% url 'daily_accomplishment_create' date=bin_date %}">Add Daily Report for {{ bin_date|date:"F d, Y" }}</a>
+                <!-- Display daily accomplishment reports for this date -->
+                <ul class="accomplishments-list">
+                  {% for accomplishment in accomplishments %}
+                    {% if accomplishment.date|date:"F d, Y" == bin_date|date:"F d, Y" %}
+                      <li class="accomplishment-item">
+                        Date: {{ accomplishment.date|date:"F d, Y" }}
+                        <p>{{ accomplishment.text_submission }}</p>
+                        {% if accomplishment.document_submission %}
+                          <a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a>
+                        {% endif %}
+                      </li>
+                    {% endif %}
+                  {% empty %}
+                  {% endfor %}
+                </ul>
+              </li>
             {% endfor %}
           </ul>
         </li>
-        {% if forloop.counter|divisibleby:7 %}
-          </ul><ul class="bins-list">
-        {% endif %}
       {% endfor %}
     </ul>
-  </div>
+  {% else %}
+    <p>{{ message }}</p>
+  {% endif %}
 
   <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
   <a href="{% url 'time_in_out' %}">Add Time Record</a> <br><br>
@@ -49,15 +45,15 @@
 
   <!-- CSS to ensure 7 bins per row -->
   <style>
-    .submission-bins ul.bins-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+    ul {
+      list-style-type: none;
+      padding: 0;
     }
-    .submission-bins ul.bins-list > li {
-      flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
-      margin-bottom: 10px; /* Adjust the margin between bins as needed */
+    .submission-bins h3 {
+      margin-top: 20px;
+    }
+    .accomplishments-list {
+      margin-left: 20px;
     }
   </style>
-</div>
 {% endblock %}

@@ -96,6 +96,7 @@ class InternsCalendar(models.Model):
     user = models.ForeignKey(intern, on_delete=models.CASCADE)
     start_month = models.DateField()
     end_month = models.DateField()
+    start_week_number = models.PositiveIntegerField(null=True)
     num_submission_bins = models.PositiveIntegerField(default=0)  # Default value of 0
 
     def update_num_submission_bins(self):
