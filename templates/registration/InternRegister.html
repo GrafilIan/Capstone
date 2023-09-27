@@ -30,59 +30,59 @@
 
         <!---------------------Rectangle Container------------------>
         <div class="rectangle">
-            <form method="post" action="{% url 'InternRegister' %}">
+            <form method="post" action="{% url 'InternRegister' %}" enctype="multipart/form-data">
                 {% csrf_token %}
+
                 <div class="input-field1">
                     <div class="row">
-                        <input for="{{ form.first_name.id_for_label }}" type="text" class="input1" placeholder="First Name" required>
+                        <input type="text" name="first_name" class="input1" placeholder="First Name" required>
                     </div>
                     <div class="row">
-                        <input for="{{ form.last_name.id_for_label }}" type="text" class="input1" placeholder="Last Name" required>
+                        <input type="text" name="last_name" class="input1" placeholder="Last Name" required>
                     </div>
                     <div class="row">
-                        <input for="{{ form.middle_name.id_for_label }}" type="text" class="input1" placeholder="Middle Initial" required>
+                        <input type="text" name="middle_name" class="input1" placeholder="Middle Initial">
                     </div>
                     <div class="row">
-                        <input for="{{ form.suffix.id_for_label }}" type="text" class="input1" placeholder="Suffix">
+                        <input type="text" name="suffix" class="input1" placeholder="Suffix">
                     </div>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.student_id.id_for_label }}" type="text" class="input" placeholder="School ID Number" required>
+                    <input type="text" name="student_id" class="input" placeholder="School ID Number" required>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.course.id_for_label }}" type="text" class="input" placeholder="Course" required>
+                    <input type="text" name="course" class="input" placeholder="Course" required>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.company_name.id_for_label }}" type="text" class="input" placeholder="Company Name" required>
+                    <input type="text" name="company_name" class="input" placeholder="Company Name" required>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.email.id_for_label }}" type="text" class="input" placeholder="E-mail Address" required>
+                    <input type="email" name="email" class="input" placeholder="E-mail Address" required>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.company_name.id_for_label }}" type="text" class="input" placeholder="Position" required>
+                    <input type="text" name="position" class="input" placeholder="Position" required>
                 </div>
 
                 <div class="input-field">
-                    <input for="{{ form.address.id_for_label }}" type="text" class="input" placeholder="Address" required>
+                    <input type="text" name="address" class="input" placeholder="Address" required>
                 </div>
-
 
                 <div class="input-field2">
                     <div class="input-field">
-                        <input for="{{ form.username.id_for_label }}" type="text" class="input" placeholder="Username" required>
+                        <input type="text" name="username" class="input" placeholder="Username" required>
                     </div>
 
                     <div class="input-field">
-                        <input for="{{ form.password1.id_for_label }} type="password" class="input" placeholder="Password" required>
+                        <input type="password" name="password1" class="input" placeholder="Password" required>
                     </div>
 
                     <div class="input-field">
-                        <input for="{{ form.password2.id_for_label }}" type="password" class="input" placeholder="Confirm Password" required>
+                        <input type="password" name="password2" class="input" placeholder="Confirm Password" required>
                     </div>
                 </div>
 

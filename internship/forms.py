@@ -1,48 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
 from .models import InternsCalendar, DailyAccomplishment
-
-class CustomUserCreationForm(UserCreationForm):
-    password1 = forms.CharField(
-        label="Password",
-        strip=False,
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-    )
-    password2 = forms.CharField(
-        label="Password confirmation",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-        strip=False,
-    )
-
-    class Meta:
-        model = intern
-        fields = ("first_name",
-                  "middle_name",
-                  "last_name",
-                  "suffix",
-                  "username",
-                  "email",
-                  "student_id",
-                  "course",
-                  "company_name",
-                  "contact_num",
-                  "address",
-                  "profile_image")
-
-class CustomUserChangeForm(UserChangeForm):
-
-    class Meta:
-        model = intern
-        fields = ("username",
-                  "email",
-                  "student_id",
-                  "course",
-                  "company_name",
-                  "contact_num",
-                  "address",
-                  "profile_image")
-
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:

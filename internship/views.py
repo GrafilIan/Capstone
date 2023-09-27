@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm, AnnouncementForm, RecommendationForm
+from .forms import AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
 from .models import intern, TimeRecord
 from .forms import TimeRecordForm
@@ -12,20 +12,93 @@ from .models import InternsCalendar, DailyAccomplishment
 from .forms import InternsCalendarForm, DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
-
+from django.utils.timezone import now
 def InternRegister(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
+        # Get the data from the POST request
+        username = request.POST['username']
+        password1 = request.POST['password1']  # Use 'password1' to retrieve the first password input
+        password2 = request.POST['password2']
+        email = request.POST['email']
+        student_id = request.POST['student_id']
+        middle_name = request.POST['middle_name']
+        suffix = request.POST['suffix']
+        course = request.POST['course']
+        company_name = request.POST['company_name']
+        position = request.POST['position']
+        address = request.POST['address']
+        profile_image = request.FILES.get('profile_image')
+
+        if password1 != password2:
+            # Handle password mismatch error (e.g., return an error response or render a form with an error message)
+            return render(request, 'registration/InternRegister.html', {'error_message': 'Passwords do not match'})
+
+        # Create a new intern object and save it to the database
+        intern_obj = intern(
+            username=username,
+            email=email,
+            student_id=student_id,
+            middle_name=middle_name,
+            suffix=suffix,
+            course=course,
+            company_name=company_name,
+            position=position,
+            address=address,
+            profile_image=profile_image,
+            pub_date=now()
+        )
+        intern_obj.set_password(password1)
+        intern_obj.save()
+
+        # Log in the user
+        login(request, intern_obj)
+
+        # Redirect to a success page or profile page
+        return redirect('Login')  # Change 'profile' to your desired URL
+
+    return render(request, 'registration/InternRegister.html')
+
+def loginnn(request):
+    if request.method == 'POST':
+        auth_form = AuthenticationForm(request, data=request.POST)
+        if auth_form.is_valid():
+            # Extract username and password from the form
+            username = auth_form.cleaned_data.get('username')
+            password = auth_form.cleaned_data.get('password')
+
+            # Use authenticate to check credentials
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                auth_login(request, user)
+
+                if user.is_superuser:
+                    # Superuser, redirect to some other page for superusers
+                    return redirect('time_in_out')  # Replace 'superuser_dashboard' with your desired URL name
+
+                # Check if the user has calendar records
+                has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
+
+                if has_calendars:
+                    # User has calendars, redirect to view_calendar
+                    return redirect('calendar_view')
+                else:
+                    # User doesn't have calendars, check the session variable
+                    if request.session.get('redirect_to_create_calendar'):
+                        messages.info(request, 'Please set up your calendar.')
+                        del request.session['redirect_to_create_calendar']  # Remove the session variable
+                        return redirect('interns_calendar_create')
+                    else:
+                        # No session variable, redirect to some other page
+                        return redirect('interns_calendar_create')
+            else:
+                # Authentication failed for wrong password
+                messages.error(request, 'Incorrect password. Please try again.')
 
     else:
-        form = CustomUserCreationForm()
+        auth_form = AuthenticationForm()
 
-    return render(request, 'registration/InternRegister.html', {'form': form})
-
+    return render(request, 'Login.html', {'auth_form': auth_form})
 
 def create_announcement(request):
     if request.method == 'POST':
@@ -152,47 +225,7 @@ def redirect_to_calendar(request):
         request.session['redirect_to_create_calendar'] = True
         return redirect('interns_calendar_create')
 
-def loginnn(request):
-    if request.method == 'POST':
-        auth_form = AuthenticationForm(request, data=request.POST)
-        if auth_form.is_valid():
-            # Extract username and password from the form
-            username = auth_form.cleaned_data.get('username')
-            password = auth_form.cleaned_data.get('password')
 
-            # Use authenticate to check credentials
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                auth_login(request, user)
-
-                if user.is_superuser:
-                    # Superuser, redirect to some other page for superusers
-                    return redirect('time_in_out')  # Replace 'superuser_dashboard' with your desired URL name
-
-                # Check if the user has calendar records
-                has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
-
-                if has_calendars:
-                    # User has calendars, redirect to view_calendar
-                    return redirect('calendar_view')
-                else:
-                    # User doesn't have calendars, check the session variable
-                    if request.session.get('redirect_to_create_calendar'):
-                        messages.info(request, 'Please set up your calendar.')
-                        del request.session['redirect_to_create_calendar']  # Remove the session variable
-                        return redirect('interns_calendar_create')
-                    else:
-                        # No session variable, redirect to some other page
-                        return redirect('interns_calendar_create')
-            else:
-                # Authentication failed for wrong password
-                messages.error(request, 'Incorrect password. Please try again.')
-
-    else:
-        auth_form = AuthenticationForm()
-
-    return render(request, 'Login.html', {'auth_form': auth_form})
 
 
 
