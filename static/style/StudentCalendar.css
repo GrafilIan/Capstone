@@ -1,5 +1,5 @@
 /*Google Fonts Import Link*/
-/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 *{
     margin: 0;
@@ -391,70 +391,93 @@ h2{
     position: absolute;
     margin-left: 90px;
     margin-top: 160px;
+    font-style: oblique;
 }
-
-/* CSS for the green button */
-.green-button {
-    background-color: #4CAF50; /* Green background color */
-    border: none; /* Remove border */
-    color: white; /* Text color */
-    padding: 10px 20px; /* Padding to add some space around the text */
-    text-align: center; /* Center-align the text */
-    text-decoration: none; /* Remove underlines for links */
-    display: inline-block; /* Display as inline block, so it takes only the necessary width */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Change cursor to a pointer on hover */
-}
-
-/* Hover effect for the button */
-.green-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-
 .createcalendar{
+    position: absolute;
+    background: #848484;
+    top: 210px;
+    margin-left: 800px;
+    height: 230px;
+    width: 300px;
+    padding: 50px;
+    padding-left: 20px;
+    color: white;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.createcalendar h2{
+    background: #970505;
+    width: 300px;
+    top: -180px;
+    margin-left: -20px;
+    padding: 15px;
+    padding-left: 20px;
+    border: none;
+    border-radius: 8px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    font-size: 18px;
+    color: white;
+}
+.createcalendar #start_month, #end_month{
+    padding: 10px;
+    width: 260px;
+    border: none;
+    border-radius: 5px;
+    height: 28px;
+}
+.createcalendar button{
+    background-color: #A90000;
+    margin-top: 20px;
+    margin-left: 70px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+}
+.createcalendar label{
+    font-size: 10px;
+    font-weight: 700;
+}
+.eme img{
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    margin-top: 210px;
+    margin-left: 450px;
+    z-index: 3;
+}
+.cc img{
     position: relative;
-    top: 200px;
-    margin-left: 500px;
+    width: 135px;
+    height: 135px;
+    margin-top: 280px;
+    margin-left: 590px;
+    z-index: 1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media (min-width: 320px){
-    .dash-content .content-list{
-    margin-top: 150px;
-    }
+.bb img{
+    position: relative;
+    width: 135px;
+    height: 135px;
+    margin-top: -120px;
+    margin-left: 400px;
+    z-index: 2;
 }
-@media (min-width: 375px){
-    .dash-content .content-list{
-        margin-top: 125px;
-        }
+.ss img{
+    position: relative;
+    width: 150px;
+    height: 150px;
+    top: -300px;
+    margin-left: 400px;
+    z-index: 1;
 }
-@media (min-width: 425px){
-    .dash-content .content-list{
-        margin-top: 100px;
-        }
+.mari{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin-top: -620px;
+    margin-left: -8px;
+    display: flex;
 }
-
-

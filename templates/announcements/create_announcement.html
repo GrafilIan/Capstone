@@ -1,25 +1,38 @@
-{% extends "base.html" %}
-
-{% block title %}Create Announcement{% endblock %}
 {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard Panel | Bulan Campus</title>
+    <link rel="stylesheet" href="{% static 'style/sample.css' %}">
+    <!-------Boxicons CDN link----->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
 {% block content %}
     <h1>Create Announcement</h1>
     <div class="form-container">
-        <div class="form-column">
+        <div class="form-column1">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ announcement_form.announcement_list.label_tag }}
+                <div class="input-container">
+                 <label class="input-label" for="{{ announcement_form.announcement_list.id_for_label }}">Announcement List:</label>
                 {{ announcement_form.announcement_list }}
+                </div>
                 <br>
-                <label for="{{ announcement_form.image_announcement.id }}">Image</label>
+
+                 <label class="label"for="{{ announcement_form.image_announcement.id }}">Image:</label>
+    <!-- File input field -->
                 {{ announcement_form.image_announcement }}
-                <br>
+                </div><br>
                 <label for="{{ announcement_form.document_announcement.id }}">Document</label>
                 {{ announcement_form.document_announcement }}
-            # the form is not enclosed to further use the button below.
+
         </div>
 
-        <div class="form-column">
+        <div class="form-column2">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ recommendation_form.recommendation_list.label_tag }}
@@ -40,3 +53,5 @@
     <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
     <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
 {% endblock %}
+</body>
+</html>

@@ -12,6 +12,8 @@
     {% else %}
         <p><a href="{% url 'interns_calendar_create' %}">Create Calendar</a></p>
     {% endif %}
+    <a href="{% url 'announcement_list' %}">View Announcement</a> <br>
+    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
     <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
     <a href="{% url 'time_in_out' %}">Add Time Record</a> <br><br>
     <a href="{% url 'upload_document' %}">Upload Requirements</a> <br>

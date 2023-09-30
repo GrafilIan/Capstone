@@ -8,3 +8,122 @@
     background-color: #FF5733;
     color: #FFFFFF;
 }
+
+.form-column1{
+    background: lime;
+    position: relative;
+    top: 100px;
+    margin-left:200px;
+    width: 350px;
+}
+
+.form-column2{
+    background: pink;
+    position: relative;
+    top: 30px;
+    margin-left:600px;
+    width: 350px;
+}
+
+.list-column1{
+    background: pink;
+    position: relative;
+    top: 30px;
+    margin-left:100px;
+    width: 350px;
+
+}
+.announcementimage1{
+    max-width: 100px; /* Adjust the maximum width as needed */
+    max-height: auto;
+}
+.list-column2{
+    position: relative;
+    background: lime;
+    position: relative;
+    bottom: 320px;
+    margin-left: 600px;
+    width: 350px;
+}
+
+.create-button{
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db; /* Background color */
+            color: #fff; /* Text color */
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Hover effect */
+        .create-button:hover {
+            background-color: #2980b9; /* Hover background color */
+            transform: scale(1.05); /* Scale up on hover */
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ffff;
+            border-radius: 5px;
+            padding: 8px;
+            width: 300px;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Input field */
+        .input-container input[type="text"] {
+            border: none;
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        /* Label for the input field */
+        .input-label {
+            margin-right: 10px;
+        }
+
+        /* Focus effect */
+        .input-container:focus-within {
+            border-color: #3498db;
+        }
+
+        /* Placeholder text */
+        ::placeholder {
+            color: #aaa;
+        }
+
+
+.label {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Styling for the file input field */
+        .input[type="file"] {
+            border: none;
+            outline: none;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #111111;
+            border-radius: 4px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect for the file input */
+        input[type="file"]:hover {
+            background-color: #e0e0e0;
+        }
