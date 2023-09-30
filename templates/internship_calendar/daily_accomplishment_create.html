@@ -4,39 +4,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Add Daily Report</title>
 
 </head>
 <body>
 {% block content %}
   <h2>Create Daily Accomplishment Report for {{ selected_date|date:"F d, Y" }}</h2>
+
+  {% if accomplishments %}
+    <!-- Display existing accomplishments if they exist -->
+    <h3>Existing Accomplishments:</h3>
+    <ul>
+      {% for accomplishment in accomplishments %}
+        <li>{{ accomplishment.text_submission }}</li>
+        {% if accomplishment.document_submission %}
+          <li><a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>
     <button type="submit" name="rest_day" value="true">Rest Day</button>
   </form>
+
   <a href="{% url 'calendar_view' %}">Back to Calendar</a>
 
-    <form action="submit.php" method="POST">
-        <table>
-            <thead>
-                <tr>
-                    <th>DATE</th>
-                    <th>DAILY ACCOMPLISHMENTS</th>
-                    <th>HOURS RENDERED</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" name="date[]" required></td>
-                    <td><textarea name="accomplishments[]" rows="4" required></textarea></td>
-                    <td><input type="text" name="hours_rendered[]" required></td>
-                </tr>
-                <!-- You can add more rows as needed -->
-            </tbody>
-        </table>
-        <button type="submit">Submit</button>
-    </form>
 </body>
 {% endblock %}
+</html>

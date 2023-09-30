@@ -1,3 +1,10 @@
+
+.submission-bins {
+    background-color: #a80000;
+    border-radius: 15px 15px 15px 15px;
+    padding: 0px;
+    width: 600px;
+}
 .day{
     position: relative;
     top: -5px;
@@ -73,17 +80,11 @@ ul {
     font-size: 10px;
     margin-right: -2px; /* Add margin to the right of the buttons to control spacing */
     white-space: nowrap; /* Prevent line breaks */
+    height: 10px;
 }
 /* Hover effect for the button */
 .green-button:hover {
     background-color: #45a049; /* Darker green on hover */
-}
-
-.submission-bins {
-    background-color: #a80000;
-    border-radius: 15px 15px 15px 15px;
-    padding: 0px;
-    width: 600px;
 }
 
 .week-item {
@@ -94,6 +95,12 @@ ul {
 }
 
 .week-item > li{
-    hieght: 10px;
+    height: 10px;
 
 }
+
+  .red-button {
+    background-color: red;
+    color: white;
+    /* Add any other styling you want for the red button */
+  }

@@ -1,11 +1,114 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard Panel | Bulan Campus</title>
+    <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
+    <link rel="stylesheet" href="{% static 'style/CreateCalendar.css' %}">
+    <!-------Boxicons CDN link----->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
 {% block content %}
-<h2>Create Internship Calendar</h2>
-<form method="post">
+<body>
+
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
+            <span class="logo_name">Sorsogon State University - Bulan Campus</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="StudentDashboard.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="StudentCalendar.html">
+                    <i class='bx bx-calendar-event'></i>
+                    <span class="link_name">Calendar</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="StudentCalendar.html">Calendar</a></li>
+                </ul>
+            <li>
+                <div class="icon-link">
+                    <a href="#">
+                        <i class='bx bxs-folder-open' ></i>
+                        <span class="link_name">Records</span>
+                    </a>
+                    <i class="bx bxs-chevron-down arrow"></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Records</a></li>
+                    <li><a href="Requirements.html">Internship Requirements</a></li>
+                    <li><a href="Weekly.html">Weekly Reports</a></li>
+                    <li><a href="Narrative.html">Narrative Report</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="StudentEvaluation.html">
+                    <i class='bx bxs-door-open' ></i>
+                    <span class="link_name">Evaluation</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-log-out' ></i>
+                    <span class="link_name">Log-out</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Log-out</a></li>
+                </ul>
+            </li>
+            <li>
+        <div class="profile-details">
+            <div class="profile-content">
+                <a href="#"><img src="{% static 'images/PicsArt_08-23-11.10.20.jpg' %}" alt="profile"></a>
+            </div>
+            <div class="name-job">
+                <div class="profile_name">Dela Cruz Juanna</div>
+                <div class="job">Full-Stack Web Developer</div>
+                <div class="company">Doofinshmirtz Incorporated</div>
+            </div>
+
+            <i class= ></i>
+            </a>
+        </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Calendar Reports</span>
+        </div>
+    </section>
+
+
+<div class="createcalendar"><h2>Create Internship Calendar</h2>
+<form method="post" action="{% url 'interns_calendar_create' %}">
   {% csrf_token %}
-  {{ form.as_p }}
-  <p><strong>Number of Submission Bins:</strong> {{ interns_calendar.num_submission_bins }}</p>
+  <div class="form-group">
+    <label for="{{ form.start_month.id_for_label }}">Start Month:</label>
+    {{ form.start_month }}
+  </div>
+  <div class="form-group">
+    <label for="{{ form.end_month.id_for_label }}">End Month:</label>
+    {{ form.end_month }}
+  </div>
   <button type="submit">Submit</button>
 </form>
 <ul>
@@ -19,5 +122,28 @@
 {% if request.session.redirect_to_create_calendar %}
   <!-- Display a message indicating that the user needs to set up their calendar -->
   <p>Please set up your calendar.</p>
-  {% endif %}
+{% endif %}
 {% endblock %}
+</div>
+    <script>
+
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+            let arrowParent = e.target.parentElement.parentElement;
+            arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+        });
+
+        </script>
+
+
+
+</html>

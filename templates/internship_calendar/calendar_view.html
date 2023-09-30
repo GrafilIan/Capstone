@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="{% static 'style/calendar_view.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <title>Add Daily Report</title>
 
 </head>
@@ -25,26 +26,15 @@
 
           <ul class="bins-in-week">
             {% for bin_date in week.bin_dates %}
-              <li class="bin-item">
-                <p class="day"> Day {{ forloop.counter }} </p>
-                <br>
-                <p class="month"> {{ bin_date|date:"F d" }} </p>
-                <a href="{% url 'daily_accomplishment_create' date=bin_date %}"><button class="green-button"> Add </button></a>
-                <!-- Display daily accomplishment reports for this date -->
-                <ul class="accomplishments-list">
-                  {% for accomplishment in accomplishments %}
-                    {% if accomplishment.date|date:"F d, Y" == bin_date|date:"F d, Y" %}
-                      <li class="accomplishment-item{% if accomplishment.is_rest_day %} rest-day{% endif %}">
-                        Rest Day
-                        <p>{{ accomplishment.text_submission }}</p>
-                        {% if accomplishment.document_submission %}
-                          <a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a>
-                        {% endif %}
-                      </li>
-                    {% endif %}
-                  {% empty %}
-                  {% endfor %}
-                </ul>
+                <li class="bin-item">
+                  <p class="day"> Day {{ forloop.counter }} </p>
+                  <br>
+                  <p class="month"> {{ bin_date|date:"F d" }} </p>
+                  <!-- Check if it's a rest day, and apply the CSS class accordingly -->
+                  <a href="{% url 'daily_accomplishment_create' date=bin_date %}">
+                    <button class="green-button{% if is_rest_day %} red-button{% endif %}">  </button>
+                  </a>
+
               </li>
             {% endfor %}
           </ul>
@@ -89,5 +79,19 @@
     }
   </style>
 </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const restDayButton = document.querySelector('button[name="rest_day"]');
+    const addButton = document.getElementById('add-button');
+
+    restDayButton.addEventListener("click", function() {
+      addButton.classList.add("red-button"); // Add a CSS class to change the button color to red
+    });
+  });
+  </script>
+
+
 {% endblock %}
 </body>
+</html>

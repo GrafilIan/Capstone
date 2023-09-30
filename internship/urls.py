@@ -21,7 +21,9 @@ urlpatterns = [
     path('test_messages/', views.test_messages, name='test_messages'),
     path('documents/', views.document_list, name='document_list'),
     path('upload/', views.upload_document, name='upload_document'),
-
+    path('download_time_records/', views.view_time_records, name='download_time_records'),
+    path('download_history/', views.download_history, name='download_history'),
     path('', views.my_view, name='StudentCalendar'),
+    path('record_history/', views.record_history, name='record_history'),
 
 ]

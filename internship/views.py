@@ -9,10 +9,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
 from .models import InternsCalendar, DailyAccomplishment
-from .forms import InternsCalendarForm, DailyAccomplishmentForm
+from .forms import DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
 from django.utils.timezone import now
+from django import forms
+from django.http import HttpResponse
+import csv
 def InternRegister(request):
     if request.method == 'POST':
         # Get the data from the POST request
@@ -169,6 +172,13 @@ def delete_all_recommendation(request):
     return redirect('announcement_list')
 
 
+
+def generate_time_records_text(time_records):
+    text_content = "Timestamp | Action\n"
+    for record in time_records:
+        text_content += f"{record.timestamp} | {record.action}\n"
+    return text_content
+
 @login_required
 def time_in_out(request):
     if request.method == 'POST':
@@ -197,11 +207,40 @@ def time_in_out(request):
 
 
 @login_required
+def record_history(request):
+    # Handle the record history logic here
+    # You can add a success message if needed
+    messages.success(request, 'Recorded history successfully.')
+
+    # Redirect to the page where you can view the saved history
+    return redirect('view_time_records')
+
+@login_required
 def view_time_records(request):
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
 
+    if 'download_history' in request.POST:
+        # Generate the text content
+        text_content = generate_time_records_text(time_records)
+
+        # Create a text response and set the appropriate headers
+        response = HttpResponse(text_content, content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename="time_records.txt"'
+        return response
+
     return render(request, 'DTR/view_time_records.html', {'time_records': time_records})
 
+def download_history(request):
+    # Retrieve and order time records
+    time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
+
+    # Generate the text content
+    text_content = generate_time_records_text(time_records)
+
+    # Create a text response and set the appropriate headers for download
+    response = HttpResponse(text_content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="time_records.txt"'
+    return response
 
 def clear_history(request):
     if request.method == 'POST':
@@ -211,16 +250,16 @@ def clear_history(request):
 
 
 
-@login_required  # This ensures that the user is logged in
+@login_required
 def redirect_to_calendar(request):
     # Check if the user has calendar records
-    has_calendars = InternsCalendarForm.objects.filter(user=request.user).exists()
+    has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
 
     if has_calendars:
         # User has calendars, redirect to view_calendar.html
         return redirect('calendar_view')
     else:
-        # User doesn't have calendars, redirect to set_up_calendar.html
+        # User doesn't have calendars.
         messages.info(request, 'Please set up your calendar.')
         request.session['redirect_to_create_calendar'] = True
         return redirect('interns_calendar_create')
@@ -230,6 +269,18 @@ def redirect_to_calendar(request):
 
 
 def interns_calendar_create(request):
+    class InternsCalendarForm(forms.ModelForm):
+        class Meta:
+            model = InternsCalendar
+            fields = ['start_month', 'end_month']
+
+        def save(self, commit=True):
+            instance = super().save(commit=False)
+            instance.update_num_submission_bins()  # Update num_submission_bins before saving
+            if commit:
+                instance.save()
+            return instance
+
     if request.method == 'POST':
         form = InternsCalendarForm(request.POST)
         if form.is_valid():
@@ -250,6 +301,9 @@ def interns_calendar_create(request):
 def daily_accomplishment_create(request, date=None):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
+    # Retrieve all DailyAccomplishments for the given date
+    accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar, date=date)
 
     if request.method == 'POST':
         form = DailyAccomplishmentForm(request.POST, request.FILES)
@@ -280,7 +334,9 @@ def daily_accomplishment_create(request, date=None):
     else:
         form = DailyAccomplishmentForm(initial={'date': date})
 
-    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form, 'date': date})
+    return render(request, 'internship_calendar/daily_accomplishment_create.html',
+                  {'form': form, 'date': date, 'accomplishments': accomplishments})
+
 
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
@@ -326,10 +382,13 @@ def calendar_view(request):
         # Retrieve daily accomplishments related to this calendar
         accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar)
 
+        is_rest_day = request.GET.get('rest_day') == 'true'
+
         context = {
             'interns_calendar': interns_calendar,
             'accomplishments': accomplishments,
             'weeks': weeks,
+            'is_rest_day': is_rest_day,
         }
 
         return render(request, 'internship_calendar/calendar_view.html', context)
@@ -338,6 +397,7 @@ def calendar_view(request):
     context = {
         'message': 'No calendar set up. Please create a calendar.',
     }
+
     return render(request, 'internship_calendar/calendar_view.html', context)
 
 def test_messages(request):
