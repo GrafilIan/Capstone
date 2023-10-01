@@ -2,14 +2,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Calendar Panel | Bulan Campus</title>
+  <link rel="stylesheet" href="{% static 'style/createdailyreport.css' %}">
+    <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
 
-  <title>Add Daily Report</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
 <body>
-{% block content %}
+
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
+            <span class="logo_name">Sorsogon State University - Bulan Campus</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="StudentDashboard.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'calendar_view' %}">
+                    <i class='bx bx-calendar-event'></i>
+                    <span class="link_name">Calendar</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'calendar_view' %}">Calendar</a></li>
+                </ul>
+            <li>
+                <div class="icon-link">
+                    <a href="#">
+                        <i class='bx bxs-folder-open' ></i>
+                        <span class="link_name">Records</span>
+                    </a>
+                    <i class="bx bxs-chevron-down arrow"></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name" href="#">Records</a></li>
+                    <li><a href="Requirements.html">Internship Requirements</a></li>
+                    <li><a href="Weekly.html">Weekly Reports</a></li>
+                    <li><a href="Narrative.html">Narrative Report</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="StudentEvaluation.html">
+                    <i class='bx bxs-door-open' ></i>
+                    <span class="link_name">Evaluation</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}">
+                    <i class='bx bxs-log-out'></i>
+                    <span class="link_name">Log-out</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="{% url 'logout' %}">Log-out</a></li>
+                </ul>
+            </li>
+            <li>
+        <div class="profile-details">
+            <div class="profile-content">
+                <a href="#"><img src="{% static 'images/PicsArt_08-23-11.10.20.jpg' %}" alt="profile"></a>
+            </div>
+            <div class="name-job">
+                <div class="profile_name">Dela Cruz Juanna</div>
+                <div class="job">Full-Stack Web Developer</div>
+                <div class="company">Doofinshmirtz Incorporated</div>
+            </div>
+
+            <i class= ></i>
+            </a>
+        </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Calendar Reports</span>
+        </div>
+    </section>
+<!-----------------------------------------------Side Bar /end----------------------------------------------------->
+
+<div class="DailyAccomplishement">
   <h2>Create Daily Accomplishment Report for {{ selected_date|date:"F d, Y" }}</h2>
 
   {% if accomplishments %}
@@ -33,7 +121,120 @@
   </form>
 
   <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+</div>
+
+<!-----------------------------Time In Out-------------------------------------->
+<div class="dtr">
+        <h1>Time In/Out Management System</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" name="is_time_in" value="on">Time In</button>
+        <button type="submit" name="is_time_in" value="false">Time Out</button>
+         <button type="button" id="record-history-button">Record History</button>
+         <!-- New button for downloading history -->
+    </form>
+
+    <h2>History:</h2>
+    <ul>
+        {% for record in time_records %}
+            <li>{{ record.timestamp }} - {{ record.action }}</li>
+        {% endfor %}
+    </ul>
+
+    <form method="post" action="{% url 'clear_history' %}">
+        {% csrf_token %}
+        <button type="submit">Clear History</button>
+    </form>
+</div>
+<!-----------------------------Time In Out/end-------------------------------------->
+
+
+<!-----------------------------View Time Records------------------------------------>
+
+<div class="timehistory">
+  <h2>Time Record History:</h2>
+  <ul>
+    {% for record in time_records %}
+      <li>{{ record.timestamp }} - {{ record.action }}</li>
+    {% empty %}
+      <li>No time records available.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Add the "Download History" button -->
+  <form method="post" action="{% url 'download_history' %}">
+    {% csrf_token %}
+    <button type="submit" name="download_history" value="true">Download History</button>
+  </form>
+</div>
+<!-----------------------------View Time Records------------------------------------>
+
+
+
+
+<script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e) => {
+            let arrowParent = e.target.parentElement.parentElement;
+            arrowParent.classList.toggle("showMenu");
+        });
+    }
+
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
+
+    sidebarBtn.addEventListener("click", () => {
+    // Check if the sidebar is already open before toggling
+    if (sidebar.classList.contains("close")) {
+        sidebar.classList.remove("close");
+    } else {
+        sidebar.classList.add("close");
+    }
+});
+
+    // Add event listener to the document to close sidebar when clicking outside of it
+    document.addEventListener("click", (e) => {
+        if (!sidebar.contains(e.target) && !sidebarBtn.contains(e.target)) {
+            // Clicked outside of both the sidebar and sidebar button
+            sidebar.classList.add("close");
+        }
+    });
+</script>
+
+<!-----------------------------Time In Out-------------------------------------->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Find the "Record History" button by its id
+    const recordHistoryButton = document.getElementById('record-history-button');
+
+    // Add a click event listener to the button
+    recordHistoryButton.addEventListener('click', function () {
+        // Make an AJAX request to the server to handle the "Record History" action
+        fetch("{% url 'record_history' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}', // Include the CSRF token in the request headers
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redirect to the page where you can view the saved history
+                window.location.href = "{% url 'view_time_records' %}";
+            } else {
+                // Handle any errors or display a message if needed
+                console.error('Failed to record history');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
+</script>
+<!-----------------------------Time In Out/end-------------------------------------->
+
 
 </body>
-{% endblock %}
 </html>

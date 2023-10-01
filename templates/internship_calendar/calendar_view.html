@@ -31,12 +31,12 @@
                 </ul>
             </li>
             <li>
-                <a href="StudentCalendar.html">
+                <a href="{% url 'calendar_view' %}">
                     <i class='bx bx-calendar-event'></i>
                     <span class="link_name">Calendar</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="StudentCalendar.html">Calendar</a></li>
+                    <li><a class="link_name" href="{% url 'calendar_view' %}">Calendar</a></li>
                 </ul>
             <li>
                 <div class="icon-link">
@@ -62,13 +62,13 @@
                     <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-log-out' ></i>
+           <li>
+                <a href="{% url 'logout' %}">
+                    <i class='bx bxs-log-out'></i>
                     <span class="link_name">Log-out</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Log-out</a></li>
+                    <li><a class="link_name" href="{% url 'logout' %}">Log-out</a></li>
                 </ul>
             </li>
             <li>
@@ -103,40 +103,40 @@
             <div class="startend">
                 <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
                 <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
-                <a href="{% url 'StudentCalendar' %}">Daily Report View</a>
             </div>
             <a href="{% url 'logout' %}">Log Out</a> <br>
 
 
-    <div class="container">
-        <div class="calendar">
-          <div class="header1">
-            <div class="month"></div>
-            <div class="btns">
-              <div class="btn today-btn">
-                <i class="bx bx-calendar-day"></i>
-              </div>
-              <div class="btn prev-btn">
-                <i class="bx bx-chevron-left"></i>
-              </div>
-              <div class="btn next-btn">
-                <i class="bx bx-chevron-right"></i>
-              </div>
-            </div>
-          </div>
-              <div class="weekdays">
-                <div class="day">Sun</div>
-                <div class="day">Mon</div>
-                <div class="day">Tue</div>
-                <div class="day">Wed</div>
-                <div class="day">Thu</div>
-                <div class="day">Fri</div>
-                <div class="day">Sat</div>
-              </div>
-          <div class="days"></div>
+<div class="container">
+  <div class="calendar">
+    <div class="header1">
+      <div class="month"></div>
+      <div class="btns">
+        <div class="btn today-btn">
+          <i class="bx bx-calendar-day"></i>
+        </div>
+        <div class="btn prev-btn">
+          <i class="bx bx-chevron-left"></i>
+        </div>
+        <div class="btn next-btn">
+          <i class="bx bx-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+    <div class="weekdays">
+      <div class="day">Sun</div>
+      <div class="day">Mon</div>
+      <div class="day">Tue</div>
+      <div class="day">Wed</div>
+      <div class="day">Thu</div>
+      <div class="day">Fri</div>
+      <div class="day">Sat</div>
+    </div>
+    <div class="days">
 
-     </div>
- </div>
+    </div>
+  </div>
+</div>
 
     <div class="mylinks">
           <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
@@ -174,6 +174,40 @@
 
 
   <!-- CSS to ensure 7 bins per row -->
+<style>
+  /* Style for rest days */
+  .rest-day {
+    background-color: #FF5733; /* Adjust the background color as needed */
+    color: #FFFFFF; /* Text color for rest days */
+    border-radius: 50%; /* Add a circular background for rest days, adjust as needed */
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get all day elements in the calendar
+    const dayElements = document.querySelectorAll(".day");
+
+    // Loop through each day element
+    dayElements.forEach(dayElement => {
+      // Extract the date from the day element's ID
+      const date = dayElement.id.replace("day-", "");
+
+      // Check if the date is marked as a rest day (you need to implement this logic)
+      // For demonstration purposes, let's assume rest days are marked in a JavaScript object
+      const restDays = {
+        "2023-10-05": true, // Example rest day, format: "YYYY-MM-DD"
+        // Add more rest days as needed
+      };
+
+      // Apply CSS class based on whether it's a rest day
+      if (date in restDays) {
+        dayElement.classList.add("rest-day");
+      }
+    });
+  });
+</script>
+
   <style>
     .submission-bins ul.bins-list {
       display: flex;
@@ -205,6 +239,11 @@
   </style>
 
 
+
+
+</body>
+</html>
+
   <script>
   document.addEventListener("DOMContentLoaded", function() {
     const restDayButton = document.querySelector('button[name="rest_day"]');
@@ -216,26 +255,31 @@
   });
   </script>
 
-    <script>
 
-        let arrow = document.querySelectorAll(".arrow");
-        for (var i = 0; i < arrow.length; i++) {
-            arrow[i].addEventListener("click", (e)=>{
+
+<script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e) => {
             let arrowParent = e.target.parentElement.parentElement;
             arrowParent.classList.toggle("showMenu");
-            });
-        }
-
-        let sidebar = document.querySelector(".sidebar");
-        let sidebarBtn = document.querySelector(".bx-menu");
-        console.log(sidebarBtn);
-        sidebarBtn.addEventListener("click", ()=>{
-            sidebar.classList.toggle("close");
         });
+    }
 
-    </script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
+
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+    });
+
+    // Add event listener to the document to close sidebar when clicking outside of it
+    document.addEventListener("click", (e) => {
+        if (!sidebar.contains(e.target) && !sidebarBtn.contains(e.target)) {
+            // Clicked outside of both the sidebar and sidebar button
+            sidebar.classList.add("close");
+        }
+    });
+</script>
 
     <script src="{% static 'script/StudentCalendar.js' %}"></script>
-
-</body>
-</html>

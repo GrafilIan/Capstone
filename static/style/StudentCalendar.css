@@ -325,8 +325,9 @@
   }
   .weekdays {
     display: flex;
-    gap: 11px;
+    gap: 7px;
     margin-bottom: 10px;
+    margin-left: 20px;
 
   }
   .weekdays .day {
@@ -346,7 +347,7 @@
     color: white;
   }
   .days .day {
-    width: calc(100% / 7 - 10px);
+    width: calc(110% / 7 - 10px);
     height: 40px;
     display: flex;
     align-items: center;
@@ -647,8 +648,8 @@ ul {
 
 .mylinks {
     position: absolute;
-    top: 120px;
-    left: 500px;
+    top: 550px;
+    left: 1000px;
 }
 
         text {

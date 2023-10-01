@@ -1,0 +1,25 @@
+
+.DailyAccomplishement{
+    position: absolute;
+    top: 300px;
+    left: 700px;
+    max-width: 500px;
+    background-color: red;
+}
+
+
+.dtr{
+    position: absolute;
+    top: -40px;
+    left: 150px;
+    max-width: 500px;
+    background-color: blue;
+}
+
+.timehistory{
+    position: relative;
+    top: 0px;
+    left: 700px;
+    max-width: 500px;
+    background-color: green;
+}

@@ -15,6 +15,7 @@ from datetime import timedelta
 from django.utils.timezone import now
 from django import forms
 from django.http import HttpResponse
+
 import csv
 def InternRegister(request):
     if request.method == 'POST':
@@ -297,7 +298,8 @@ def interns_calendar_create(request):
 
     return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
 
-
+###------------------------------------Calendar Report Page-------------------------------------------
+@login_required
 def daily_accomplishment_create(request, date=None):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
@@ -305,9 +307,28 @@ def daily_accomplishment_create(request, date=None):
     # Retrieve all DailyAccomplishments for the given date
     accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar, date=date)
 
+    # Retrieve time records
+    time_records = TimeRecord.objects.filter(intern_user=user).order_by('-timestamp')
+
+    # TimeRecordForm
+    class TimeRecordForm(forms.Form):
+        is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
+
+    # DailyAccomplishmentForm
+    class DailyAccomplishmentForm(forms.ModelForm):
+        class Meta:
+            model = DailyAccomplishment
+            fields = ['date', 'text_submission', 'document_submission']
+
+        def __init__(self, *args, **kwargs):
+            super(DailyAccomplishmentForm, self).__init__(*args, **kwargs)
+            self.fields['text_submission'].required = False
+
     if request.method == 'POST':
-        form = DailyAccomplishmentForm(request.POST, request.FILES)
-        if form.is_valid():
+        # Handle DailyAccomplishmentForm submission
+        daily_accomplishment_form = DailyAccomplishmentForm(request.POST, request.FILES)
+
+        if daily_accomplishment_form.is_valid():
             # Check if the "Rest Day" button is clicked
             if 'rest_day' in request.POST:
                 # Handle the rest day logic here
@@ -321,7 +342,7 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "This day is marked as a rest day.")
             else:
-                daily_accomplishment = form.save(commit=False)
+                daily_accomplishment = daily_accomplishment_form.save(commit=False)
                 daily_accomplishment.interns_calendar = interns_calendar
                 daily_accomplishment.date = date
                 daily_accomplishment.submitted_by = user
@@ -331,11 +352,36 @@ def daily_accomplishment_create(request, date=None):
             # Redirect to the calendar_view page
             return redirect('calendar_view')
 
-    else:
-        form = DailyAccomplishmentForm(initial={'date': date})
+        # Handle TimeRecordForm submission
+        time_form = TimeRecordForm(request.POST)
+        if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
+            time_form.fields['is_time_in'].required = False
 
-    return render(request, 'internship_calendar/daily_accomplishment_create.html',
-                  {'form': form, 'date': date, 'accomplishments': accomplishments})
+        if time_form.is_valid():
+            is_time_in = time_form.cleaned_data['is_time_in']
+            action = 'Time In' if is_time_in else 'Time Out'
+            TimeRecord.objects.create(intern_user=user, is_time_in=is_time_in, action=action)
+            messages.success(request, 'Time Record saved successfully.')
+
+            if 'record_history' in request.POST:
+                # Redirect to the page where you can view the saved history
+                return redirect('daily_accomplishment_create')
+
+
+
+
+
+    else:
+        daily_accomplishment_form = DailyAccomplishmentForm(initial={'date': date})
+        time_form = TimeRecordForm()
+
+    return render(request, 'internship_calendar/daily_accomplishment_create.html', {
+        'daily_accomplishment_form': daily_accomplishment_form,
+        'time_form': time_form,
+        'date': date,
+        'accomplishments': accomplishments,
+        'time_records': time_records,
+    })
 
 
 def calendar_view(request):
@@ -382,6 +428,17 @@ def calendar_view(request):
         # Retrieve daily accomplishments related to this calendar
         accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar)
 
+        # Retrieve time records for each submission bin or day
+        bin_time_records = []
+        for week in weeks:
+            for bin_date in week['bin_dates']:
+                # Retrieve time records for the current bin_date
+                time_records_for_bin = TimeRecord.objects.filter(intern_user=user, timestamp__date=bin_date)
+                bin_time_records.append({
+                    'bin_date': bin_date,
+                    'time_records': time_records_for_bin,
+                })
+
         is_rest_day = request.GET.get('rest_day') == 'true'
 
         context = {
@@ -389,6 +446,7 @@ def calendar_view(request):
             'accomplishments': accomplishments,
             'weeks': weeks,
             'is_rest_day': is_rest_day,
+            'bin_time_records': bin_time_records,  # Include time records in the context
         }
 
         return render(request, 'internship_calendar/calendar_view.html', context)
