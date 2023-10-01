@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard Panel | Bulan Campus</title>
     <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-------Boxicons CDN link----->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -99,7 +100,9 @@
 
         <h2>WEEK 1</h2>
         
-        
+<div id="message-container">
+               <input class="text" type="text" id="name" name="name" placeholder="Enter your name">
+            </div>
 
 
     <div class="container">
@@ -118,25 +121,19 @@
               </div>
             </div>
           </div>
-          <div class="weekdays">
-            <div class="day">Sun</div>
-            <div class="day">Mon</div>
-            <div class="day">Tue</div>
-            <div class="day">Wed</div>
-            <div class="day">Thu</div>
-            <div class="day">Fri</div>
-            <div class="day">Sat</div>
-          </div>
-          <div class="days">
-</div>
+              <div class="weekdays">
+                <div class="day">Sun</div>
+                <div class="day">Mon</div>
+                <div class="day">Tue</div>
+                <div class="day">Wed</div>
+                <div class="day">Thu</div>
+                <div class="day">Fri</div>
+                <div class="day">Sat</div>
+              </div>
+          <div class="days"></div>
 
-
-
-<div id="message-container">
-    Default Text Message Display for Intern Notices. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel atque, illum rerum accusantium porro quia dolores consectetur consequuntur minus temporibus cum eligendi deleniti optio laborum ea quasi. Fuga, ad laboriosam!
-</div>
-
-
+     </div>
+ </div>
 
 
 

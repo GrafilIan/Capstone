@@ -1,20 +1,19 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard Panel | Bulan Campus</title>
     <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
-    <link rel="stylesheet" href="{% static 'style/CreateCalendar.css' %}">
     <!-------Boxicons CDN link----->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
+<!-------------------------------------SIDE BAR CODE /-------------------------------------------->
 {% block content %}
 <body>
-
     <div class="sidebar">
         <div class="logo-details">
             <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
@@ -90,48 +89,50 @@
         </ul>
     </div>
 
-       <div class="eme">
-            <a><img src="images/SorSU-Logo.png" alt="profile"></a>
-        </div>
-
-        <div class="cc">
-            <a><img src="images/cc.gif" alt="profile"></a>
-        </div>
-
-        <div class="bb">
-            <a><img src="images/bb.gif" alt="profile"></a>
-        </div>
-
-        <div class="ss">
-            <a><img src="images/ss.gif" alt="profile"></a>
-        </div>
-
-        <div class="mari">
-            <a><img src="images/mariii.jpg" alt="profile"></a>
-        </div>
-
-
-    <section class="home-section">
+        <section class="home-section">
         <div class="home-content">
             <i class='bx bx-menu'></i>
             <span class="text">Calendar Reports</span>
         </div>
-    </section>
+        </section>
+<!-------------------------------------SIDE BAR CODE END /-------------------------------------------->
+<div class="eme">
+    <a href="#"><img src="{% static 'images/SorSU-Logo.png' %}" alt="profile"></a>
+</div>
+
+<div class="cc">
+    <a href="#"><img src="{% static 'images/cc.gif' %}" alt="profile"></a>
+</div>
+
+<div class="bb">
+    <a href="#"><img src="{% static 'images/bb.gif' %}" alt="profile"></a>
+</div>
+
+<div class="ss">
+    <a href="#"><img src="{% static 'images/ss.gif' %}" alt="profile"></a>
+</div>
+
+<div class="mari">
+    <a href="#"><img src="{% static 'images/mariii.jpg' %}" alt="profile"></a>
+</div>
 
 
-<div class="createcalendar"><h2>Create Internship Calendar</h2>
-<form method="post" action="{% url 'interns_calendar_create' %}">
-  {% csrf_token %}
-  <div class="form-group">
-    <label for="{{ form.start_month.id_for_label }}">Start Month:</label>
-    {{ form.start_month }}
-  </div>
-  <div class="form-group">
-    <label for="{{ form.end_month.id_for_label }}">End Month:</label>
-    {{ form.end_month }}
-  </div>
-  <button type="submit">Submit</button>
-</form>
+<div class="createcalendar">
+    <h2>Create Internship Calendar</h2>
+    <form method="post" action="{% url 'interns_calendar_create' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="start_month">Start Month:</label>
+        <input type="text" id="start_month" name="start_month" placeholder="MM/DD/YYYY" required>
+      </div>
+      <div class="form-group">
+        <label for="end_month">End Month:</label>
+        <input type="text" id="end_month" name="end_month" placeholder="MM/DD/YYYY" required>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+</div>
+
 <ul>
     {% for bin_number, adjusted_bin_number, bin_date in submission_bins_with_dates %}
         <li>
@@ -144,7 +145,7 @@
   <!-- Display a message indicating that the user needs to set up their calendar -->
   <p>Please set up your calendar.</p>
 {% endif %}
-{% endblock %}
+
 </div>
     <script>
 
@@ -165,6 +166,6 @@
 
         </script>
 
-
-
+{% endblock %}
+</body>
 </html>
