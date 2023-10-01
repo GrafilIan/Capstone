@@ -262,44 +262,43 @@
     margin-left: 0px;
     color: white;
 }
+
+/*----------------------------------------------CALENDAR-----------------------------------------------------*/
 .container {
-    height: 10px;
-    display: flex;
+    min-height: 60vh;
+    display: fixed;
     position: absolute;
     margin-left: 790px;
-    top: 315px;
+    margin-top: 80px;
+    margin-bottom: 20px;
     align-items: center;
     justify-content: center;
-    padding-bottom: 100px;
-    z-index: 20px;
   }
   .calendar {
     display: fixed;
     position: relative;
-    height: auto;
-    max-width: 450px;
-    padding: 40px 20px;
-    padding-bottom: 0px;
+    max-width: 400px;
+    padding: 30px 20px;
     border-radius: 10px;
     background-color: rgba(68, 68, 68, 1);
+
+
   }
   .calendar .header1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    padding-bottom: px;
+    padding-bottom: 0px;
     color: white;
     border-bottom: 2px solid #000000;
   }
   .calendar .header1 .month {
     display: flex;
     align-items: center;
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 600;
-    position: relative;
-    top: -25px;
-    white-space: nowrap;
+    padding-top: 20px;
   }
   .calendar .header1 .btns {
     display: flex;
@@ -328,6 +327,7 @@
     display: flex;
     gap: 11px;
     margin-bottom: 10px;
+
   }
   .weekdays .day {
     width: calc(100% / 7 - 10px);
@@ -339,24 +339,29 @@
   .days {
     display: flex;
     flex-wrap: wrap;
-    gap: 11px;
+    gap: 1px;
+    position: relative;
+    top: 20px;
+    margin-left: 20px;
+    color: white;
   }
   .days .day {
     width: calc(100% / 7 - 10px);
-    height: 50px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size: 15px;
     font-weight: 400;
     color: var(--text-color);
-    background-color: #fff;
+    background-color: #6a6a6a;
     transition: all 0.3s;
+
   }
   .days .day:not(.next):not(.prev):hover {
     color: gold;
-    background-color: var(--primary-color);
+    background-color: maroon;
     transform: scale(1.05);
   }
   .days .day.today {
@@ -367,6 +372,10 @@
   .days .day.prev {
     color: #ccc;
   }
+
+/*----------------------------------------------CALENDAR /end-----------------------------------------------------*/
+
+
   #message-container{
     position: relative;
     top: 500px;
@@ -493,9 +502,6 @@ h2{
     display: flex;
 }
 
-
-
-
 .interncalendartxt{
     font: normal;
     width: 600px;
@@ -505,8 +511,12 @@ h2{
 
 }
 
+
+
+
 .startend {
     position: relative;
+    max-width: 220px;
     top: 130px;
     left: 110px;
     font-size: 14px;
@@ -537,7 +547,7 @@ h2{
 
 .month{
     position: relative;
-    top: -36px;
+    top: -33px;
     font-size: 10px;
     color: gold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -592,21 +602,18 @@ ul {
 }
 /* CSS for the green button */
 .green-button {
+    display: flex;
+    flex-wrap: wrap;
     position: relative;
-    top: -83px;
+    top: -75px;
     background-color: #4CAF50; /* Green background color */
     border: none; /* Remove border */
     color: white; /* Text color */
-    padding-right: 25px; /* Adjust padding to control button size */
-    padding-left: 25px;
     text-align: center; /* Center-align the text */
     text-decoration: none; /* Remove underlines for links */
-    display: inline-block; /* Display as inline block, so it takes only the necessary width */
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 2px; /* Rounded corners */
     cursor: pointer; /* Change cursor to a pointer on hover */
     font-size: 10px;
-    margin-right: -2px; /* Add margin to the right of the buttons to control spacing */
-    white-space: nowrap; /* Prevent line breaks */
     height: 10px;
     width: 70px;
 }
@@ -640,9 +647,29 @@ ul {
 
 .mylinks {
     position: absolute;
-    top: 100px;
-    left: 1100px;
+    top: 120px;
+    left: 500px;
 }
+
+        text {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        /* Hover effect */
+        textarea:hover {
+            border-color: #666;
+        }
+
+        /* Focus effect */
+        textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
 
 
 
