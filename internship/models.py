@@ -66,15 +66,7 @@ class intern(AbstractUser):
     def __str__(self):
         return self.username
 
-#-----Time Record-----#
 
-class TimeRecord(models.Model):
-    intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
-    timestamp = models.DateTimeField(default=now)
-    is_time_in = models.BooleanField(default=True)
-    action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
-
-#-----Time Record/end-----#
 
 #-----CalendarSetup-----#
 
@@ -110,6 +102,17 @@ class InternsCalendar(models.Model):
 
     def __str__(self):
         return f"InternsCalendar for {self.user}"
+
+class TimeRecord(models.Model):
+    interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE, default=None)
+    intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
+    timestamp = models.DateTimeField(default=now)
+    is_time_in = models.BooleanField(default=True)
+    action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
+
+    def __str__(self):
+        return f"TimeRecord for {self.interns_calendar}"
+
 
 class DailyAccomplishment(models.Model):
     interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE)

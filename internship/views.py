@@ -13,9 +13,11 @@ from .models import Document
 from datetime import timedelta
 from django.utils.timezone import now
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 
-import csv
+
+###-----------------------------------Login-------------------------------------###
+
 def InternRegister(request):
     if request.method == 'POST':
         # Get the data from the POST request
@@ -103,6 +105,27 @@ def loginnn(request):
 
     return render(request, 'Login.html', {'auth_form': auth_form})
 
+@login_required
+def redirect_to_calendar(request):
+    # Check if the user has calendar records
+    has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
+
+    if has_calendars:
+        # User has calendars, redirect to view_calendar.html
+        return redirect('calendar_view')
+    else:
+        # User doesn't have calendars.
+        messages.info(request, 'Please set up your calendar.')
+        request.session['redirect_to_create_calendar'] = True
+        return redirect('interns_calendar_create')
+
+###-----------------------------------Login/end-------------------------------------###
+
+
+
+
+
+###-----------------------------------Announcement----------------------------------###
 def create_announcement(request):
     if request.method == 'POST':
         announcement_form = AnnouncementForm(request.POST, request.FILES, prefix='announcement')
@@ -135,7 +158,6 @@ def announcement_list(request):
     }
 
     return render(request, 'announcements/announcement_list.html', context)
-
 
 def delete_item(request, item_type, item_id):
     if item_type == 'announcement':
@@ -171,11 +193,8 @@ def delete_all_recommendation(request):
 
     return redirect('announcement_list')
 
-def generate_time_records_text(time_records):
-    text_content = "Timestamp | Action\n"
-    for record in time_records:
-        text_content += f"{record.timestamp} | {record.action}\n"
-    return text_content
+
+###-----------------------------------Announcement/end----------------------------------###
 
 
 @login_required
@@ -186,6 +205,12 @@ def record_history(request):
 
     # Redirect to the page where you can view the saved history
     return redirect('view_time_records')
+
+def generate_time_records_text(time_records):
+    text_content = "Timestamp | Action\n"
+    for record in time_records:
+        text_content += f"{record.timestamp} | {record.action}\n"
+    return text_content
 
 @login_required
 def view_time_records(request):
@@ -213,6 +238,51 @@ def download_history(request):
     response = HttpResponse(text_content, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="time_records.txt"'
     return response
+
+def clear_history(request):
+    if request.method == 'POST':
+        TimeRecord.objects.all().delete()
+
+    return redirect('time_in_out')
+
+def test_messages(request):
+    messages.success(request, 'This is a success message.')
+    messages.error(request, 'This is an error message.')
+    messages.warning(request, 'This is a warning message.')
+    messages.info(request, 'This is an info message.')
+
+    return render(request, 'internship_calendar/test_messages.html')
+
+###------------------------------------Calendar Report Page-----------------------------------------###
+
+def interns_calendar_create(request):
+    class InternsCalendarForm(forms.ModelForm):
+        class Meta:
+            model = InternsCalendar
+            fields = ['start_month', 'end_month']
+
+        def save(self, commit=True):
+            instance = super().save(commit=False)
+            instance.update_num_submission_bins()  # Update num_submission_bins before saving
+            if commit:
+                instance.save()
+            return instance
+
+    if request.method == 'POST':
+        form = InternsCalendarForm(request.POST)
+        if form.is_valid():
+            # Save the form and setup calendar
+            interns_calendar = form.save(commit=False)
+            interns_calendar.user = request.user  # Assuming user is authenticated
+            interns_calendar.save()
+
+            # Redirect to the calendar_view page
+            return redirect('calendar_view')
+
+    else:
+        form = InternsCalendarForm()
+
+    return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
 
 @login_required
 def daily_accomplishment_create(request, date=None):
@@ -258,6 +328,7 @@ def daily_accomplishment_create(request, date=None):
             is_time_in = time_record_form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
             TimeRecord.objects.create(
+                interns_calendar=interns_calendar,
                 intern_user=request.user,
                 is_time_in=is_time_in,
                 action=action,
@@ -277,60 +348,6 @@ def daily_accomplishment_create(request, date=None):
     return render(request, 'internship_calendar/daily_accomplishment_create.html',
                   {'form': form, 'date': date, 'accomplishments': accomplishments,'time_records': time_records, 'time_record_form': time_record_form})
 
-
-
-@login_required
-def redirect_to_calendar(request):
-    # Check if the user has calendar records
-    has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
-
-    if has_calendars:
-        # User has calendars, redirect to view_calendar.html
-        return redirect('calendar_view')
-    else:
-        # User doesn't have calendars.
-        messages.info(request, 'Please set up your calendar.')
-        request.session['redirect_to_create_calendar'] = True
-        return redirect('interns_calendar_create')
-
-
-def interns_calendar_create(request):
-    class InternsCalendarForm(forms.ModelForm):
-        class Meta:
-            model = InternsCalendar
-            fields = ['start_month', 'end_month']
-
-        def save(self, commit=True):
-            instance = super().save(commit=False)
-            instance.update_num_submission_bins()  # Update num_submission_bins before saving
-            if commit:
-                instance.save()
-            return instance
-
-    if request.method == 'POST':
-        form = InternsCalendarForm(request.POST)
-        if form.is_valid():
-            # Save the form and setup calendar
-            interns_calendar = form.save(commit=False)
-            interns_calendar.user = request.user  # Assuming user is authenticated
-            interns_calendar.save()
-
-            # Redirect to the calendar_view page
-            return redirect('calendar_view')
-
-    else:
-        form = InternsCalendarForm()
-
-    return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
-
-###------------------------------------Calendar Report Page-------------------------------------------
-
-
-def clear_history(request):
-    if request.method == 'POST':
-        TimeRecord.objects.all().delete()
-
-    return redirect('time_in_out')
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
@@ -405,14 +422,12 @@ def calendar_view(request):
 
     return render(request, 'internship_calendar/calendar_view.html', context)
 
-def test_messages(request):
-    messages.success(request, 'This is a success message.')
-    messages.error(request, 'This is an error message.')
-    messages.warning(request, 'This is a warning message.')
-    messages.info(request, 'This is an info message.')
 
-    return render(request, 'internship_calendar/test_messages.html')
 
+
+
+
+###-------------------------------------Documents----------------------------------###
 @login_required
 def upload_document(request):
     if request.method == 'POST':

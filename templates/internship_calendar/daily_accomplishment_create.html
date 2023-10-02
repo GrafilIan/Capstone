@@ -125,24 +125,28 @@
 </div>
 
 <!-----------------------------Time In Out-------------------------------------->
+
 <div class="dtr">
     <h1>Time In/Out Management System</h1>
     <h2>Time Record for {{ selected_date|date:"F d, Y" }}</h2>
+
     <form method="post" action="{% url 'daily_accomplishment_create' date %}">
         {% csrf_token %}
-        {{ forms }}
+        {{ time_record_form.as_p }}  <!-- Use the time_record_form for Time In/Out -->
         <button type="submit" name="is_time_in" value="on">Time In</button>
         <button type="submit" name="is_time_in" value="false">Time Out</button>
     </form>
+
     <h2>History:</h2>
     <ul>
         {% for record in time_records %}
             <li>{{ record.timestamp }} - {{ record.action }}</li>
         {% endfor %}
     </ul>
+
     <form method="post" action="{% url 'download_history' %}">
-    {% csrf_token %}
-    <button type="submit" name="download_history" value="true">Download History</button>
+        {% csrf_token %}
+        <button type="submit" name="download_history" value="true">Download History</button>
     </form>
 
     <form method="post" action="{% url 'clear_history' %}">
