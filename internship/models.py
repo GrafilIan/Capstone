@@ -114,7 +114,6 @@ class DailyAccomplishment(models.Model):
 # -----Time Record-----#
 class TimeRecord(models.Model):
     intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
-    daily_accomplishment = models.ForeignKey(DailyAccomplishment, on_delete=models.CASCADE, default=None)
     interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE, default=None)
     timestamp = models.DateTimeField(default=now)
     is_time_in = models.BooleanField(default=True)

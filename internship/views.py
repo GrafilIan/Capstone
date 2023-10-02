@@ -3,11 +3,10 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import AnnouncementForm, RecommendationForm
 from .models import Announcement, Recommendation
-from .models import intern, TimeRecord
+from .models import intern, TimeRecord, InternsCalendar, DailyAccomplishment
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
-from .models import InternsCalendar, DailyAccomplishment
 from .forms import DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
@@ -177,9 +176,19 @@ def generate_time_records_text(time_records):
         text_content += f"{record.timestamp} | {record.action}\n"
     return text_content
 
+
 @login_required
-def time_in_out(request):
-    daily_accomplishment = get_object_or_404(DailyAccomplishment, date=date)
+def time_in_out(request, date=None):
+    if date is None:
+        date = datetime.date.today()
+
+    # Retrieve the InternsCalendar for the current user
+    interns_calendar = InternsCalendar.objects.filter(user=request.user).last()
+
+    daily_accomplishment, created = DailyAccomplishment.objects.get_or_create(
+        date=date,
+        interns_calendar=interns_calendar  # Ensure it's associated with the correct InternsCalendar
+    )
 
     class TimeRecordForm(forms.Form):
         is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
@@ -195,9 +204,9 @@ def time_in_out(request):
             action = 'Time In' if is_time_in else 'Time Out'
             TimeRecord.objects.create(
                 intern_user=request.user,
+                daily_accomplishment=daily_accomplishment,
                 is_time_in=is_time_in,
                 action=action,
-                daily_accomplishment=daily_accomplishment
             )
 
             # Set a success message
@@ -211,7 +220,7 @@ def time_in_out(request):
         form = TimeRecordForm()
 
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
-    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form, 'time_records': time_records})
+    return render(request, 'internship_calendar/daily_accomplishment_create.html', {'form': form, 'time_records': time_records, 'date': date})
 
 
 @login_required
@@ -281,12 +290,13 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "Daily accomplishment report submitted.")
 
-            # Redirect to the calendar_view page
-            return HttpResponseRedirect(reverse('calendar_view'))
+            # Redirect to the same daily_accomplishment_create page
+            return redirect('daily_accomplishment_create', date=date)  # Redirect to the same view with the selected date
 
     else:
         form = DailyAccomplishmentForm(initial={'date': date})
 
+    # Render the 'daily_accomplishment_create.html' template
     return render(request, 'internship_calendar/daily_accomplishment_create.html',
                   {'form': form, 'date': date, 'accomplishments': accomplishments})
 
@@ -342,7 +352,7 @@ def clear_history(request):
     if request.method == 'POST':
         TimeRecord.objects.all().delete()
 
-    return redirect('time_in_out')
+    return redirect('daily_accomplishment_create')
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
