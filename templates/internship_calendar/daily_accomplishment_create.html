@@ -126,8 +126,8 @@
 <!-----------------------------Time In Out-------------------------------------->
 <div class="dtr">
     <h1>Time In/Out Management System</h1>
-
-    <form method="post" action="{% url 'time_in_out' %}">
+    <h2>Time Record for {{ selected_date|date:"F d, Y" }}</h2>
+    <form method="post" action="{% url 'time_in_out' date %}">
         {% csrf_token %}
         <button type="submit" name="is_time_in" value="on">Time In</button>
         <button type="submit" name="is_time_in" value="false">Time Out</button>

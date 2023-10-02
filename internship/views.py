@@ -179,6 +179,8 @@ def generate_time_records_text(time_records):
 
 @login_required
 def time_in_out(request):
+    daily_accomplishment = get_object_or_404(DailyAccomplishment, date=date)
+
     class TimeRecordForm(forms.Form):
         is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
 
@@ -191,7 +193,12 @@ def time_in_out(request):
         if form.is_valid():
             is_time_in = form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
-            TimeRecord.objects.create(intern_user=request.user, is_time_in=is_time_in, action=action)
+            TimeRecord.objects.create(
+                intern_user=request.user,
+                is_time_in=is_time_in,
+                action=action,
+                daily_accomplishment=daily_accomplishment
+            )
 
             # Set a success message
             messages.success(request, 'Time Record saved successfully.')
