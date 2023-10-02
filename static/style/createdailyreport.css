@@ -3,14 +3,15 @@
     position: absolute;
     top: 300px;
     left: 700px;
-    max-width: 500px;
-    background-color: red;
+    height: 200px;
+    max-width: 2000px;
+    background-color: yellow;
 }
 
 
 .dtr{
     position: absolute;
-    top: -40px;
+    top: 100px;
     left: 150px;
     max-width: 500px;
     background-color: blue;
@@ -18,8 +19,9 @@
 
 .timehistory{
     position: relative;
-    top: 0px;
+    top: 100px;
     left: 700px;
     max-width: 500px;
-    background-color: green;
+    background-color: pink;
+    z-index: 2;
 }
