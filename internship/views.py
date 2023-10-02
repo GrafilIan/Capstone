@@ -14,7 +14,7 @@ from datetime import timedelta
 from django.utils.timezone import now
 from django import forms
 from django.http import HttpResponse
-
+from datetime import date
 
 ###-----------------------------------Login-------------------------------------###
 
@@ -243,7 +243,8 @@ def clear_history(request):
     if request.method == 'POST':
         TimeRecord.objects.all().delete()
 
-    return redirect('time_in_out')
+    default_date = date.today()
+    return redirect('daily_accomplishment_create', date=default_date)
 
 def test_messages(request):
     messages.success(request, 'This is a success message.')
