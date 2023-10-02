@@ -120,6 +120,7 @@
     <button type="submit" name="rest_day" value="true">Rest Day</button>
   </form>
 
+    <a href="{% url 'test_messages' %}">Test Messages</a><br>
   <a href="{% url 'calendar_view' %}">Back to Calendar</a>
 </div>
 
@@ -127,13 +128,12 @@
 <div class="dtr">
     <h1>Time In/Out Management System</h1>
     <h2>Time Record for {{ selected_date|date:"F d, Y" }}</h2>
-    <form method="post" action="{% url 'time_in_out' date %}">
+    <form method="post" action="{% url 'daily_accomplishment_create' date %}">
         {% csrf_token %}
+        {{ forms }}
         <button type="submit" name="is_time_in" value="on">Time In</button>
         <button type="submit" name="is_time_in" value="false">Time Out</button>
-        <button type="button" id="record-history-button">Record History</button>
     </form>
-
     <h2>History:</h2>
     <ul>
         {% for record in time_records %}
@@ -203,35 +203,7 @@
 
 
 <!-----------------------------Time In Out-------------------------------------->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Find the "Record History" button by its id
-    const recordHistoryButton = document.getElementById('record-history-button');
 
-    // Add a click event listener to the button
-    recordHistoryButton.addEventListener('click', function () {
-        // Make an AJAX request to the server to handle the "Record History" action
-        fetch("{% url 'record_history' %}", {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}', // Include the CSRF token in the request headers
-            },
-        })
-        .then(response => {
-            if (response.ok) {
-                // Redirect to the page where you can view the saved history
-                window.location.href = "{% url 'view_time_records' %}";
-            } else {
-                // Handle any errors or display a message if needed
-                console.error('Failed to record history');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-});
-</script>
 <!-----------------------------Time In Out/end-------------------------------------->
 
 

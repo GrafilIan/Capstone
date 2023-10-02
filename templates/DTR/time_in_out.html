@@ -4,12 +4,13 @@
 {% block content %}
 <h1>Time In/Out Management System</h1>
 
-<form method="post" action="{% url 'time_in_out' %}">
+<form method="post">
     {% csrf_token %}
-    <input type="hidden" name="is_time_in" value="on">
     {{ form }}
+    <button type="submit" name="is_time_in" value="on">Time In</button>
     <button type="submit" name="is_time_in" value="false">Time Out</button>
-    <button type="button" id="record-history-button">Record History</button>
+     <button type="button" id="record-history-button">Record History</button>
+     <!-- New button for downloading history -->
 </form>
 
 <h2>History:</h2>
@@ -23,8 +24,6 @@
     {% csrf_token %}
     <button type="submit">Clear History</button>
 </form>
-
-<br><br>
 
 <br> <br>
 

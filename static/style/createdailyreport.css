@@ -1,9 +1,9 @@
 
 .DailyAccomplishement{
     position: absolute;
-    top: 300px;
+    top: 100px;
     left: 700px;
-    height: 200px;
+    height: 500px;
     max-width: 2000px;
     background-color: yellow;
 }
@@ -25,3 +25,6 @@
     background-color: pink;
     z-index: 2;
 }
+
+
+

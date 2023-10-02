@@ -66,7 +66,15 @@ class intern(AbstractUser):
     def __str__(self):
         return self.username
 
+#-----Time Record-----#
 
+class TimeRecord(models.Model):
+    intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
+    timestamp = models.DateTimeField(default=now)
+    is_time_in = models.BooleanField(default=True)
+    action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
+
+#-----Time Record/end-----#
 
 #-----CalendarSetup-----#
 
@@ -111,15 +119,6 @@ class DailyAccomplishment(models.Model):
     text_submission = models.TextField()
     document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
 
-# -----Time Record-----#
-class TimeRecord(models.Model):
-    intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
-    interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE, default=None)
-    timestamp = models.DateTimeField(default=now)
-    is_time_in = models.BooleanField(default=True)
-    action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
-
-# -----Time Record/end-----#
 
     def __str__(self):
         return f"Accomplishment for {self.interns_calendar.user} on {self.date}"

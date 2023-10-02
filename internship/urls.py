@@ -9,7 +9,6 @@ urlpatterns = [
     path('create/', views.create_announcement, name='create_announcement'),
     path('list/', views.announcement_list, name='announcement_list'),
     path('delete/<str:item_type>/<int:item_id>/', views.delete_item, name='delete_item'),
-    path('time_in_out/<str:date>/', views.time_in_out, name='time_in_out'),
     path('view_time_records/', views.view_time_records, name='view_time_records'),
     path('clear_history/', views.clear_history, name='clear_history'),
     path('delete_all_announcement/', views.delete_all_announcement, name='delete_all_announcement'),
@@ -24,6 +23,5 @@ urlpatterns = [
     path('download_time_records/', views.view_time_records, name='download_time_records'),
     path('download_history/', views.download_history, name='download_history'),
     path('', views.my_view, name='StudentCalendar'),
-    path('record_history/', views.record_history, name='record_history'),
 
 ]
