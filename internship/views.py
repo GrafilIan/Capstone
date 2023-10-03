@@ -227,9 +227,6 @@ def view_time_records(request):
     return render(request, 'DTR/view_time_records.html', {'time_records': time_records})
 
 
-
-
-
 def test_messages(request):
     messages.success(request, 'This is a success message.')
     messages.error(request, 'This is an error message.')
@@ -271,6 +268,7 @@ def interns_calendar_create(request):
 
 @login_required
 def daily_accomplishment_create(request, date=None):
+
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
 
@@ -326,11 +324,12 @@ def daily_accomplishment_create(request, date=None):
         if time_record_form.is_valid():
             is_time_in = time_record_form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
+
             TimeRecord.objects.create(
                 interns_calendar=interns_calendar,
                 intern_user=request.user,
                 is_time_in=is_time_in,
-                action=action,
+                action=action
             )
 
             # Set a success message
@@ -426,8 +425,6 @@ def calendar_view(request):
 
     return render(request, 'internship_calendar/calendar_view.html', context)
 
-
-
 def download_history(request):
     # Retrieve and order time records
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
@@ -446,7 +443,6 @@ def clear_history(request):
 
     default_date = date.today()
     return redirect('daily_accomplishment_create', date=default_date)
-
 
 ###-------------------------------------Documents----------------------------------###
 @login_required
