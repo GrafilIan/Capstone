@@ -12,13 +12,5 @@
       <li>No time records available.</li>
     {% endfor %}
   </ul>
-
-  <!-- Add the "Download History" button -->
-  <form method="post" action="{% url 'download_history' %}">
-    {% csrf_token %}
-    <button type="submit" name="download_history" value="true">Download History</button>
-  </form>
-
-  <a href="{% url 'time_in_out' %}">Back to Time In/Out</a>
   
 {% endblock %}

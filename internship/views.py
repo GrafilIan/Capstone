@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
 from .models import InternsCalendar, DailyAccomplishment
-from .forms import DailyAccomplishmentForm
 from .models import Document
 from datetime import timedelta
 from django.utils.timezone import now
@@ -227,24 +226,9 @@ def view_time_records(request):
 
     return render(request, 'DTR/view_time_records.html', {'time_records': time_records})
 
-def download_history(request):
-    # Retrieve and order time records
-    time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
 
-    # Generate the text content
-    text_content = generate_time_records_text(time_records)
 
-    # Create a text response and set the appropriate headers for download
-    response = HttpResponse(text_content, content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="time_records.txt"'
-    return response
 
-def clear_history(request):
-    if request.method == 'POST':
-        TimeRecord.objects.all().delete()
-
-    default_date = date.today()
-    return redirect('daily_accomplishment_create', date=default_date)
 
 def test_messages(request):
     messages.success(request, 'This is a success message.')
@@ -296,15 +280,23 @@ def daily_accomplishment_create(request, date=None):
     # Retrieve TimeRecords for the user and order by timestamp
     time_records = TimeRecord.objects.filter(intern_user=user).order_by('-timestamp')
 
+    class DailyAccomplishmentForm(forms.ModelForm):
+        class Meta:
+            model = DailyAccomplishment
+            fields = ['date', 'text_submission', 'document_submission']
+
     class TimeRecordForm(forms.Form):
         is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
 
     if request.method == 'POST':
-        form = DailyAccomplishmentForm(request.POST, request.FILES)
-        time_record_form = TimeRecordForm(request.POST)
+        form = DailyAccomplishmentForm(request.POST, request.FILES, instance=None)
 
-        if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
-            time_record_form.fields['is_time_in'].required = False
+        if 'text_submission' in form.data:
+            form.fields['text_submission'].required = False
+        if 'document_submission' in form.data:
+            form.fields['document_submission'].required = False
+
+        time_record_form = TimeRecordForm(request.POST)
 
         if form.is_valid():
             # Check if the "Rest Day" button is clicked
@@ -325,7 +317,13 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "Daily accomplishment report submitted.")
 
-        elif time_record_form.is_valid():
+        # This section handles the time record creation
+        time_record_form = TimeRecordForm(request.POST)
+        # Makes the time out button work
+        if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
+            time_record_form.fields['is_time_in'].required = False
+
+        if time_record_form.is_valid():
             is_time_in = time_record_form.cleaned_data['is_time_in']
             action = 'Time In' if is_time_in else 'Time Out'
             TimeRecord.objects.create(
@@ -343,11 +341,16 @@ def daily_accomplishment_create(request, date=None):
                 return redirect('view_time_records')
 
     else:
-        form = DailyAccomplishmentForm(initial={'date': date})
+        initial_data = {'date': date}
+        form = DailyAccomplishmentForm(initial=initial_data)
         time_record_form = TimeRecordForm()
 
     return render(request, 'internship_calendar/daily_accomplishment_create.html',
-                  {'form': form, 'date': date, 'accomplishments': accomplishments,'time_records': time_records, 'time_record_form': time_record_form})
+                  {'form': form, 'date': date,
+                   'accomplishments': accomplishments,
+                   'time_records': time_records,
+                   'time_record_form': time_record_form,
+                   'bin_date': date,})
 
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
@@ -425,7 +428,24 @@ def calendar_view(request):
 
 
 
+def download_history(request):
+    # Retrieve and order time records
+    time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
 
+    # Generate the text content
+    text_content = generate_time_records_text(time_records)
+
+    # Create a text response and set the appropriate headers for download
+    response = HttpResponse(text_content, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="time_records.txt"'
+    return response
+
+def clear_history(request):
+    if request.method == 'POST':
+        TimeRecord.objects.all().delete()
+
+    default_date = date.today()
+    return redirect('daily_accomplishment_create', date=default_date)
 
 
 ###-------------------------------------Documents----------------------------------###

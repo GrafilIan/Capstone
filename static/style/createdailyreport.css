@@ -4,7 +4,7 @@
     top: 100px;
     left: 700px;
     height: 500px;
-    max-width: 2000px;
+    width: 500px;
     background-color: yellow;
 }
 
@@ -14,7 +14,7 @@
     top: 100px;
     left: 150px;
     max-width: 500px;
-    background-color: blue;
+    background-color: gray;
 }
 
 .timehistory{
@@ -26,5 +26,39 @@
     z-index: 2;
 }
 
+/* Style for the textarea */
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: none; /* Disable textarea resizing */
+  font-size: 16px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease-in-out;
+}
+
+/* Style for the textarea when it's focused */
+textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Optional: Add a placeholder style */
+textarea::placeholder {
+  color: #aaa;
+}
+
+/* Optional: Add a maximum height and scroll if content overflows */
+textarea {
+  max-height: 300px; /* Adjust this value as needed */
+  overflow-y: auto;
+}
+
+/* Optional: Add a border highlight on hover */
+textarea:hover {
+  border-color: #66afe9;
+}
 
 

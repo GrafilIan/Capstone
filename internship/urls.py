@@ -23,5 +23,4 @@ urlpatterns = [
     path('download_time_records/', views.view_time_records, name='download_time_records'),
     path('download_history/', views.download_history, name='download_history'),
     path('', views.my_view, name='StudentCalendar'),
-
 ]
