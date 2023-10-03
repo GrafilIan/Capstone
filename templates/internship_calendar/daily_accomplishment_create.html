@@ -98,7 +98,7 @@
 <!-----------------------------------------------Side Bar /end----------------------------------------------------->
 
 <div class="DailyAccomplishement">
-  <h2>Create Daily Accomplishment Report for {{ bin_date|date:"F d, Y" }}</h2>
+  <h2>Create Daily Accomplishment Report for {{ bin_date|date:"Y-m-d" }}</h2>
 
   {% if accomplishments %}
     <!-- Display existing accomplishments if they exist -->
@@ -118,7 +118,7 @@
     <input type="date" name="date" value="{{ bin_date|date:"Y-m-d" }}" required>
     <textarea name="text_submission" placeholder="Text Submission"></textarea>
     <input type="file" name="document_submission">
-
+        <h3>Existing Accomplishments:</h3>
     <button type="submit" class="submit-button">Submit</button>
     <button type="submit" class="rest-day-button" name="rest_day" value="true">Rest Day</button>
 </form>
@@ -130,35 +130,6 @@
 <!-----------------------------Time In Out-------------------------------------->
 
 <div class="dtr">
-    <h1>Time In/Out Management System</h1>
-    <h2>Time Record for {{ selected_date|date:"F d, Y" }}</h2>
-
-    <form id="TimeRecord" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ time_record_form.is_time_in }}
-        <button type="submit" name="is_time_in" value="on">Time In</button>
-        <button type="submit" name="is_time_in" value="off">Time Out</button>
-    </form>
-
-    <h3>Time In/Out Records:</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Date/Time</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in time_records %}
-                <tr>
-                    <td>{{ record.timestamp|date:"M. d, Y, P" }}</td>
-                    <td>{{ record.action }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-
 
     <form method="post" action="{% url 'download_history' %}">
         {% csrf_token %}

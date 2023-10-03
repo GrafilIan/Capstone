@@ -1,6 +1,6 @@
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
-from .models import InternsCalendar, DailyAccomplishment
+from .models import InternsCalendar, DailyAccomplishment, TimeRecord
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:

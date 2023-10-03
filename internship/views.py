@@ -14,7 +14,9 @@ from django.utils.timezone import now
 from django import forms
 from django.http import HttpResponse
 from datetime import date
-
+from .forms import DailyAccomplishmentForm, TimeRecordForm
+from django.utils import timezone
+import pytz
 ###-----------------------------------Login-------------------------------------###
 
 def InternRegister(request):
@@ -205,10 +207,18 @@ def record_history(request):
     # Redirect to the page where you can view the saved history
     return redirect('view_time_records')
 
+
 def generate_time_records_text(time_records):
     text_content = "Timestamp | Action\n"
+
     for record in time_records:
-        text_content += f"{record.timestamp} | {record.action}\n"
+        # Convert the timestamp to the user's timezone
+        user_timezone = pytz.timezone(record.intern_user.timezone)
+        timestamp_local = record.timestamp.astimezone(user_timezone)
+
+        # Add the timestamp and action to the text content
+        text_content += f"{timestamp_local} | {record.action}\n"
+
     return text_content
 
 @login_required
@@ -225,9 +235,6 @@ def view_time_records(request):
         return response
 
     return render(request, 'DTR/view_time_records.html', {'time_records': time_records})
-
-
-
 
 
 def test_messages(request):
@@ -271,22 +278,12 @@ def interns_calendar_create(request):
 
 @login_required
 def daily_accomplishment_create(request, date=None):
+
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
 
     # Retrieve all DailyAccomplishments for the given date
     accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar, date=date)
-
-    # Retrieve TimeRecords for the user and order by timestamp
-    time_records = TimeRecord.objects.filter(intern_user=user).order_by('-timestamp')
-
-    class DailyAccomplishmentForm(forms.ModelForm):
-        class Meta:
-            model = DailyAccomplishment
-            fields = ['date', 'text_submission', 'document_submission']
-
-    class TimeRecordForm(forms.Form):
-        is_time_in = forms.BooleanField(required=True, widget=forms.HiddenInput())
 
     if request.method == 'POST':
         form = DailyAccomplishmentForm(request.POST, request.FILES, instance=None)
@@ -295,8 +292,6 @@ def daily_accomplishment_create(request, date=None):
             form.fields['text_submission'].required = False
         if 'document_submission' in form.data:
             form.fields['document_submission'].required = False
-
-        time_record_form = TimeRecordForm(request.POST)
 
         if form.is_valid():
             # Check if the "Rest Day" button is clicked
@@ -317,40 +312,17 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "Daily accomplishment report submitted.")
 
-        # This section handles the time record creation
-        time_record_form = TimeRecordForm(request.POST)
-        # Makes the time out button work
-        if 'is_time_in' in request.POST and request.POST['is_time_in'] == 'false':
-            time_record_form.fields['is_time_in'].required = False
-
-        if time_record_form.is_valid():
-            is_time_in = time_record_form.cleaned_data['is_time_in']
-            action = 'Time In' if is_time_in else 'Time Out'
-            TimeRecord.objects.create(
-                interns_calendar=interns_calendar,
-                intern_user=request.user,
-                is_time_in=is_time_in,
-                action=action,
-            )
-
-            # Set a success message
-            messages.success(request, 'Time Record saved successfully.')
-
-            if 'record_history' in request.POST:
-                # Redirect to the page where you can view the saved history
-                return redirect('view_time_records')
-
     else:
         initial_data = {'date': date}
         form = DailyAccomplishmentForm(initial=initial_data)
-        time_record_form = TimeRecordForm()
 
-    return render(request, 'internship_calendar/daily_accomplishment_create.html',
-                  {'form': form, 'date': date,
-                   'accomplishments': accomplishments,
-                   'time_records': time_records,
-                   'time_record_form': time_record_form,
-                   'bin_date': date,})
+    return render(request, 'internship_calendar/daily_accomplishment_create.html', {
+        'form': form,
+        'date': date,
+        'accomplishments': accomplishments,
+        'bin_date': date,
+    })
+
 
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
@@ -428,6 +400,39 @@ def calendar_view(request):
 
 
 
+def calendar_detail(request, interns_calendar_id):
+    interns_calendar = get_object_or_404(InternsCalendar, pk=interns_calendar_id)
+    time_records = TimeRecord.objects.filter(interns_calendar=interns_calendar)
+
+    context = {
+        'interns_calendar': interns_calendar,
+        'time_records': time_records,
+    }
+    return render(request, 'internship_calendar/calendar_detail.html', context)
+
+def time_in(request, interns_calendar_id):
+    # Create a TimeRecord entry for Time In
+    TimeRecord.objects.create(
+        interns_calendar_id=interns_calendar_id,
+        intern_user=request.user,
+        is_time_in=True,
+        action='Time In'
+    )
+    return redirect('calendar_detail', interns_calendar_id=interns_calendar_id)
+
+def time_out(request, interns_calendar_id):
+    # Create a TimeRecord entry for Time Out
+    TimeRecord.objects.create(
+        interns_calendar_id=interns_calendar_id,
+        intern_user=request.user,
+        is_time_in=False,
+        action='Time Out'
+    )
+    return redirect('calendar_detail', interns_calendar_id=interns_calendar_id)
+
+
+
+
 def download_history(request):
     # Retrieve and order time records
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
@@ -444,9 +449,9 @@ def clear_history(request):
     if request.method == 'POST':
         TimeRecord.objects.all().delete()
 
-    default_date = date.today()
-    return redirect('daily_accomplishment_create', date=default_date)
-
+    # Assuming you have a valid way to obtain the interns_calendar_id
+    interns_calendar_id = 1 # Replace with the actual calendar ID
+    return redirect('calendar_detail', interns_calendar_id=interns_calendar_id)
 
 ###-------------------------------------Documents----------------------------------###
 @login_required
@@ -466,3 +471,4 @@ def document_list(request):
 
 def my_view(request):
     return render(request, 'internship_calendar/StudentCalendar.html')
+

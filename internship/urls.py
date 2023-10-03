@@ -23,4 +23,8 @@ urlpatterns = [
     path('download_time_records/', views.view_time_records, name='download_time_records'),
     path('download_history/', views.download_history, name='download_history'),
     path('', views.my_view, name='StudentCalendar'),
+
+    path('calendar/<int:interns_calendar_id>/', views.calendar_detail, name='calendar_detail'),
+    path('time_in/<int:interns_calendar_id>/', views.time_in, name='time_in'),
+    path('time_out/<int:interns_calendar_id>/', views.time_out, name='time_out'),
 ]

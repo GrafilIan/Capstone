@@ -1,7 +1,8 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
-from datetime import timedelta
 
 #-----Announcement Section-----#
 
@@ -45,6 +46,7 @@ class intern(AbstractUser):
     address = models.CharField(max_length=200, verbose_name='Address', null=True)
     profile_image = models.ImageField(upload_to='profile_images/', default='images/default_profile_image.png')
     pub_date = models.DateTimeField(default=now)
+    timezone = models.CharField(max_length=63, default='Asia/Manila')
     # Intern Status
     STATUS_CHOICES = [
         ('active', 'Active'),
@@ -106,9 +108,10 @@ class InternsCalendar(models.Model):
 class TimeRecord(models.Model):
     interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE, default=None)
     intern_user = models.ForeignKey(intern, on_delete=models.CASCADE, default=None)
-    timestamp = models.DateTimeField(default=now)
-    is_time_in = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_time_in = models.BooleanField(default=False)
     action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
+
 
     def __str__(self):
         return f"TimeRecord for {self.interns_calendar}"

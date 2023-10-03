@@ -1,0 +1,45 @@
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interns Calendar Detail</title>
+</head>
+<body>
+    <h1>Interns Calendar Detail</h1>
+
+    <p><strong>User:</strong> {{ interns_calendar.user }}</p>
+    <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
+    <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
+
+    <form method="post" action="{% url 'time_in' interns_calendar_id=interns_calendar.id %}">
+        {% csrf_token %}
+        <button type="submit">Time In</button>
+    </form>
+
+    <form method="post" action="{% url 'time_out' interns_calendar_id=interns_calendar.id %}">
+        {% csrf_token %}
+        <button type="submit">Time Out</button>
+    </form>
+
+    <h2>Time Records</h2>
+    <ul>
+        {% for time_record in time_records %}
+
+                <li>{{ time_record.timestamp }} - {{ time_record.action }}</li>
+
+        {% endfor %}
+    </ul>
+
+    <form method="post" action="{% url 'download_history' %}">
+        {% csrf_token %}
+        <button type="submit" name="download_history" value="true">Download History</button>
+    </form>
+
+    <form method="post" action="{% url 'clear_history' %}">
+        {% csrf_token %}
+        <button type="submit">Clear History</button>
+    </form>
+
+</body>
+</html>
