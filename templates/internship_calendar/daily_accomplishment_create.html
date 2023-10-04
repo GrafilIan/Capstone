@@ -1,17 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Calendar Panel | Bulan Campus</title>
-  <link rel="stylesheet" href="{% static 'style/createdailyreport.css' %}">
+    <link rel="stylesheet" href="{% static 'style/createdailyreport.css' %}">
     <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
+
+
 <body>
 
     <div class="sidebar">
@@ -95,11 +98,19 @@
             <span class="text">Calendar Reports</span>
         </div>
     </section>
+
 <!-----------------------------------------------Side Bar /end----------------------------------------------------->
 
 <div class="DailyAccomplishement">
-  <h2>Create Daily Accomplishment Report for {{ bin_date|date:"Y-m-d" }}</h2>
+  <h2>Create Daily Accomplishment Report</h2> <br>
 
+<form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea name="text_submission" placeholder="Text Submission"></textarea>
+    <input type="file" name="document_submission">
+    <button type="submit" class="submit-button">Submit</button>
+    <button type="submit" class="rest-day-button" name="rest_day" value="true">Rest Day</button>
+</form>
   {% if accomplishments %}
     <!-- Display existing accomplishments if they exist -->
     <h3>Existing Accomplishments:</h3>
@@ -112,37 +123,21 @@
       {% endfor %}
     </ul>
   {% endif %}
-
-<form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="date" name="date" value="{{ bin_date|date:"Y-m-d" }}" required>
-    <textarea name="text_submission" placeholder="Text Submission"></textarea>
-    <input type="file" name="document_submission">
-        <h3>Existing Accomplishments:</h3>
-    <button type="submit" class="submit-button">Submit</button>
-    <button type="submit" class="rest-day-button" name="rest_day" value="true">Rest Day</button>
-</form>
-
     <a href="{% url 'test_messages' %}">Test Messages</a><br>
-  <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+
 </div>
 
 <!-----------------------------Time In Out-------------------------------------->
-
-<div class="dtr">
 
     <form method="post" action="{% url 'download_history' %}">
         {% csrf_token %}
         <button type="submit" name="download_history" value="true">Download History</button>
     </form>
 
-    <form method="post" action="{% url 'clear_history' %}">
-        {% csrf_token %}
-        <button type="submit">Clear History</button>
-    </form>
 
     <br><br>
-</div>
+
+
 <!-----------------------------Time In Out/end-------------------------------------->
 
 
@@ -151,6 +146,7 @@
 <!-----------------------------View Time Records------------------------------------>
 
 <script>
+
     let arrow = document.querySelectorAll(".arrow");
     for (var i = 0; i < arrow.length; i++) {
         arrow[i].addEventListener("click", (e) => {
@@ -195,8 +191,6 @@
             localStorage.setItem("sidebarState", "closed");
         }
     });
-
-
 
 </script>
 

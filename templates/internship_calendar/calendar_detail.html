@@ -12,12 +12,12 @@
     <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
     <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
 
-    <form method="post" action="{% url 'time_in' interns_calendar_id=interns_calendar.id %}">
+    <form method="post" action="{% url 'time_in' date=date %}">
         {% csrf_token %}
         <button type="submit">Time In</button>
     </form>
 
-    <form method="post" action="{% url 'time_out' interns_calendar_id=interns_calendar.id %}">
+    <form method="post" action="{% url 'time_out' date=date %}">
         {% csrf_token %}
         <button type="submit">Time Out</button>
     </form>
@@ -36,10 +36,8 @@
         <button type="submit" name="download_history" value="true">Download History</button>
     </form>
 
-    <form method="post" action="{% url 'clear_history' %}">
-        {% csrf_token %}
-        <button type="submit">Clear History</button>
-    </form>
 
+
+<a href="{% url 'calendar_view' %}">Back to Calendar</a>
 </body>
 </html>

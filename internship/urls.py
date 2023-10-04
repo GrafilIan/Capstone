@@ -10,7 +10,6 @@ urlpatterns = [
     path('list/', views.announcement_list, name='announcement_list'),
     path('delete/<str:item_type>/<int:item_id>/', views.delete_item, name='delete_item'),
     path('view_time_records/', views.view_time_records, name='view_time_records'),
-    path('clear_history/', views.clear_history, name='clear_history'),
     path('delete_all_announcement/', views.delete_all_announcement, name='delete_all_announcement'),
     path('delete_all_recommendation/', views.delete_all_recommendation, name='delete_all_recommendation'),
     path('redirect-to-calendar/', views.redirect_to_calendar, name='redirect_to_calendar'),
@@ -24,7 +23,7 @@ urlpatterns = [
     path('download_history/', views.download_history, name='download_history'),
     path('', views.my_view, name='StudentCalendar'),
 
-    path('calendar/<int:interns_calendar_id>/', views.calendar_detail, name='calendar_detail'),
-    path('time_in/<int:interns_calendar_id>/', views.time_in, name='time_in'),
-    path('time_out/<int:interns_calendar_id>/', views.time_out, name='time_out'),
+    path('calendar/<str:date>/', views.calendar_detail, name='calendar_detail'),
+    path('time_in/<str:date>/', views.time_in, name='time_in'),
+    path('time_out/<str:date>/', views.time_out, name='time_out'),
 ]

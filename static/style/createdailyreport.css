@@ -2,10 +2,10 @@
 .DailyAccomplishement{
     position: absolute;
     top: 100px;
-    left: 700px;
+    left: 500px;
     height: 500px;
     width: 500px;
-    background-color: yellow;
+    background-color: green;
 }
 
 

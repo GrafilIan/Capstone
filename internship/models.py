@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
@@ -111,7 +109,7 @@ class TimeRecord(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_time_in = models.BooleanField(default=False)
     action = models.CharField(max_length=8, choices=[('Time In', 'Time In'), ('Time Out', 'Time Out')], default='Time In')
-
+    date = models.DateField(null=True)
 
     def __str__(self):
         return f"TimeRecord for {self.interns_calendar}"
@@ -120,7 +118,7 @@ class TimeRecord(models.Model):
 class DailyAccomplishment(models.Model):
     interns_calendar = models.ForeignKey(InternsCalendar, on_delete=models.CASCADE)
     submitted_by = models.ForeignKey(intern, on_delete=models.CASCADE, default=1)
-    date = models.DateField()
+    date = models.DateField(null=True)
     is_rest_day = models.BooleanField(default=False)
     text_submission = models.TextField()
     document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
