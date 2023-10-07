@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <title>Daily Report</title>
 
     <style>
@@ -57,13 +58,13 @@
 
 <div class="all">
     <div class="interncalendartxt">
-    <h2>Internship Calendar</h2>
+    <h2 style="bold-text">Internship Calendar</h2>
         </div>
             <div class="startend">
                 <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
                 <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
             </div>
-            <a href="{% url 'logout' %}">Log Out</a> <br>
+
 
 
 <div class="container">
@@ -118,7 +119,7 @@
                       <a href="{% url 'daily_accomplishment_create' date=bin_date %}">
                         <button class="button1 {% if is_rest_day %} red-button{% endif %}"></button>
                       </a>
-                      <a href="{% url 'calendar_detail' date=bin_date %}">
+                      <a class="button2" href="{% url 'calendar_detail' date=bin_date %}">
                         <button class="button2">{{ bin_date|date:"M d" }}</button>
                       </a>
                     </li>

@@ -312,6 +312,8 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "Daily accomplishment report submitted.")
 
+                return redirect('test_messages')
+
     else:
         form = DailyAccomplishmentForm(initial={'date': date})
 

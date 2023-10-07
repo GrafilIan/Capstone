@@ -1,101 +1,30 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+{% block title %} Set Up Panel | Bulan Campus {% endblock %}
+
+{% block head %}
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard Panel | Bulan Campus</title>
     <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
-    <!-------Boxicons CDN link----->
+    <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
-</head>
-<!-------------------------------------SIDE BAR CODE /-------------------------------------------->
+
+<style>
+    body {
+        background-color: white !important; /* Set the background color for this page */
+    }
+</style>
+
+{% endblock %}
+
+
 {% block content %}
-<body>
-    <div class="sidebar">
-        <div class="logo-details">
-            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
-            <span class="logo_name">Sorsogon State University - Bulan Campus</span>
-        </div>
 
-        <ul class="nav-links">
-            <li>
-                <a href="StudentDashboard.html">
-                    <i class='bx bxs-dashboard'></i>
-                    <span class="link_name">Dashboard</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="{% url 'calendar_view' %}">
-                    <i class='bx bx-calendar-event'></i>
-                    <span class="link_name">Calendar</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% url 'calendar_view' %}">Calendar</a></li>
-                </ul>
-            <li>
-                <div class="icon-link">
-                    <a href="#">
-                        <i class='bx bxs-folder-open' ></i>
-                        <span class="link_name">Records</span>
-                    </a>
-                    <i class="bx bxs-chevron-down arrow"></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="#">Records</a></li>
-                    <li><a href="Requirements.html">Internship Requirements</a></li>
-                    <li><a href="Weekly.html">Weekly Reports</a></li>
-                    <li><a href="Narrative.html">Narrative Report</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="StudentEvaluation.html">
-                    <i class='bx bxs-door-open' ></i>
-                    <span class="link_name">Evaluation</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class='bx bxs-log-out' ></i>
-                    <span class="link_name">Log-out</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Log-out</a></li>
-                </ul>
-            </li>
-            <li>
-        <div class="profile-details">
-            <div class="profile-content">
-                <a href="#"><img src="{% static 'images/PicsArt_08-23-11.10.20.jpg' %}" alt="profile"></a>
-            </div>
-            <div class="name-job">
-                <div class="profile_name">Dela Cruz Juanna</div>
-                <div class="job">Full-Stack Web Developer</div>
-                <div class="company">Doofinshmirtz Incorporated</div>
-            </div>
-
-            <i class= ></i>
-            </a>
-        </div>
-            </li>
-        </ul>
-    </div>
-
-        <section class="home-section">
-        <div class="home-content">
-            <i class='bx bx-menu'></i>
-            <span class="text">Calendar Reports</span>
-        </div>
-        </section>
-<!-------------------------------------SIDE BAR CODE END /-------------------------------------------->
 <div class="eme">
     <a href="#"><img src="{% static 'images/SorSU-Logo.png' %}" alt="profile"></a>
 </div>
@@ -110,10 +39,6 @@
 
 <div class="ss">
     <a href="#"><img src="{% static 'images/ss.gif' %}" alt="profile"></a>
-</div>
-
-<div class="mari">
-    <a href="#"><img src="{% static 'images/mariii.jpg' %}" alt="profile"></a>
 </div>
 
 
@@ -140,13 +65,19 @@
         </li>
     {% endfor %}
 </ul>
-<p><a href="{% url 'calendar_view' %}">Go to Calendar View</a></p>
+
 {% if request.session.redirect_to_create_calendar %}
   <!-- Display a message indicating that the user needs to set up their calendar -->
   <p>Please set up your calendar.</p>
 {% endif %}
 
+
 </div>
+{% endblock %}
+
+
+
+{% block scripts %}
     <script>
 
         let arrow = document.querySelectorAll(".arrow");
@@ -167,5 +98,3 @@
         </script>
 
 {% endblock %}
-</body>
-</html>

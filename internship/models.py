@@ -121,6 +121,7 @@ class DailyAccomplishment(models.Model):
     date = models.DateField(null=True)
     is_rest_day = models.BooleanField(default=False)
     text_submission = models.TextField()
+    hours_submission = models.TextField(null=True)
     document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
 
 

@@ -262,3 +262,9 @@
     margin-left: 0px;
     color: white;
 }
+
+.successful{
+position: absolute;
+top: 50%;
+left: 50%;
+}
