@@ -1,101 +1,60 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
+{% block title %}Student Calendar Panel | Bulan Campus{% endblock %}
+
+{% block head %}
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Student Calendar Panel | Bulan Campus</title>
+    <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'style/StudentCalendar.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Daily Report</title>
 
-</head>
-<body>
-<!-------------------------------------SIDE BAR CODE /-------------------------------------------->
+    <style>
+  /* Style for rest days */
+  .rest-day {
+    background-color: #FF5733; /* Adjust the background color as needed */
+    color: #FFFFFF; /* Text color for rest days */
+    border-radius: 50%; /* Add a circular background for rest days, adjust as needed */
+  }
 
-    <div class="sidebar">
-        <div class="logo-details">
-            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
-            <span class="logo_name">Sorsogon State University - Bulan Campus</span>
-        </div>
+    .submission-bins ul.bins-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .submission-bins ul.bins-list > li {
+      flex-basis: 100%;
+      margin-bottom: 20px; /* Adjust the margin between weeks as needed */
+    }
+    .week-item {
+      font-weight: bold;
+    }
+    .bins-in-week {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .bins-in-week > li {
+      flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
+      margin-bottom: 10px; /* Adjust the margin between bins as needed */
+    }
 
-        <ul class="nav-links">
-            <li>
-                <a href="StudentDashboard.html">
-                    <i class='bx bxs-dashboard'></i>
-                    <span class="link_name">Dashboard</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="{% url 'calendar_view' %}">
-                    <i class='bx bx-calendar-event'></i>
-                    <span class="link_name">Calendar</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% url 'calendar_view' %}">Calendar</a></li>
-                </ul>
-            <li>
-                <div class="icon-link">
-                    <a href="#">
-                        <i class='bx bxs-folder-open' ></i>
-                        <span class="link_name">Records</span>
-                    </a>
-                    <i class="bx bxs-chevron-down arrow"></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name" href="#">Records</a></li>
-                    <li><a href="Requirements.html">Internship Requirements</a></li>
-                    <li><a href="Weekly.html">Weekly Reports</a></li>
-                    <li><a href="Narrative.html">Narrative Report</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="StudentEvaluation.html">
-                    <i class='bx bxs-door-open' ></i>
-                    <span class="link_name">Evaluation</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
-                </ul>
-            </li>
-           <li>
-                <a href="{% url 'logout' %}">
-                    <i class='bx bxs-log-out'></i>
-                    <span class="link_name">Log-out</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% url 'logout' %}">Log-out</a></li>
-                </ul>
-            </li>
-            <li>
-        <div class="profile-details">
-            <div class="profile-content">
-                <a href="#"><img src="{% static 'images/PicsArt_08-23-11.10.20.jpg' %}" alt="profile"></a>
-            </div>
-            <div class="name-job">
-                <div class="profile_name">Dela Cruz Juanna</div>
-                <div class="job">Full-Stack Web Developer</div>
-                <div class="company">Doofinshmirtz Incorporated</div>
-            </div>
+    /* Style for rest days */
+    .rest-day {
+      background-color: #FF5733; /* Adjust the background color as needed */
+      color: #FFFFFF; /* Text color for rest days */
+    }
+    </style>
 
-            <i class= ></i>
-            </a>
-        </div>
-            </li>
-        </ul>
-    </div>
+{% endblock %}
 
-        <section class="home-section">
-        <div class="home-content">
-            <i class='bx bx-menu'></i>
-            <span class="text">Calendar Reports</span>
-        </div>
-        </section>
-<!-------------------------------------SIDE BAR CODE END /-------------------------------------------->
+{% block content %}
+
 <div class="all">
     <div class="interncalendartxt">
     <h2>Internship Calendar</h2>
@@ -139,6 +98,7 @@
 </div>
 
     <div class="mylinks">
+        <p><strong>User:</strong> {{ interns_calendar.user }}</p>
           <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
           <a href="{% url 'upload_document' %}">Upload Requirements</a> <br>
           <a href="{% url 'document_list' %}">View Documents</a> <br>
@@ -153,15 +113,13 @@
                   <ul class="bins-in-week">
                     {% for bin_date in week.bin_dates %}
                     <li class="bin-item">
-                      <p class="day"> Day {{ forloop.counter }} </p>
                       <br>
-                      <p class="month"> {{ bin_date|date:"F d" }} </p>
                       <!-- Check if it's a rest day, and apply the CSS class accordingly -->
                       <a href="{% url 'daily_accomplishment_create' date=bin_date %}">
-                        <button class="green-button{% if is_rest_day %} red-button{% endif %}"></button>
+                        <button class="button1 {% if is_rest_day %} red-button{% endif %}"></button>
                       </a>
                       <a href="{% url 'calendar_detail' date=bin_date %}">
-                        <button class="calendar-detail-button">0000</button>
+                        <button class="button2">{{ bin_date|date:"M d" }}</button>
                       </a>
                     </li>
                     {% endfor %}
@@ -173,17 +131,15 @@
 
 
 
-  <!-- CSS to ensure 7 bins per row -->
-<style>
-  /* Style for rest days */
-  .rest-day {
-    background-color: #FF5733; /* Adjust the background color as needed */
-    color: #FFFFFF; /* Text color for rest days */
-    border-radius: 50%; /* Add a circular background for rest days, adjust as needed */
-  }
-</style>
+{% endblock %}
 
-<script>
+
+
+
+
+{% block scripts %}
+
+    <script>
   document.addEventListener("DOMContentLoaded", function() {
     // Get all day elements in the calendar
     const dayElements = document.querySelectorAll(".day");
@@ -206,43 +162,7 @@
       }
     });
   });
-</script>
-
-  <style>
-    .submission-bins ul.bins-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-    .submission-bins ul.bins-list > li {
-      flex-basis: 100%;
-      margin-bottom: 20px; /* Adjust the margin between weeks as needed */
-    }
-    .week-item {
-      font-weight: bold;
-    }
-    .bins-in-week {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-    .bins-in-week > li {
-      flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
-      margin-bottom: 10px; /* Adjust the margin between bins as needed */
-    }
-
-    /* Style for rest days */
-    .rest-day {
-      background-color: #FF5733; /* Adjust the background color as needed */
-      color: #FFFFFF; /* Text color for rest days */
-    }
-  </style>
-
-
-
-
-</body>
-</html>
+  </script>
 
   <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -283,3 +203,5 @@
 </script>
 
     <script src="{% static 'script/StudentCalendar.js' %}"></script>
+
+{% endblock %}

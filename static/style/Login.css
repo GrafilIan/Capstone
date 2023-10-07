@@ -55,7 +55,7 @@ body{
         top: 170px;
         height: 50px;
         width: 400px;
-        left: 220px;
+        left: 190px;
         border: none;
         outline: none;
         border-radius: 20px;
@@ -66,7 +66,7 @@ body{
     i{
         position: relative;
         top: 137px;
-        left: 240px;
+        left: 210px;
         width: 20px;
         color: #8a4848;
     }
@@ -127,8 +127,8 @@ body{
         line-height: 0px;
         font-size: 25px;
         color: #FFFFFF;
-        top: 180px;
-        left: 370px;
+        top: 155px;
+        left: 380px;
     }
 
     .text-two{
@@ -140,7 +140,7 @@ body{
         line-height: 0px;
         font-size: 30px;
         color: #FFFFFF;
-        top: 210px;
+        top: 185px;
         left: 415px;
     }
     .sign-up button{
@@ -150,7 +150,7 @@ body{
         font-size: 15px;
         height: 45px;
         top: 126px;
-        left: 400px;
+        left: 370px;
         outline: none;
         width: 100px;
         background: rgba(30, 164, 17, 0.847);

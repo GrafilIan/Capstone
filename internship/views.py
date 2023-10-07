@@ -17,7 +17,11 @@ from datetime import date
 from .forms import DailyAccomplishmentForm, TimeRecordForm
 from django.utils import timezone
 import pytz
+
+from django import template
 ###-----------------------------------Login-------------------------------------###
+
+
 
 def InternRegister(request):
     if request.method == 'POST':
@@ -200,11 +204,9 @@ def delete_all_recommendation(request):
 
 @login_required
 def record_history(request):
-    # Handle the record history logic here
-    # You can add a success message if needed
     messages.success(request, 'Recorded history successfully.')
 
-    # Redirect to the page where you can view the saved history
+
     return redirect('view_time_records')
 
 
@@ -276,35 +278,33 @@ def interns_calendar_create(request):
 
     return render(request, 'internship_calendar/interns_calendar_create.html', {'form': form})
 
+
 @login_required
 def daily_accomplishment_create(request, date=None):
-
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
 
-    # Retrieve all DailyAccomplishments for the given date
-    accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar, date=date)
+    # Retrieve all DailyAccomplishments for the given date (if date is provided)
+    accomplishments = []
+    if date:
+        accomplishments = DailyAccomplishment.objects.filter(interns_calendar=interns_calendar, date=date)
 
     if request.method == 'POST':
-        form = DailyAccomplishmentForm(request.POST, request.FILES, instance=None)
+        form = DailyAccomplishmentForm(request.POST, request.FILES)
 
-        if 'text_submission' in form.data:
-            form.fields['text_submission'].required = False
-        if 'document_submission' in form.data:
-            form.fields['document_submission'].required = False
-
-        if form.is_valid():
-            # Check if the "Rest Day" button is clicked
-            if 'rest_day' in request.POST:
-                daily_accomplishment = DailyAccomplishment(
-                    interns_calendar=interns_calendar,
-                    date=date,
-                    submitted_by=user,
-                    is_rest_day=True  # Set the rest day flag
-                )
-                daily_accomplishment.save()
-                messages.success(request, "This day is marked as a rest day.")
-            else:
+        if 'rest_day' in request.POST:
+            # Handle marking the day as a rest day
+            daily_accomplishment = DailyAccomplishment(
+                interns_calendar=interns_calendar,
+                date=date,
+                submitted_by=user,
+                is_rest_day=True
+            )
+            daily_accomplishment.save()
+            messages.success(request, "This day is marked as a rest day.")
+        else:
+            # Handle regular daily accomplishment submission
+            if form.is_valid():
                 daily_accomplishment = form.save(commit=False)
                 daily_accomplishment.interns_calendar = interns_calendar
                 daily_accomplishment.date = date
@@ -313,8 +313,7 @@ def daily_accomplishment_create(request, date=None):
                 messages.success(request, "Daily accomplishment report submitted.")
 
     else:
-        initial_data = {'date': date}
-        form = DailyAccomplishmentForm(initial=initial_data)
+        form = DailyAccomplishmentForm(initial={'date': date})
 
     return render(request, 'internship_calendar/daily_accomplishment_create.html', {
         'form': form,
@@ -399,36 +398,55 @@ def calendar_view(request):
     return render(request, 'internship_calendar/calendar_view.html', context)
 
 
+def calendar_detail(request, date=None):
+    user = request.user  # Assuming user is authenticated
 
-def calendar_detail(request, interns_calendar_id):
-    interns_calendar = get_object_or_404(InternsCalendar, pk=interns_calendar_id)
-    time_records = TimeRecord.objects.filter(interns_calendar=interns_calendar)
+    if date is None:
+        # If date is not specified, use the current date as the default
+        date = date.today()
+
+    interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
+    # Filter TimeRecord objects for the given date and interns_calendar
+    time_records = TimeRecord.objects.filter(interns_calendar=interns_calendar, date=date)
 
     context = {
         'interns_calendar': interns_calendar,
         'time_records': time_records,
+        'date': date,  # Pass the date to the template context
     }
     return render(request, 'internship_calendar/calendar_detail.html', context)
 
-def time_in(request, interns_calendar_id):
+
+def time_in(request, date=None):
+    # Retrieve the InternsCalendar associated with the user
+    user = request.user  # Assuming user is authenticated
+    interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
     # Create a TimeRecord entry for Time In
     TimeRecord.objects.create(
-        interns_calendar_id=interns_calendar_id,
-        intern_user=request.user,
+        interns_calendar=interns_calendar,  # Associate with the retrieved calendar
+        intern_user=user,
         is_time_in=True,
-        action='Time In'
+        action='Time In',
+        date=date  # Pass the date parameter
     )
-    return redirect('calendar_detail', interns_calendar_id=interns_calendar_id)
+    return redirect('calendar_detail', date=date)
 
-def time_out(request, interns_calendar_id):
+def time_out(request, date=None):
+
+    user = request.user  # Assuming user is authenticated
+    interns_calendar = InternsCalendar.objects.filter(user=user).last()
+
     # Create a TimeRecord entry for Time Out
     TimeRecord.objects.create(
-        interns_calendar_id=interns_calendar_id,
-        intern_user=request.user,
+        interns_calendar=interns_calendar,  # Associate with the retrieved calendar
+        intern_user=user,
         is_time_in=False,
-        action='Time Out'
+        action='Time Out',
+        date=date  # Pass the date parameter
     )
-    return redirect('calendar_detail', interns_calendar_id=interns_calendar_id)
+    return redirect('calendar_detail', date=date)
 
 
 

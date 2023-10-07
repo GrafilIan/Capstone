@@ -102,15 +102,24 @@
 <!-----------------------------------------------Side Bar /end----------------------------------------------------->
 
 <div class="DailyAccomplishement">
+<div class="DailyAccomplishment">
   <h2>Create Daily Accomplishment Report</h2> <br>
 
-<form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data">
+  {% if date %}
+    <p>Date: {{ date }}</p>
+  {% endif %}
+
+  <form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    {% if date %}
+      <input type="hidden" name="date" value="{{ date }}">
+    {% endif %}
     <textarea name="text_submission" placeholder="Text Submission"></textarea>
     <input type="file" name="document_submission">
     <button type="submit" class="submit-button">Submit</button>
     <button type="submit" class="rest-day-button" name="rest_day" value="true">Rest Day</button>
-</form>
+  </form>
+
   {% if accomplishments %}
     <!-- Display existing accomplishments if they exist -->
     <h3>Existing Accomplishments:</h3>
@@ -123,7 +132,8 @@
       {% endfor %}
     </ul>
   {% endif %}
-    <a href="{% url 'test_messages' %}">Test Messages</a><br>
+  <a href="{% url 'test_messages' %}">Test Messages</a><br>
+</div>
 
 </div>
 
