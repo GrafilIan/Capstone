@@ -17,8 +17,8 @@ from datetime import date
 from .forms import DailyAccomplishmentForm, TimeRecordForm
 from django.utils import timezone
 import pytz
-
-from django import template
+from django.http import JsonResponse
+from django.contrib import messages
 ###-----------------------------------Login-------------------------------------###
 
 
@@ -248,7 +248,7 @@ def test_messages(request):
     return render(request, 'internship_calendar/test_messages.html')
 
 ###------------------------------------Calendar Report Page-----------------------------------------###
-
+@login_required
 def interns_calendar_create(request):
     class InternsCalendarForm(forms.ModelForm):
         class Meta:
@@ -302,6 +302,8 @@ def daily_accomplishment_create(request, date=None):
             )
             daily_accomplishment.save()
             messages.success(request, "This day is marked as a rest day.")
+            return JsonResponse({'success': True})
+
         else:
             # Handle regular daily accomplishment submission
             if form.is_valid():
@@ -312,7 +314,17 @@ def daily_accomplishment_create(request, date=None):
                 daily_accomplishment.save()
                 messages.success(request, "Daily accomplishment report submitted.")
 
-                return redirect('test_messages')
+                accomplishment_data = {
+                    'text_submission': daily_accomplishment.text_submission,
+                    'hours_submission': daily_accomplishment.hours_submission,
+                    'document_submission_url': daily_accomplishment.document_submission.url if daily_accomplishment.document_submission else None,
+                }
+
+                return JsonResponse({'success': True, 'accomplishment': accomplishment_data})
+
+            else:
+                # Handle form validation errors here
+                return JsonResponse({'success': False})
 
     else:
         form = DailyAccomplishmentForm(initial={'date': date})
@@ -324,7 +336,7 @@ def daily_accomplishment_create(request, date=None):
         'bin_date': date,
     })
 
-
+@login_required
 def calendar_view(request):
     user = request.user  # Assuming user is authenticated
     interns_calendar = InternsCalendar.objects.filter(user=user).last()
@@ -399,7 +411,7 @@ def calendar_view(request):
 
     return render(request, 'internship_calendar/calendar_view.html', context)
 
-
+@login_required
 def calendar_detail(request, date=None):
     user = request.user  # Assuming user is authenticated
 

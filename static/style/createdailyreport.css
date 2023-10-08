@@ -2,10 +2,11 @@
 .DailyAccomplishement{
     position: absolute;
     top: 100px;
-    left: 500px;
+    left: 350px;
     height: 500px;
-    width: 500px;
-    background-color: green;
+    width: 800px;
+    background-color: pink;
+
 }
 
 
@@ -27,7 +28,7 @@
 }
 
 /* Style for the textarea */
-textarea {
+.textarea {
   width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
@@ -51,16 +52,18 @@ textarea::placeholder {
 }
 
 /* Optional: Add a maximum height and scroll if content overflows */
-textarea {
-  max-height: 300px; /* Adjust this value as needed */
-  overflow-y: auto;
+.textsub {
+  max-height: 500px; /* Adjust this value as needed */
+  max-width: 500px;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: white;
 }
 
 /* Optional: Add a border highlight on hover */
 textarea:hover {
   border-color: #66afe9;
 }
-
 
 
 

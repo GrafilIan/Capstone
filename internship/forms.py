@@ -44,7 +44,7 @@ class InternsCalendarForm(forms.ModelForm):
 class DailyAccomplishmentForm(forms.ModelForm):
     class Meta:
         model = DailyAccomplishment
-        fields = ['date', 'text_submission', 'document_submission']
+        fields = ['date', 'text_submission', 'document_submission', 'hours_submission']
 
     def __init__(self, *args, **kwargs):
         super(DailyAccomplishmentForm, self).__init__(*args, **kwargs)

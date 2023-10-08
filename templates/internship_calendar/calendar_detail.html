@@ -1,43 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
 {% load tz %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
+{% block title %}Interns Calendar Detail{% endblock %}
+
+{% block head %}
     <meta charset="UTF-8">
-    <title>Interns Calendar Detail</title>
-</head>
-<body>
-    <h1>Interns Calendar Detail</h1>
+    <title>Interns Calendar Detail | Bulan Campus</title>
+    <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'style/time_track.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
 
-    <p><strong>User:</strong> {{ interns_calendar.user }}</p>
-    <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
-    <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
+{% endblock %}
 
-    <form method="post" action="{% url 'time_in' date=date %}">
-        {% csrf_token %}
-        <button type="submit">Time In</button>
-    </form>
+{% block content %}
 
-    <form method="post" action="{% url 'time_out' date=date %}">
-        {% csrf_token %}
-        <button type="submit">Time Out</button>
-    </form>
+    <div class="juswa">
+        <h1>Interns Calendar Detail</h1>
 
-    <h2>Time Records</h2>
-    <ul>
-        {% for time_record in time_records %}
+        <p><strong>User:</strong> {{ interns_calendar.user }}</p>
+            <div class="month">
+            <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
+            <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
+            </div>
 
+        <div class="pindutan">
+        <form method="post" action="{% url 'time_in' date=date %}">
+            {% csrf_token %}
+            <button type="submit">Time In</button>
+        </form>
+
+        <form method="post" action="{% url 'time_out' date=date %}">
+            {% csrf_token %}
+            <button type="submit">Time Out</button>
+        </form>
+            </div>
+
+        <div class="time">
+
+        <ul>
+            {% for time_record in time_records %}
                 <li>{{ time_record.timestamp }} - {{ time_record.action }}</li>
+            {% endfor %}
+        </ul>
 
-        {% endfor %}
-    </ul>
-
-    <form method="post" action="{% url 'download_history' %}">
-        {% csrf_token %}
-        <button type="submit" name="download_history" value="true">Download History</button>
-    </form>
+            </div>
 
 
+        <div class="past">
+        <form method="post" action="{% url 'download_history' %}">
+            {% csrf_token %}
+            <button type="submit" name="download_history" value="true">Download History</button>
+        </form>
+        </div>
 
-<a href="{% url 'calendar_view' %}">Back to Calendar</a>
-</body>
-</html>
+    <a href="[Calendar View URL]">Back to Calendar</a>
+
+
+    <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+    </div>
+
+{% endblock %}

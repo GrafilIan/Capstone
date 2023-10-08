@@ -60,43 +60,47 @@
     <div class="interncalendartxt">
     <h2 style="bold-text">Internship Calendar</h2>
         </div>
-            <div class="startend">
+            <div class="startM">
                 <p>Start Month: {{ interns_calendar.start_month|date:"F d, Y" }}</p>
+            </div>
+
+            <div class="endM">
                 <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
             </div>
 
 
 
-<div class="container">
-  <div class="calendar">
-    <div class="header1">
-      <div class="month"></div>
-      <div class="btns">
-        <div class="btn today-btn">
-          <i class="bx bx-calendar-day"></i>
-        </div>
-        <div class="btn prev-btn">
-          <i class="bx bx-chevron-left"></i>
-        </div>
-        <div class="btn next-btn">
-          <i class="bx bx-chevron-right"></i>
-        </div>
-      </div>
-    </div>
-    <div class="weekdays">
-      <div class="day">Sun</div>
-      <div class="day">Mon</div>
-      <div class="day">Tue</div>
-      <div class="day">Wed</div>
-      <div class="day">Thu</div>
-      <div class="day">Fri</div>
-      <div class="day">Sat</div>
-    </div>
-    <div class="days">
-
-    </div>
-  </div>
 </div>
+    <div class="container">
+      <div class="calendar">
+        <div class="header1">
+          <div class="month"></div>
+          <div class="btns">
+            <div class="btn today-btn">
+              <i class="bx bx-calendar-day"></i>
+            </div>
+            <div class="btn prev-btn">
+              <i class="bx bx-chevron-left"></i>
+            </div>
+            <div class="btn next-btn">
+              <i class="bx bx-chevron-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="weekdays">
+          <div class="day">Sun</div>
+          <div class="day">Mon</div>
+          <div class="day">Tue</div>
+          <div class="day">Wed</div>
+          <div class="day">Thu</div>
+          <div class="day">Fri</div>
+          <div class="day">Sat</div>
+        </div>
+        <div class="days">
+
+        </div>
+
+      </div>
 
     <div class="mylinks">
         <p><strong>User:</strong> {{ interns_calendar.user }}</p>

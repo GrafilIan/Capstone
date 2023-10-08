@@ -9,130 +9,123 @@
     <title>Student Calendar Panel | Bulan Campus</title>
     <link rel="stylesheet" href="{% static 'style/sidebar.css' %}">
     <link rel="stylesheet" href="{% static 'style/createdailyreport.css' %}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
 {% endblock %}
 
 {% block content %}
-
 <div class="DailyAccomplishement">
-<div class="DailyAccomplishment">
-  <h2>Create Daily Accomplishment Report</h2><br>
+    <div class="DailyAccomplishment">
+        <h2>Daily Accomplishment Report</h2><br>
+        <div>
+          {% if date %}
+            <p>Date: {{ date }}</p>
+          {% endif %}
+        </div>
 
-  {% if date %}
-    <p>Date: {{ date }}</p>
-  {% endif %}
+        <form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data" action="{% url 'daily_accomplishment_create' date=date %}">
+            {% csrf_token %}
+            {% if date %}
+              <input type="hidden" name="date" value="{{ date }}">
+            {% endif %}
 
-  <form id="DailyAccomplishmentForm" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {% if date %}
-      <input type="hidden" name="date" value="{{ date }}">
-    {% endif %}
-    <label for="text_submission">Text Submission:</label>
-    <textarea id="text_submission" name="text_submission" placeholder="Text Submission" required></textarea><br>
+            <label for="text_submission">Accomplishment Report:</label>
+            <textarea class="textsub" id="text_submission" name="text_submission" placeholder="Write Daily Accomplishment" required></textarea><br>
 
-    <label for="document_submission">Document Submission:</label>
-    <input type="file" id="document_submission" name="document_submission"><br>
+            <label for="hours_submission">No. of Hours:</label>
+            <textarea class="textarea" id="hours_submission" name="hours_submission" placeholder="Hours Submission" required></textarea><br>
 
-    <button type="submit" class="submit-button">Submit</button>
-    <button type="submit" class="rest-day-button" name="rest_day" value="true">Rest Day</button>
-  </form>
+            <label for="document_submission">Document Submission:</label>
+            <input type="file" id="document_submission" name="document_submission"><br>
 
-  {% if accomplishments %}
-    <!-- Display existing accomplishments if they exist -->
-    <h3>Existing Accomplishments:</h3>
-    <ul>
-      {% for accomplishment in accomplishments %}
-        <li>{{ accomplishment.text_submission }}</li>
-        {% if accomplishment.document_submission %}
-          <li><a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a></li>
+            <button type="button" class="submit-button" id="submit-button">Submit</button>
+            <button type="button" class="rest-day-button" id="rest-day-button" name="rest_day" value="true">Rest Day</button>
+        </form>
+        <h3>Existing Accomplishments:</h3>
+        {% if accomplishments %}
+            <!-- Display existing accomplishments if they exist -->
+
+            <ul id="accomplishments-list">
+              {% for accomplishment in accomplishments %}
+                <li>{{ accomplishment.text_submission }}</li>
+                <li>{{ accomplishment.hours_submission }}</li>
+                {% if accomplishment.document_submission %}
+                  <li><a href="{{ accomplishment.document_submission.url|safe }}" target="_blank">Download File</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
         {% endif %}
-      {% endfor %}
-    </ul>
-  {% endif %}
-
+    </div>
 </div>
 
 
+<br><br>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Submitted Successfully!
+      </div>
+      <div class="modal-footer">
+
+      </div>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
 </div>
-
-<!-----------------------------Time In Out-------------------------------------->
-
-    <form method="post" action="{% url 'download_history' %}">
-        {% csrf_token %}
-        <button type="submit" name="download_history" value="true">Download History</button>
-    </form>
-
-
-    <br><br>
 
 {% endblock %}
 
 {% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Get all day elements in the calendar
-    const dayElements = document.querySelectorAll(".day");
+<script>
+$(document).ready(function() {
+  // Add an event listener to the submit button
+  $("#submit-button").click(function(e) {
+    e.preventDefault(); // Prevent the default form submission behavior
 
-    // Loop through each day element
-    dayElements.forEach(dayElement => {
-      // Extract the date from the day element's ID
-      const date = dayElement.id.replace("day-", "");
+    const submitUrl = $("#DailyAccomplishmentForm").attr("action");
 
-      // Check if the date is marked as a rest day (you need to implement this logic)
-      // For demonstration purposes, let's assume rest days are marked in a JavaScript object
-      const restDays = {
-        "2023-10-05": true, // Example rest day, format: "YYYY-MM-DD"
-        // Add more rest days as needed
-      };
+    $.ajax({
+      type: "POST",
+      url: submitUrl,
+      data: new FormData($("#DailyAccomplishmentForm")[0]),
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        if (response.success) {
+          // Reset the form
+          $('#DailyAccomplishmentForm')[0].reset();
 
-      // Apply CSS class based on whether it's a rest day
-      if (date in restDays) {
-        dayElement.classList.add("rest-day");
+          // Close the modal
+          $('#exampleModal').modal('hide');
+
+          // Reload the page when the modal is closed
+          location.reload();
+
+          // You can also display a success message if needed
+          alert('Submitted Successfully!');
+        } else {
+          // Handle errors here if the submission was not successful
+          alert('Submission failed. Please try again.');
+        }
       }
     });
   });
-  </script>
 
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const restDayButton = document.querySelector('button[name="rest_day"]');
-    const addButton = document.getElementById('add-button');
-
-    restDayButton.addEventListener("click", function() {
-      addButton.classList.add("red-button"); // Add a CSS class to change the button color to red
-    });
+  // Add an event listener for the rest day button
+  $("#rest-day-button").click(function() {
+    // Modify the logic as needed
+    alert('Rest day button clicked');
   });
-  </script>
-
-
-
-<script>
-    let arrow = document.querySelectorAll(".arrow");
-    for (var i = 0; i < arrow.length; i++) {
-        arrow[i].addEventListener("click", (e) => {
-            let arrowParent = e.target.parentElement.parentElement;
-            arrowParent.classList.toggle("showMenu");
-        });
-    }
-
-    let sidebar = document.querySelector(".sidebar");
-    let sidebarBtn = document.querySelector(".bx-menu");
-
-    sidebarBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-    });
-
-    // Add event listener to the document to close sidebar when clicking outside of it
-    document.addEventListener("click", (e) => {
-        if (!sidebar.contains(e.target) && !sidebarBtn.contains(e.target)) {
-            // Clicked outside of both the sidebar and sidebar button
-            sidebar.classList.add("close");
-        }
-    });
+});
 </script>
 
-    <script src="{% static 'script/StudentCalendar.js' %}"></script>
+<script src="{% static 'script/StudentCalendar.js' %}" defer></script>
 {% endblock %}
