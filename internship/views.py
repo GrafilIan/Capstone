@@ -462,9 +462,6 @@ def time_out(request, date=None):
     )
     return redirect('calendar_detail', date=date)
 
-
-
-
 def download_history(request):
     # Retrieve and order time records
     time_records = TimeRecord.objects.filter(intern_user=request.user).order_by('-timestamp')
@@ -501,6 +498,7 @@ def document_list(request):
     documents = Document.objects.filter(user=request.user)
     return render(request, 'documents/document_list.html', {'documents': documents})
 
+###---------------------------------Documents/end----------------------------------###
 def my_view(request):
     return render(request, 'internship_calendar/StudentCalendar.html')
 

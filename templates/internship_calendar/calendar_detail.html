@@ -16,16 +16,20 @@
 
 {% endblock %}
 
+
 {% block content %}
 
     <div class="juswa">
         <h1>Interns Calendar Detail</h1>
+    <div class="line-break"></div>
 
         <p><strong>User:</strong> {{ interns_calendar.user }}</p>
-            <div class="month">
-            <p><strong>Start Month:</strong> {{ interns_calendar.start_month }}</p>
-            <p><strong>End Month:</strong> {{ interns_calendar.end_month }}</p>
-            </div>
+
+        <div class="datee">
+          {% if date %}
+            <p><strong>Date:</strong>  {{ date }}</p>
+          {% endif %}
+        </div>
 
         <div class="pindutan">
         <form method="post" action="{% url 'time_in' date=date %}">
@@ -49,18 +53,8 @@
 
             </div>
 
-
-        <div class="past">
-        <form method="post" action="{% url 'download_history' %}">
-            {% csrf_token %}
-            <button type="submit" name="download_history" value="true">Download History</button>
-        </form>
-        </div>
-
-    <a href="[Calendar View URL]">Back to Calendar</a>
-
-
-    <a href="{% url 'calendar_view' %}">Back to Calendar</a>
+    <a href="{% url 'calendar_view' %}" class="back">Back to Calendar</a>
+        <div class="line-break2"></div>
     </div>
 
 {% endblock %}

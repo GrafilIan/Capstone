@@ -53,11 +53,35 @@ textarea::placeholder {
 
 /* Optional: Add a maximum height and scroll if content overflows */
 .textsub {
-  max-height: 500px; /* Adjust this value as needed */
-  max-width: 500px;
-  padding: 12px;
+  width: 100%; /* Adjust the width as needed */
+  height: 150px; /* Adjust the height as needed */
+  padding: 10px; /* Adjust the padding as needed */
+  font-family: Arial, sans-serif; /* Choose your desired font */
+  font-size: 16px; /* Choose your desired font size */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add rounded corners */
+  resize: vertical; /* Allow vertical resizing (remove if not needed) */
+}
+
+.textsub:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle box shadow on focus */
+}
+
+.AR {
+  display: flex;
+
+  margin-left: 250px;
+  align-items: center;
+  justify-content: center;
+  height: 100%; /* Ensure the label takes up the full height for vertical alignment */
+  background: white;
+  margin-bottom: 10px;
+  width: 300px;
   border-radius: 4px;
-  background-color: white;
+
+
 }
 
 /* Optional: Add a border highlight on hover */
@@ -65,5 +89,29 @@ textarea:hover {
   border-color: #66afe9;
 }
 
+.textsubsub {
+    position: absolute;
+    top: 400px;
+    left: 200px;
+    background-color: blue;
+}
 
+#accomplishments-list {
+  list-style: none;
+  padding: 0;
+}
+
+.accomplishment-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Add spacing between items if desired */
+}
+
+.text-submission {
+  flex: 1; /* Makes the text submission div take up the available space */
+}
+
+.hours-submission {
+  margin-left: 10px; /* Add spacing between text and hours submission if desired */
+}
 

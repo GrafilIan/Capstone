@@ -28,18 +28,22 @@
       flex-wrap: wrap;
       justify-content: space-between;
     }
+
     .submission-bins ul.bins-list > li {
       flex-basis: 100%;
       margin-bottom: 20px; /* Adjust the margin between weeks as needed */
     }
+
     .week-item {
       font-weight: bold;
     }
+
     .bins-in-week {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
     }
+
     .bins-in-week > li {
       flex-basis: calc(14.28% - 10px); /* Adjust this width as needed */
       margin-bottom: 10px; /* Adjust the margin between bins as needed */
@@ -53,6 +57,7 @@
     </style>
 
 {% endblock %}
+
 
 {% block content %}
 
@@ -68,10 +73,8 @@
                 <p>End Month: {{ interns_calendar.end_month|date:"F d, Y" }}</p>
             </div>
 
-
-
 </div>
-    <div class="container">
+
       <div class="calendar">
         <div class="header1">
           <div class="month"></div>
@@ -103,12 +106,12 @@
       </div>
 
     <div class="mylinks">
-        <p><strong>User:</strong> {{ interns_calendar.user }}</p>
+          <p><strong>User:</strong> {{ interns_calendar.user }}</p>
           <a href="{% url 'interns_calendar_create' %}">Set Up Calendar</a> <br>
           <a href="{% url 'upload_document' %}">Upload Requirements</a> <br>
           <a href="{% url 'document_list' %}">View Documents</a> <br>
     </div>
-</div>
+
 
             <div class="submission-bins">
               <ul class="bins-list">

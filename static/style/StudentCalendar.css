@@ -1,12 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 /*----------------------------------------------CALENDAR-----------------------------------------------------*/
-.container {
 
-    position: relative;
-    top: 140px;
-    left: 800px;
-
-}
 
   .calendar {
     display: fixed;
@@ -15,9 +9,10 @@
     padding: 30px 20px;
     border-radius: 10px;
     background-color: rgba(68, 68, 68, 1);
-
-
+    margin-left: 800px;
+    margin-top: 126px;
   }
+
   .calendar .header1 {
     display: flex;
     justify-content: space-between;
@@ -27,6 +22,7 @@
     color: white;
     border-bottom: 2px solid #000000;
   }
+
   .calendar .header1 .month {
     display: flex;
     align-items: center;
@@ -34,12 +30,14 @@
     font-weight: 600;
     padding-top: 20px;
   }
+
   .calendar .header1 .btns {
     display: flex;
     gap: 15px;
     position: relative;
     top: -20px;
   }
+
   .calendar .header1 .btns .btn {
     width: 50px;
     height: 40px;
@@ -53,10 +51,12 @@
     cursor: pointer;
     transition: all 0.3s;
   }
+
   .calendar .header1 .btns .btn:hover {
     background-color: #791e30;
     transform: scale(0.5);
   }
+
   .weekdays {
     display: flex;
     gap: 7px;
@@ -64,6 +64,7 @@
     margin-left: 20px;
 
   }
+
   .weekdays .day {
     width: calc(100% / 7 - 10px);
     text-align: center;
@@ -109,12 +110,14 @@
   }
 
 /*----------------------------------------------CALENDAR /end-----------------------------------------------------*/
+
 .bodywhite{
-    background-color: white;
-    }
+            background-color: white;
+        }
+
 
 .body {
-            background-color: #f2f3f7; /* Set the background color here */
+            background-color: #e8e8e8; /* Set the background color here */
         }
 
 
@@ -266,7 +269,7 @@ h2{
     position: relative;
     max-width: 220px;
     top: 168px;
-    left: 115px;
+    left: 215px;
     font-size: 14px;
     font-weight: bold;
     z-index: 25;
@@ -276,8 +279,8 @@ h2{
     display: flex;
     position: relative;
     max-width: 220px;
-    top: 130px;
-    left: 500px;
+    top: 132px;
+    left: 535px;
     font-size: 14px;
     font-weight: bold;
     z-index: 25;
@@ -288,7 +291,7 @@ h2{
 .submission-bins {
     position: absolute;
     top: 200px;
-    left: 100px;
+    left: 165px;
     background-color: #444444;
     border-radius: 5px 5px 5px 5px;
     padding: 0px;
@@ -426,11 +429,11 @@ ul {
 
 .mylinks {
     position: absolute;
-    top: 550px;
-    left: 200px;
+    top: 650px;
+    left: 800px;
+
+    z-index: 2;
 }
-
-
 
         text {
             width: 100%;

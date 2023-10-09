@@ -268,3 +268,7 @@ position: absolute;
 top: 50%;
 left: 50%;
 }
+
+.body{
+            background-color: #e8e8e8; /* Set the background color here */
+        }

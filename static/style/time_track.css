@@ -1,80 +1,140 @@
+ .body {
+            background-color: #f2f3f7; /* Set the background color here */
+        }
+
  .juswa{
             position: absolute;
-            background: #3a3535;
+            top: 110px;
+            margin-left: 500px;
+            background: #e8e8e8;
             padding: 30px;
-            border: none;
-            border-radius: 20px;
             width: 400px;
-            height: calc(100% - 100px);
-            margin-left: 600px;
-            top: 80px;
-            box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, .5);
         }
 
         h1{
             padding: 5px;
             font-size: 30px;
             text-align: center;
-            color: white;
+            color: black;
+            font-weight: bolder;
+
         }
+.datee{
+            color: black;
+            display: flex;
+            margin-top: -15px;
+            justify-content: space-between;
+            font-size: 13px;}
+            margin-bottom: 10px;
+            }
 
         p{
             display: grid;
-            color: white;
+            color: black;
+            font-size: 13px;
         }
 
         .month{
-        color: white;
+            color: black;
             display: flex;
             margin-top: -20px;
             justify-content: space-between;
+            font-size: 13px;
         }
 
         .pindutan{
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: -8px;
             padding: 20px;
-            background-color: maroon;
+            background-color: #8f0000;
             border: none;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            font-size: 13px;
 
         }
 
         .pindutan button{
-            background: green;
+            margin-left: 20px;
+            margin-right: 20px;
+            background: #ffc400;
             border: black;
-            box-shadow: 0px 4px 0px rgba(0, 0, 0, 0.2);
-            border-radius: 100px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
             padding: 5px;
             width: 100px;
-            color: white;
+            color: black;
         }
 
         .pindutan button:hover{
-            background: #2b2b2b;
-            color: black;
+            background: #cb9c00;
+            color: white;
+            transition: background-color 0.3s ease;
         }
 
         .time li{
             border: none;
-            background: maroon;
+            background: #8f0000;
             list-style: none;
-            padding: 5px;
+            padding-left: 20px;
+            padding-bottom: 5px;
             margin-left: -32px;
             color: white;
+            font-size: 13px;
         }
 
         .past button{
-            background-color: lightblue;
+            background-color: #109700;
             border: none;
             border-radius: 100px;
             padding: 10px;
             font-size: 12px;
+            color: white;
         }
 
         .past button:hover{
             background-color: #00FFFF;
             color: black;
         }
+
+ .line-break::before {
+              content: "";
+              display: block;
+              margin-top: -10px;
+              margin-bottom: 10px; /* Adjust the margin-top to control the spacing between elements */
+              border-top: 1px solid #9d9d9d; /* Adjust the color and thickness as needed */
+
+            }
+
+ .line-break2::before {
+              content: "";
+              display: block;
+              margin-top: 10px;
+              margin-bottom: -7px; /* Adjust the margin-top to control the spacing between elements */
+              border-top: 1px solid #9d9d9d; /* Adjust the color and thickness as needed */
+
+            }
+
+ .back {
+      display: inline-block;
+      padding: 10px 20px; /* Adjust padding as needed */
+      margin-left: 90px;
+      background-color: #a00000; /* Change the background color */
+      color: #fff; /* Text color */
+      text-decoration: none; /* Remove underline */
+      border: none; /* Remove border */
+      border-radius: 5px; /* Add rounded corners */
+      cursor: pointer;
+      transition: background-color 0.3s ease; /* Add a smooth transition effect */
+      font-size: 13px;
+      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.5);
+
+}
+
+.back:hover {
+      background-color: #640000; /* Change color on hover */
+}
+

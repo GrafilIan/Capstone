@@ -1,4 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+  {% block title %}Django{% endblock %}
+  <link rel="stylesheet" href="{% static 'style/Requirements.css' %}">
+
+{% endblock %}
 
 {% block content %}
 <h2>Uploaded Documents</h2>
@@ -39,8 +46,10 @@
 </ul>
 
 <a href="{% url 'upload_document' %}">Upload a New Document</a> <br>
-<a href="{% url 'home' %}">Home</a>
 
+{% endblock %}
+
+{% block scripts %}
 <script>
 document.getElementById('requirement-filter').addEventListener('change', function() {
   var selectedRequirement = this.value;
