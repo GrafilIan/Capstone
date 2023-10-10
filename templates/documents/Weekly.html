@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Weekly Report Panel{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="{% static 'style/Weekly.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="dash-content">
+            <div class="title">
+                <i class='bx bxs-report' ></i>
+                <span class="text">NARRATIVE REPORT</span>
+            </div>
+
+            <div class="box"></div>
+
+
+            <!-----PREVIEW BOX-->
+            <div class="preview-box">
+                <img src="preview-image.jpg" alt="Preview Image">
+                <h2>Preview Title</h2>
+                <p>Some preview content goes here.</p>
+                <a href="#">Read More</a>
+            </div>
+
+            <!-----Forms---->
+
+                <form action="#upload.php" method="post" enctype="multipart/form-data">
+                    <label for="file">Choose a file:</label>
+                    <input type="file" name="file" id="file" accept=".pdf, .doc, .docx">
+                    <input type="submit" value="Upload File">
+                </form>
+
+
+
+   <!-- Create a text editor div with contenteditable attribute for rich text editing -->
+   <div class="text-editor" contenteditable="true" id="editor">
+    Start typing here...
+</div>
+
+<!-- Create a toolbar with buttons for formatting -->
+<div class="merge">
+    <div class="toolbar">
+        <button onclick="document.execCommand('bold', false, null);"><i class="fas fa-bold"></i></button>
+        <button onclick="document.execCommand('italic', false, null);"><i class="fas fa-italic"></i></button>
+        <button onclick="document.execCommand('underline', false, null);"><i class="fas fa-underline"></i></button>
+        <button onclick="document.execCommand('justifyLeft', false, null);"><i class="fas fa-align-left"></i></button>
+        <button onclick="document.execCommand('justifyCenter', false, null);"><i class="fas fa-align-center"></i></button>
+        <button onclick="document.execCommand('justifyRight', false, null);"><i class="fas fa-align-right"></i></button>
+    </div>
+</div>
+
+
+<!-- Create a submit button -->
+<div class="sub">
+<button onclick="submitText()">Submit</button>
+</div>
+
+{% endblock %}
+{% block scripts %}
+
+<script>
+    // Function to update the current week when the user selects a different week
+    function changeWeek(selectedWeek) {
+        const currentWeekElement = document.getElementById('current-week');
+        currentWeekElement.textContent = selectedWeek;
+    }
+</script>
+    
+{% endblock %}

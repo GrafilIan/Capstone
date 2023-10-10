@@ -2,8 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import AnnouncementForm, RecommendationForm
-from .models import Announcement, Recommendation
-from .models import intern, TimeRecord
+from .models import Announcement, Recommendation, intern, TimeRecord, WeeklyReport
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login
@@ -499,6 +498,16 @@ def document_list(request):
     return render(request, 'documents/document_list.html', {'documents': documents})
 
 ###---------------------------------Documents/end----------------------------------###
-def my_view(request):
-    return render(request, 'internship_calendar/StudentCalendar.html')
+
+@login_required
+def weekly_report(request):
+    Weekly = WeeklyReport.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        Weekly_textsub = request.POST['Weekly_textsub']
+        document_submission = request.FILES['document_submission']
+        Document.objects.create(user=request.user,  Weekly_textsub= Weekly_textsub, document_submission=document_submission)
+        return redirect('document_list')
+
+    return render(request, 'documents/Weekly.html', {'Weekly': Weekly})
 
