@@ -155,4 +155,12 @@ class Document(models.Model):
     def __str__(self):
         return f"{self.requirement} - {self.id}"
 
+class WeeklyReport(models.Model):
+    user = models.ForeignKey(intern, on_delete=models.CASCADE)
+    week_number = models.PositiveIntegerField()
+    Weekly_textsub = models.TextField()
+    document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
+
+    def __str__(self):
+        return f"Weekly Report for {self.user} on Week {self.week_number}"
 ### End ###

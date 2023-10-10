@@ -17,10 +17,10 @@
 
 <div class="DailyAccomplishement">
     <div class="DailyAccomplishment">
-        <h2>Daily Accomplishment Report</h2><br>
+        <h2>DAILY ACCOMPLISHMENT REPORT</h2><br>
         <div>
           {% if date %}
-            <p>Date: {{ date }}</p>
+            <p>DATE: {{ date }}</p>
           {% endif %}
         </div>
 
@@ -30,31 +30,51 @@
               <input type="hidden" name="date" value="{{ date }}">
             {% endif %}
 
-            <label class="AR" for="text_submission">Accomplishment Report:</label>
+            <div class="c2">
+            <label for="text_submission">Accomplishment Report</label>
             <textarea class="textsub" id="text_submission" name="text_submission" placeholder="Write Daily Accomplishment" required></textarea><br>
-
+            </div>
+            <div class="shee">
             <label for="hours_submission">No. of Hours:</label>
-            <textarea class="textarea" id="hours_submission" name="hours_submission" placeholder="Hours Submission" required></textarea><br>
-
+            <textarea class="textarea" id="hours_submission" name="hours_submission" placeholder="Hours Submission"></textarea><br>
+            </div>
 
             <button type="button" class="submit-button" id="submit-button">Submit</button>
             <button type="button" class="rest-day-button" id="rest-day-button" name="rest_day" value="true">Rest Day</button>
         </form>
-        <h5>Accomplishment Report:</h5>
 
-        {% if accomplishments %}
-            <!-- Display existing accomplishments if they exist -->
+        <div class="vane"></div>
 
-            <ul id="accomplishments-list">
-              {% for accomplishment in accomplishments %}
-                <li class="accomplishment-item">
-                  <div class="text-submission">{{ accomplishment.text_submission }}</div>
-                  <div class="hours-submission">{{ accomplishment.hours_submission }}</div>
-                </li>
-              {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+        <h5>ACCOMPLISHMENT</h5>
+
+        <div class="ian">
+
+          <h6>NO. OF HOURS:</h6>
+              <ul id="accomplishments-list">
+                  {% if accomplishments %}
+                      <!-- Display existing accomplishments if they exist -->
+                      {% for accomplishment in accomplishments %}
+                          <li class="accomplishment-text">
+                              <div class="text-submission">{{ accomplishment.text_submission }}</div>
+                          </li>
+                      {% endfor %}
+                  {% endif %}
+              </ul>
+
+              <ul>
+                  {% if accomplishments %}
+                      <!-- Display existing accomplishments if they exist -->
+                      {% for accomplishment in accomplishments %}
+
+                          <li class="accomplishment-hour">
+                              <div class="hours-submission">{{ accomplishment.hours_submission }}</div>
+                          </li>
+                      {% endfor %}
+                  {% endif %}
+              </ul>
+
+          </div>
+</div>
 </div>
 
 

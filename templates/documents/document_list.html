@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Document Panel{% endblock %}
+
 {% block head %}
-  {% block title %}Django{% endblock %}
+
   <link rel="stylesheet" href="{% static 'style/Requirements.css' %}">
 
 {% endblock %}
@@ -12,6 +14,7 @@
 
 <div class="filter-section">
   <label for="requirement-filter">Filter by Requirement:</label>
+
   <select id="requirement-filter" class="form-control">
     <option value="">All</option>
     <option value="Acceptance Form for OJT">Acceptance Form for OJT</option>
@@ -28,24 +31,28 @@
       <option value="Cedula">Cedula</option>
     <!-- Add more options as needed -->
   </select>
+   <a href="{% url 'upload_document' %}" class="button maroon-button">Upload a New Document</a>
 </div>
 
-<ul class="document-list">
-  {% for document in documents %}
-  <li class="document-item" data-requirement="{{ document.requirement }}">
-    <strong>Requirement:</strong> {{ document.requirement }}<br>
-    <strong>Document:</strong> {{ document.document_image.name }}<br>
-    <button class="preview-button" data-image="{{ document.document_image.url }}">Toggle Image Preview</button>
-    <div class="image-preview" style="display: none;">
-      <img src="{{ document.document_image.url }}" alt="Image Preview" style="max-width: 200px;">
-    </div>
-  </li>
-  {% empty %}
-  <li>No documents have been uploaded yet.</li>
-  {% endfor %}
-</ul>
+<div class="document-container">
+  <ul class="document-list">
+    {% for document in documents %}
+    <li class="document-item" data-requirement="{{ document.requirement }}">
+      <strong>Requirement:</strong> {{ document.requirement }}<br>
+      <strong>Document:</strong>
+      <span class="document-name">{{ document.document_image.name|cut:"document/" }}</span><br>
+      <button class="preview-button" data-image="{{ document.document_image.url }}">Toggle Image Preview</button>
+      <div class="image-preview" style="display: none;">
+        <img src="{{ document.document_image.url }}" alt="Image Preview" style="max-width: 200px;">
+      </div>
+    </li>
+    {% empty %}
+    <li>No documents have been uploaded yet.</li>
+    {% endfor %}
+  </ul>
 
-<a href="{% url 'upload_document' %}">Upload a New Document</a> <br>
+
+
 
 {% endblock %}
 
@@ -80,6 +87,33 @@ document.querySelectorAll('.preview-button').forEach(function(button) {
       previewDiv.style.display = 'none';
     }
   });
+});
+</script>
+
+  <script>
+// JavaScript code to handle image preview
+document.getElementById('document_image').addEventListener('change', function() {
+  var input = this;
+  var imgPreview = document.getElementById('image-preview');
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      imgPreview.src = e.target.result;
+      imgPreview.style.display = 'block';
+
+      // Set the maximum width to 200 pixels
+      if (imgPreview.width > 200) {
+        imgPreview.width = 200;
+      }
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    imgPreview.src = '';
+    imgPreview.style.display = 'none';
+  }
 });
 </script>
 {% endblock %}

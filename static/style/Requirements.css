@@ -1,268 +1,146 @@
 /*Google Fonts Import Link*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+
+/*--------------Documents-----------------*/
+
+/* Style the filter-section container */
+.filter-section {
+  position: relative;
+  top: 20px;
+  left: 80px;
+  display: flex;
+  width: 90%;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  text-align: center;
 }
 
-.sidebar{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 260px;
-    background: #393535;
-    z-index: 100;
-    transition: all 0.5s ease;
+/* Style the label for the select element */
+label {
+  font-weight: bold;
 }
-.sidebar.close{
-    width: 78px;
+
+/* Style the select element */
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+  margin-left: 50px;
 }
-.sidebar .logo-details{
-    height: 60px;
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
+
+/* Style the options within the select element */
+.form-control option {
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
 }
-.sidebar .logo-details img{
-    color: #fff;
-    height: 50px;
-    width: 50px;
-    margin-left: 15px;
-    margin-top: 10px;
-    line-height: 50px;
+
+/* Style the hover effect on options */
+.form-control option:hover {
+  background-color: #f0f0f0;
 }
-.sidebar .logo-details .logo_name{
-    font-size: 15px;
-    color: #fff;
-    margin-left: 10px;
-    margin-top: 20px;
-    font-weight: 600;
-    transition: 0.3s ease;
-    transition-delay: 0.1s;
+
+/* Style the selected option */
+.form-control option:checked {
+  background-color: #007bff;
+  color: #fff;
 }
-.sidebar.close .logo-details .logo_name{
-    transition-delay: 0s;
-    opacity: 0;
-    pointer-events: none;
+
+/*-----------------------------------------------------------------*/
+.document-container {
+  position: relative;
+  left: 34px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  max-width: 90%; /* Set the desired width for the container */
+  margin: 0 auto; /* Center the container horizontally */
 }
-.sidebar .nav-links{
-    background: #393535;
-    height: 100%;
-    padding: 50px 0 150px 0;
-    overflow: auto;
+
+/* Style the document list */
+.document-list {
+  display: flex; /* Use flexbox to make the list horizontal */
+  flex-wrap: wrap; /* Allow wrapping to the next line */
+  overflow-x: auto; /* Add horizontal scroll if needed */
+  list-style: none; /* Remove default list bullet points */
+  padding: 0; /* Remove any padding */
+  justify-content: space-between; /* Distribute items evenly */
+  gap: 20px; /* Add spacing between items */
+
 }
-.sidebar.close .nav-links{
-    overflow: visible;
+/* Style each document item */
+.document-item {
+  width: calc(25% - 20px); /* 25% width with 20px gap on each side */
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px; /* Add margin to separate rows */
+  font-size: 14px;
+
 }
-.sidebar .nav-links::-webkit-scrollbar{
-    display: none;
+
+/* Style the strong elements inside document items */
+.document-item strong {
+  font-weight: bold;
+
 }
-.sidebar .nav-links li{
-    position: relative;
-    list-style: none;
-    transition: all 0.4s ease;
+
+.document-name {
+  display: inline-block;
+  max-width: 200px; /* Adjust the maximum width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.sidebar .nav-links li:hover{
-    background: #616161;
+
+.preview-button {
+  /* Adjust the button position if needed */
+  position: relative;
+  margin-top: 10px;
+  background-color: #8c0000;
+  border-radius: 3px;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 16%;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+
 }
-.sidebar .nav-links li .icon-link{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+.preview-button:hover {
+      background-color: #640000; /* Change color on hover */
 }
-.sidebar.close .nav-links li .icon-link{
-    display: block;
+/* Style the image preview container */
+.image-preview {
+  display: none;
+  margin-top: 10px;
 }
-.sidebar .nav-links li i{
-    height: 50px;
-    min-width: 78px;
-    text-align: center;
-    line-height: 50px;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+
+/* Style the image inside the preview container */
+.image-preview img {
+  max-width: 200px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
-.sidebar .nav-links li.showMenu i.arrow{
-    transform: rotate(-180deg);
-}
-.sidebar.close .nav-links i.arrow{
-    display: none;
-}
-.sidebar .nav-links li a{
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-.sidebar .nav-links li a .link_name{
-    font-size: 18px;
-    font-weight: 400;
-    color: #fff;
-}
-.sidebar.close .nav-links li a .link_name{
-    opacity: 0;
-    pointer-events: none;
-}
-.sidebar .nav-links li .sub-menu{
-    padding: 6px 6px 14px 80px;
-    margin-top: -10px;
-    background: #616161;
-   display: none;
-}
-.sidebar .nav-links li.showMenu .sub-menu{
-    display: block;
-}
-.sidebar .nav-links li .sub-menu a{
-    color: #fff;
-    font-size: 13px;
-    padding: 5px 0;
-    white-space: nowrap;
-    opacity: 0.6;
-    transition: all 0.3s ease;
-}
-.sidebar.close .nav-links li .sub-menu a{
-    font-size: 15px;
-}
-.sidebar .nav-links li .sub-menu a:hover{
-    opacity: 1;
-}
-.sidebar.close .nav-links li .sub-menu{
-    position: absolute;
-    left: 100%;
-    top: -10px;
-    margin-top: 0;
-    padding: 10px 20px;
-    border-radius: 0 6px 6px 0;
-    opacity: 0;
-    display: block;
-    pointer-events: none;
-    transition: 0s;
-}
-.sidebar.close .nav-links li:hover .sub-menu{
-    top: 0;
-    opacity: 1;
-    pointer-events: auto;
-    transition: all 0.4s ease;
-}
-.sidebar .nav-links li .sub-menu .link_name{
-    display: none;
-}
-.sidebar.close .nav-links li .sub-menu .link_name{
-    display: none;
-}
-.sidebar.close .nav-links li .sub-menu .link_name{
-    font-size: 18px;
-    opacity: 1;
-    display: block;
-}
-.sidebar .nav-links li .sub-menu.blank{
-    opacity: 1;
-    pointer-events: auto;
-    padding: 3px 20px 6px 16px;
-    opacity: 0;
-    pointer-events: none;
-}
-.sidebar .nav-links li:hover .sub-menu.blank{
-    top: 50%;
-    transform: translateY(-50%);
-}
-.sidebar .profile-details{
-    position: fixed;
-    bottom: 0;
-    width: 260px;
-    display: flex;
-    width: 260px;
-    align-items: center;
-    justify-content: space-between;
-    background: #393535;
-    padding: 6px 0;
-    transition: all 0.5s ease;
-}
-.sidebar.close .profile-details{
-    background: none;
-}
-.sidebar.close .profile-details{
-    width: 78px;
-}
-.sidebar .profile-details .profile-content{
-    display: flex;
-    align-items: center;
-}
-.sidebar .profile-details img{
-    height: 52px;
-    width: 52px;
-    object-fit: cover;
-    border-radius: 16px;
-    margin: 0 14px 0 12px;
-    background: #978383;
-    transition: all 0.5s ease;
-}
-.sidebar.close .profile-details img{
-    border: none;
-    border-radius: 50px;
-}
-.sidebar .profile-details .profile_name,
-.sidebar .profile-details .job,
-.sidebar .profile-details .company{
-    color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-.sidebar.close .profile-details i,
-.sidebar.close .profile-details .profile_name,
-.sidebar.close .profile-details .job,
-.sidebar.close .profile-details .company{
-    display: none;
-}
-.sidebar .profile-details .job{
-    font-size: 12px;
-}
-.sidebar .profile-details .company{
-    font-size: 12px;
-}
-.home-section{
-    position: relative;
-    height: 100%;
-    left: 260px;
-    width: calc(100% - 260px);
-    transition: all 0.5s ease;
-    z-index: 10;
-}
-.sidebar.close ~ .home-section{
-    left: 78px;
-    width: calc(100% - 78px);
-    transition: all 0.5s ease;
-}
-.home-section .home-content{
-    height: 60px;
-    width: 1000vh;
-    display: flex;
-    position: fixed;
-    align-items: center;
-    background: #790707;
-}
-.home-section .home-content .bx-menu,
-.home-section .home-content .text{
-    color: #ffffff;
-    font-size: 35px;
-}
-.home-section .home-content .bx-menu{
-    margin: 0 15px;
-    cursor: pointer;
-}
-.home-section .home-content .text{
-    font-size: 26px;
-    font-weight: 600;
-    margin-top: 0px;
-    margin-left: 0px;
-    color: white;
-}
+
+/* Style the message for no documents */
+
+/*------------Documents/end--------------*/
+
+
+
 .container-fluid .dash-content{
     padding-top: 60px;
     padding-left: 50px;
@@ -370,8 +248,29 @@ select{
     outline:none;
   }
 
+.maroon-button {
+  position: relative;
+  margin-left: 60px;
+  display: inline-block;
+  padding: 20px;
+  background-color: maroon;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  font-size: 13px;
+  left: -22px;
+}
 
-
+/* Style the button hover effect */
+.maroon-button:hover {
+  background-color: #640000;
+  transition: background-color 0.3s ease;
+}
 
 
 

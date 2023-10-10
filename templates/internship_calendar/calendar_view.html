@@ -118,7 +118,9 @@
                 {% for week in weeks %}
                 <h3 class="week"> {{ week.week_number }} </h3>
                 <li class="week-item">
+
                   <ul class="bins-in-week">
+
                     {% for bin_date in week.bin_dates %}
                     <li class="bin-item">
                       <br>
@@ -129,10 +131,14 @@
                       <a class="button2" href="{% url 'calendar_detail' date=bin_date %}">
                         <button class="button2">{{ bin_date|date:"M d" }}</button>
                       </a>
+
                     </li>
                     {% endfor %}
+
                   </ul>
+
                 </li>
+                  <div class="line-break"></div>
                 {% endfor %}
               </ul>
             </div>

@@ -10,7 +10,8 @@
             padding: 30px;
             width: 400px;
             border-radius: 5px;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, .5);
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, .3);
+            border: 1px solid #ccc;
         }
 
         h1{

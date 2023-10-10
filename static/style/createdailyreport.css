@@ -1,117 +1,264 @@
+.DailyAccomplishment{
+  position: absolute;
+  top: 80px;
+  left: 200px;
+  width: 920px;
+  height: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: #E6E6E6;
+  padding: 50px 20px 20px 20px;
+}
 
-.DailyAccomplishement{
-    position: absolute;
-    top: 100px;
-    left: 350px;
-    height: 500px;
-    width: 800px;
-    background-color: pink;
+h2{
+  font-weight: 700;
+  font-size: 20px;
+  margin-left: 50px;
+  margin-top: -20px;
+}
+
+h5{
+  display: fixed;
+  position: absolute;
+  font-weight: 700;
+  font-size: 20px;
+  margin-left: 490px;
+  margin-top: -400px;
+  padding: 5px;
+  width: 360px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  background-color: #FFC701;
+}
+
+h6{
+  display: flex;
+  position: absolute;
+  background-color: white;
+  margin-left: 490px;
+  margin-top: -360px;
+  padding:5px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  width: 120px;
+  justify-content: center;
+}
+
+p{
+  text-align: center;
+  font-weight: 700;
+  margin-top: -20px;
+  margin-left: -450px;
+}
+
+.c2 label{
+  background-color: white;
+  display: flex;
+  position: absolute;
+  margin-top: -10px;
+  margin-left: 65px;
+  padding: 8px;
+  width: 300px;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+}
+
+.c2 textarea{
+  position: absolute;
+  width: 400px;
+  height: 190px;
+  margin-top: 50px;
+  margin-left: 10px;
+  border: none;
+  border: 5px;
+}
+.shee label{
+  background-color: white;
+  display: flex;
+  position: absolute;
+  margin-top: 225px;
+  margin-left: 10px;
+  justify-content: start;
+  padding: 13px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+}
+
+.shee textarea{
+  position: absolute;
+  width: 270px;
+  height: 50px;
+  margin-left: 140px;
+  margin-top: 225px;
+  border: none;
+  border: 5px;
 
 }
 
+.vane {
+  display: flex;
+  position: absolute;
+  background-color: #970505;
+  width: 400px;
+  height: 460px;
+  margin-left: 470px;
+  margin-top: -430px;
+  border: none;
+  border-radius: 5px;
+}
+
+.ian ul {
+    list-style: none;
+    padding: 0;
+}
+
+.accomplishment-text {
+  margin-bottom: 20px; /* Add space between the list items */
+}
+
+.ian .text-submission {
+      display: block;
+      position: absolute;
+      background-color: rgb(255, 255, 255);
+      margin-top: -315px;
+      margin-left: 490px;
+      width: 360px;
+      height: 300px;
+      max-width: 360px;
+      max-height: 300px; /* Set a maximum height to enable scrolling */
+      overflow-y: auto; /* Add vertical scroll if content overflows */
+      border: none;
+      border-radius: 5px;
+      padding: 5px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      flex-direction: column;
+}
+.accomplishment-hour {
+  position: absolute; /* Enable positioning for the list items */
+  margin-bottom: 20px; /* Add some space between the items */
+}
+
+.ian .hours-submission {
+
+  background-color: #f0f0f0; /* Add a background color to the content */
+  z-index: 1; /* Place the content above other elements */
+  position: relative;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 3px;
+  border: none;
+  border-radius: 5px;
+  top: -360px;
+  left: 620px;
+  width: 220px;
+  float: right; /* Float hours-submission to the right */
+}
+
+/* Additional style for the text content inside the container */
+.ian .text-content {
+  white-space: pre-wrap; /* Preserve line breaks and wrap text */
+  overflow-wrap: break-word; /* Allow word wrapping */
+}
+
+
+button{
+  display: table-row;
+  background-color: #970505;
+  color: white;
+  margin-top: 270px;
+  margin-left: 60px;
+  justify-content: space-between;
+  padding: 3px;
+  width: 120px;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover{
+  position: relative;
+  background-color: rgb(73, 157, 0);
+  overflow: hidden;
+  cursor: pointer;
+}
 
 .dtr{
-    position: absolute;
-    top: 100px;
-    left: 150px;
-    max-width: 500px;
-    background-color: gray;
+  position: absolute;
+  top: 100px;
+  left: 150px;
+  max-width: 500px;
+  background-color: gray;
 }
 
 .timehistory{
-    position: relative;
-    top: 100px;
-    left: 700px;
-    max-width: 500px;
-    background-color: pink;
-    z-index: 2;
+  position: relative;
+  top: 100px;
+  left: 700px;
+  max-width: 500px;
+  background-color: pink;
+  z-index: 2;
 }
 
 /* Style for the textarea */
 .textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: none; /* Disable textarea resizing */
-  font-size: 16px;
-  line-height: 1.5;
-  transition: border-color 0.2s ease-in-out;
+width: 100%;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+resize: none; /* Disable textarea resizing */
+font-size: 16px;
+line-height: 1.5;
+transition: border-color 0.2s ease-in-out;
 }
 
 /* Style for the textarea when it's focused */
 textarea:focus {
-  border-color: #007BFF;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+border-color: #007BFF;
+outline: none;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Optional: Add a placeholder style */
 textarea::placeholder {
-  color: #aaa;
+color: #aaa;
 }
 
 /* Optional: Add a maximum height and scroll if content overflows */
 .textsub {
-  width: 100%; /* Adjust the width as needed */
-  height: 150px; /* Adjust the height as needed */
-  padding: 10px; /* Adjust the padding as needed */
-  font-family: Arial, sans-serif; /* Choose your desired font */
-  font-size: 16px; /* Choose your desired font size */
-  border: 1px solid #ccc; /* Add a border */
-  border-radius: 5px; /* Add rounded corners */
-  resize: vertical; /* Allow vertical resizing (remove if not needed) */
-}
-
-.textsub:focus {
-  border-color: #007bff; /* Change border color on focus */
-  outline: none; /* Remove the default focus outline */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle box shadow on focus */
-}
-
-.AR {
-  display: flex;
-
-  margin-left: 250px;
-  align-items: center;
-  justify-content: center;
-  height: 100%; /* Ensure the label takes up the full height for vertical alignment */
-  background: white;
-  margin-bottom: 10px;
-  width: 300px;
-  border-radius: 4px;
-
-
+max-height: 500px; /* Adjust this value as needed */
+max-width: 500px;
+padding: 12px;
+border-radius: 4px;
+background-color: white;
 }
 
 /* Optional: Add a border highlight on hover */
 textarea:hover {
-  border-color: #66afe9;
+border-color: #66afe9;
 }
 
 .textsubsub {
-    position: absolute;
-    top: 400px;
-    left: 200px;
-    background-color: blue;
+  position: absolute;
+  top: 400px;
+  left: 200px;
+  background-color: blue;
 }
 
 #accomplishments-list {
-  list-style: none;
-  padding: 0;
+list-style: none;
+padding: 0;
 }
 
-.accomplishment-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px; /* Add spacing between items if desired */
-}
+
 
 .text-submission {
-  flex: 1; /* Makes the text submission div take up the available space */
+flex: 1; /* Makes the text submission div take up the available space */
 }
 
 .hours-submission {
-  margin-left: 10px; /* Add spacing between text and hours submission if desired */
+margin-left: 10px; /* Add spacing between text and hours submission if desired */
 }
-
