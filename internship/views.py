@@ -499,15 +499,22 @@ def document_list(request):
 
 ###---------------------------------Documents/end----------------------------------###
 
+
 @login_required
 def weekly_report(request):
     Weekly = WeeklyReport.objects.filter(user=request.user)
 
     if request.method == 'POST':
-        Weekly_textsub = request.POST['Weekly_textsub']
-        document_submission = request.FILES['document_submission']
-        Document.objects.create(user=request.user,  Weekly_textsub= Weekly_textsub, document_submission=document_submission)
-        return redirect('document_list')
+        Weekly_textsub = request.POST.get('Weekly_textsub')
+        document_submission = request.FILES.get('document_submission')
+
+        # Assuming you want to create a new WeeklyReport instance for the user
+        # and populate the fields,
+
+        # Create a new WeeklyReport instance for the user
+        WeeklyReport.objects.create(user=request.user, Weekly_textsub=Weekly_textsub, document_submission=document_submission)
+
+        return redirect('Weekly')
 
     return render(request, 'documents/Weekly.html', {'Weekly': Weekly})
 

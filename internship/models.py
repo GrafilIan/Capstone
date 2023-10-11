@@ -157,7 +157,7 @@ class Document(models.Model):
 
 class WeeklyReport(models.Model):
     user = models.ForeignKey(intern, on_delete=models.CASCADE)
-    week_number = models.PositiveIntegerField()
+    week_number = models.PositiveIntegerField(null=True)
     Weekly_textsub = models.TextField()
     document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
 
