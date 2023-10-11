@@ -4,106 +4,114 @@
 {% block title %}Weekly Report Panel{% endblock %}
 
 {% block head %}
-
     <link rel="stylesheet" href="{% static 'style/Weekly.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 {% endblock %}
 
 {% block content %}
-
     <div class="container-fluid">
         <div class="dash-content">
             <div class="title">
-                <i class='bx bxs-report' ></i>
+                <i class='bx bxs-report'></i>
                 <span class="text">NARRATIVE REPORT</span>
             </div>
 
             <div class="box"></div>
 
-            <!-----PREVIEW BOX-->
-            <div class="preview-box">
-                <img src="preview-image.jpg" alt="Preview Image">
-                <h2>Preview Title</h2>
-                <p>Some preview content goes here.</p>
-                <a href="#">Read More</a>
-            </div>
-
-            <!-----Forms---->
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="document_submission">Upload Document</label>
-                    <input type="file" name="document_submission" id="document_submission" class="form-control-file">
-                </div>
-                <div class="form-group">
-                    <label for="Weekly_textsub">Weekly Report Text</label>
-                    <textarea name="Weekly_textsub" id="Weekly_textsub" class="form-control"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-
-            <!-- Create a text editor div with contenteditable attribute for rich text editing -->
-            <div class="text-editor" contenteditable="true" id="editor">
-                Start typing here...
-            </div>
-
-            <!-- Create a toolbar with buttons for formatting -->
-            <div class="merge">
-                <div class="toolbar">
-                    <button onclick="document.execCommand('bold', false, null);"><i class="fas fa-bold"></i></button>
-                    <button onclick="document.execCommand('italic', false, null);"><i class="fas fa-italic"></i></button>
-                    <button onclick="document.execCommand('underline', false, null);"><i class="fas fa-underline"></i></button>
-                    <button onclick="document.execCommand('justifyLeft', false, null);"><i class="fas fa-align-left"></i></button>
-                    <button onclick="document.execCommand('justifyCenter', false, null);"><i class="fas fa-align-center"></i></button>
-                    <button onclick="document.execCommand('justifyRight', false, null);"><i class="fas fa-align-right"></i></button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Submitted Successfully!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- End Modal -->
 
-            <!-- Create a submit button -->
-            <div class="sub">
-                <button onclick="submitText()">Submit</button>
+            <!-- Forms -->
+            <div class="part">
+                <form method="post" action="{% url 'upload_weekly_report' %}" id="WeeklyAccomplishmentForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="week_number">Week Number</label>
+                        <input type="number" name="week_number" id="week_number" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="document_submission">Upload Document</label>
+                        <input type="file" name="document_submission" id="document_submission" class="form-control-file">
+                    </div>
+                    <div class="form-group">
+                        <label for="Weekly_textsub">Weekly Report Text</label>
+                        <textarea name="Weekly_textsub" id="Weekly_textsub" class="form-control"></textarea>
+                    </div>
+                    <button type="submit" id="submit-button" class="btn btn-primary">Upload</button>
+                </form>
             </div>
 
+            <ul class="report-list">
+                {% for report in weekly_reports %}
+                    <li class="report-item">
+                        <h3 class="week-number">Week {{ report.week_number }}</h3>
+                        {% if report.document_submission %}
+                            <p>Uploaded Document(s): <a href="{{ report.document_submission.url }}" class="document-link" target="_blank">{{ report.document_submission.name }}</a></p>
+                        {% endif %}
+                        <p>Submitted Text:</p>
+                        <div class="text-submission">{{ report.Weekly_textsub | safe }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}
 
+
 {% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/js/bootstrap.min.js"></script>
 
 <script>
-    // Function to update the current week when the user selects a different week
-    function changeWeek(selectedWeek) {
-        const currentWeekElement = document.getElementById('current-week');
-        currentWeekElement.textContent = selectedWeek;
-    }
+$(document).ready(function() {
+    // Add an event listener to the submit button
+    $("#submit-button").click(function(e) {
+        e.preventDefault(); // Prevent the default form submission behavior
 
-     function submitText() {
-        // Get the text from the text editor
-        var textData = document.getElementById('editor').innerHTML;
+        const submitUrl = $("#WeeklyAccomplishmentForm").attr("action");
 
-        // Prepare the data to be sent to the server
-        var data = {
-            Weekly_textsub: textData,
-            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
-        };
+        $.ajax({
+            type: "POST",
+            url: submitUrl,
+            data: new FormData($("#WeeklyAccomplishmentForm")[0]),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    // Reset the form
+                    $('#WeeklyAccomplishmentForm')[0].reset();
 
-        // Send the data to the server using AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '{% url 'Weekly' %}', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                // Handle the success response if needed
-                console.log('Text data submitted successfully');
-            } else {
-                // Handle any errors or failure
-                console.error('Failed to submit text data');
+                    // Close the modal
+                    $('#exampleModal').modal('show');
+
+                    // Add an event listener to the modal's close event
+                    $('#exampleModal').on('hidden.bs.modal', function (e) {
+                        // Reload the page
+                        location.reload();
+                    });
+                } else {
+                    // Handle errors here if the submission was not successful
+                    alert('Submission failed. Please try again.');
+                }
             }
-        };
-        xhr.send(JSON.stringify(data));
-    }
+        });
+    });
+});
 </script>
-
 {% endblock %}

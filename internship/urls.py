@@ -28,7 +28,9 @@ urlpatterns = [
     path('upload/', views.upload_document, name='upload_document'),
     path('download_time_records/', views.view_time_records, name='download_time_records'),
     path('download_history/', views.download_history, name='download_history'),
-    path('weekly_report', views.weekly_report, name='Weekly'),
+
+    path('upload_weekly_report/', views.upload_weekly_report, name='upload_weekly_report'),
+    path('weekly_report_detail/', views.weekly_report_detail, name='weekly_report_detail'),
 
 
 ]

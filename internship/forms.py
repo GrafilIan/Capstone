@@ -1,6 +1,7 @@
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
 from .models import InternsCalendar, DailyAccomplishment, TimeRecord
+from .models import WeeklyReport
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:
@@ -49,3 +50,8 @@ class DailyAccomplishmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DailyAccomplishmentForm, self).__init__(*args, **kwargs)
         self.fields['text_submission'].required = False
+
+class WeeklyReportForm(forms.ModelForm):
+    class Meta:
+        model = WeeklyReport
+        fields = ['week_number', 'Weekly_textsub', 'document_submission']

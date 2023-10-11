@@ -13,11 +13,14 @@ from django.utils.timezone import now
 from django import forms
 from django.http import HttpResponse
 from datetime import date
-from .forms import DailyAccomplishmentForm, TimeRecordForm
+from .forms import DailyAccomplishmentForm, TimeRecordForm,  WeeklyReportForm
 from django.utils import timezone
 import pytz
 from django.http import JsonResponse
 from django.contrib import messages
+from django.http import Http404
+
+
 ###-----------------------------------Login-------------------------------------###
 
 
@@ -501,20 +504,23 @@ def document_list(request):
 
 
 @login_required
-def weekly_report(request):
-    Weekly = WeeklyReport.objects.filter(user=request.user)
-
+def upload_weekly_report(request):
     if request.method == 'POST':
-        Weekly_textsub = request.POST.get('Weekly_textsub')
-        document_submission = request.FILES.get('document_submission')
+        form = WeeklyReportForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.user = request.user  # Assign the user
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
-        # Assuming you want to create a new WeeklyReport instance for the user
-        # and populate the fields,
 
-        # Create a new WeeklyReport instance for the user
-        WeeklyReport.objects.create(user=request.user, Weekly_textsub=Weekly_textsub, document_submission=document_submission)
+def weekly_report_detail(request):
+    # Fetch all WeeklyReport instances from the database
+    weekly_reports = WeeklyReport.objects.all()
 
-        return redirect('Weekly')
+    return render(request, 'documents/Weekly.html', {'weekly_reports': weekly_reports})
 
-    return render(request, 'documents/Weekly.html', {'Weekly': Weekly})
+
 
