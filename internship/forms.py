@@ -1,7 +1,7 @@
 from django import forms
 from .models import intern, Announcement, Recommendation, InternshipCalendar
 from .models import InternsCalendar, DailyAccomplishment, TimeRecord
-from .models import WeeklyReport
+from .models import WeeklyReport, NarrativeReport
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:
@@ -55,3 +55,8 @@ class WeeklyReportForm(forms.ModelForm):
     class Meta:
         model = WeeklyReport
         fields = ['week_number', 'Weekly_textsub', 'document_submission']
+
+class NarrativeReportForm(forms.ModelForm):
+    class Meta:
+        model = NarrativeReport
+        fields = ['Narrative_Number', 'Narrative_Text', 'document_submission']

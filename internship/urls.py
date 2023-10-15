@@ -32,5 +32,9 @@ urlpatterns = [
     path('upload_weekly_report/', views.upload_weekly_report, name='upload_weekly_report'),
     path('weekly_report_detail/', views.weekly_report_detail, name='weekly_report_detail'),
 
+    path('upload_narrative_report/', views.upload_narrative_report, name='upload_narrative_report'),
+    path('narrative_report_detail/', views.narrative_report_detail, name='narrative_report_detail'),
 
+#---------------------------Admin Section--------------------------#
+    path('admin/interns/', views.intern_list, name='intern_list'),
 ]

@@ -1,0 +1,154 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard Panel | Bulan Campus</title>
+    <link rel="stylesheet" href="{% static 'style/admin/AdminDashboard.css' %}">
+
+    <!-------Boxicons CDN link----->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    {% block head %}
+    {% endblock %}
+
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo-details">
+            <img src="{% static 'images/Revised-SSU-Logo.png' %}" alt="logo">
+            <span class="logo_name">Sorsogon State University - Bulan Campus</span>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="AdminDashboard.html">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="link_name">Dashboard</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="AdminDashboard.html">Dashboard</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="StudentList.html">
+                    <i class='bx bx-list-ul'></i>
+                    <span class="link_name">Student List</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="StudentList.html">Student List</a></li>
+                </ul>
+            <li>
+                    <a href="Feedbacks.html">
+                        <i class='bx bxs-message-alt-detail'></i>
+                        <span class="link_name">Feedbacks</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a class="link_name" href="Feedbacks.html">Feedbacks</a></li>
+                    </ul>
+            </li>
+            <li>
+                <a href="StudentEvaluation.html">
+                    <i class='bx bxs-door-open' ></i>
+                    <span class="link_name">Evaluation Portal</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="StudentEvaluation.html">Evaluation</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">
+                    <i class='bx bxs-log-out' ></i>
+                    <span class="link_name">Log-out</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><a class="link_name" href="#">Log-out</a></li>
+                </ul>
+            </li>
+            <li>
+        <div class="profile-details">
+            <div class="profile-content">
+                <a href="#"><img src="{% static 'images/GRACELA__VANESSA_MARIZ_T_1_-removebg-preview.png' %}" alt="profile"></a>
+            </div>
+            <div class="name-job">
+                <div class="profile_name">Admin si Dela Cruz</div>
+                <div class="job">SORSU - BC ILDO</div>
+                <div class="company">ILDO COORDINATOR</div>
+            </div>
+
+            <i class= ></i>
+
+        </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Dashboard</span>
+        </div>
+    </section>
+
+    {% block content %}
+    {% endblock %}
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true // Set to false for 24-hour format
+            };
+            const formattedDate = now.toLocaleString('en-US', options);
+            document.getElementById('datetime').textContent = formattedDate;
+        }
+
+        // Update the date and time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial call
+    </script>
+
+    <script>
+        let arrow = document.querySelectorAll(".arrow");
+        for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+            let arrowParent = e.target.parentElement.parentElement;
+            arrowParent.classList.toggle("showMenu");
+            });
+        }
+
+        let sidebar = document.querySelector(".sidebar");
+        let sidebarBtn = document.querySelector(".bx-menu");
+        console.log(sidebarBtn);
+        sidebarBtn.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+        });
+
+
+    // Add event listener to the document to close sidebar when clicking outside of it
+    document.addEventListener("click", (e) => {
+        if (!sidebar.contains(e.target) && !sidebarBtn.contains(e.target)) {
+            // Clicked outside of both the sidebar and sidebar button
+            sidebar.classList.add("close");
+        }
+    });
+    </script>
+
+    <script src="{% static 'script/StudentDashboard.js' %}"></script>
+
+    {% block scripts %}
+    {% endblock %}
+
+</body>
+</html>

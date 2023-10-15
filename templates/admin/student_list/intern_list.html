@@ -1,0 +1,44 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+
+    {% block title %}Interns List{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style/admin/internlist.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Intern List</h1>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Student ID</th>
+            <th>Middle Name</th>
+            <th>Suffix</th>
+            <th>Course</th>
+            <th>Company</th>
+            <th>Position</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Join Date</th>
+        </tr>
+        {% for intern in interns %}
+        <tr>
+            <td>{{ intern.username }}</td>
+            <td>{{ intern.student_id }}</td>
+            <td>{{ intern.middle_name }}</td>
+            <td>{{ intern.suffix }}</td>
+            <td>{{ intern.course }}</td>
+            <td>{{ intern.company_name }}</td>
+            <td>{{ intern.position }}</td>
+            <td>{{ intern.address }}</td>
+            <td style="color: {{ intern.status_color }}">{{ intern.status }}</td>
+            <td>{{ intern.pub_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

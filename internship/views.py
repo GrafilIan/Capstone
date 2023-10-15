@@ -1,29 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import AnnouncementForm, RecommendationForm
-from .models import Announcement, Recommendation, intern, TimeRecord, WeeklyReport
+from .forms import AnnouncementForm, RecommendationForm, DailyAccomplishmentForm, WeeklyReportForm, NarrativeReportForm
+from .models import Announcement, Recommendation, intern, TimeRecord, WeeklyReport, NarrativeReport
+from .models import InternsCalendar, DailyAccomplishment, Document
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.contrib.auth import login
-from .models import InternsCalendar, DailyAccomplishment
-from .models import Document
+from django.contrib import messages
 from datetime import timedelta
 from django.utils.timezone import now
 from django import forms
-from django.http import HttpResponse
-from datetime import date
-from .forms import DailyAccomplishmentForm, TimeRecordForm,  WeeklyReportForm
-from django.utils import timezone
+from django.http import HttpResponse, JsonResponse
 import pytz
-from django.http import JsonResponse
-from django.contrib import messages
-from django.http import Http404
-
 
 ###-----------------------------------Login-------------------------------------###
-
-
 
 def InternRegister(request):
     if request.method == 'POST':
@@ -153,7 +143,7 @@ def create_announcement(request):
         'recommendation_form': recommendation_form,
     }
 
-    return render(request, 'announcements/create_announcement.html', context)
+    return render(request, 'admin/admin_dashboard/create_announcement.html', context)
 
 def announcement_list(request):
     announcements = Announcement.objects.all().order_by('-pub_date')
@@ -164,7 +154,7 @@ def announcement_list(request):
         'recommendations': recommendations,
     }
 
-    return render(request, 'announcements/announcement_list.html', context)
+    return render(request, 'admin/admin_dashboard/announcement_list.html', context)
 
 def delete_item(request, item_type, item_id):
     if item_type == 'announcement':
@@ -186,7 +176,7 @@ def delete_item(request, item_type, item_id):
         'item_type': item_type.capitalize(),  # Capitalize for display
     }
 
-    return render(request, 'announcements/delete_item.html', context)
+    return render(request, 'admin/admin_dashboard/delete_item.html', context)
 
 def delete_all_announcement(request):
     if request.method == 'POST':
@@ -522,5 +512,34 @@ def weekly_report_detail(request):
 
     return render(request, 'documents/Weekly.html', {'weekly_reports': weekly_reports})
 
+###---------------------------------Narrative Report----------------------------------###
+@login_required
+def upload_narrative_report(request):
+    if request.method == 'POST':
+        form = NarrativeReportForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.user = request.user  # Assign the user
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'errors': 'Invalid request method'})
+
+
+def narrative_report_detail(request):
+    # Fetch all WeeklyReport instances from the database
+    narrative_reports = NarrativeReport.objects.all()
+
+    return render(request, 'documents/Narrative.html', {'narrative_reports': narrative_reports})
+
+
+#---------------------------------------------------------------------------------------#
+#-------------------------------------ADMIN SIDE----------------------------------------#
+#---------------------------------------------------------------------------------------#
+
+
+def intern_list(request):
+    interns = intern.objects.all()
+    return render(request, 'admin/student_list/intern_list.html', {'interns': interns})
 
 
