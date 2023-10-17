@@ -1,10 +1,18 @@
 /* Style for the table */
+.internhead{
+    position: relative;
+    top: 90px;
+    left: 550px;
+
+    width: 50%;
+    border-collapse: collapse;
+}
 table {
     position: relative;
     top: 90px;
-    left: 360px;
+    left: 120px;
     border: 1px solid #ddd;
-    width: 50%;
+    width: 90%;
     border-collapse: collapse;
 }
 

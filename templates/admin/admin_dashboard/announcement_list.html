@@ -1,75 +1,81 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard Panel | Bulan Campus</title>
-    <link rel="stylesheet" href="{% static 'style/sample.css' %}">
-    <!-------Boxicons CDN link----->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+{% extends 'adminbase.html' %}
 
-</head>
+{% block title %}Admin Dashboard{% endblock %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/admin/announcement_dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
-   <h1>Announcement List</h1>
-    <button class="create-button" onclick="window.location.href='{% url 'create_announcement' %}'">Create Announcement</button>
+
+        <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Dashboard</span>
+        </div>
+        </section>
+
+<div class="dashboard-container">
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="create-button" onclick="window.location.href='{% url 'create_announcement' %}'">Create Announcement</button>
+    </div>
 
     <div class="list-container">
-        <div class="list-column1">
-            <h2>Announcements</h2>
-            <form method="post" action="{% url 'delete_all_announcement' %}">
-                {% csrf_token %}
-                <button type="submit">Delete All Announcement</button>
-            </form>
-            <ul>
-               {% for announcement in announcements %}
-                   {% if announcement.announcement_list %}
-
-                       <li>News Update: {{ announcement.announcement_list }}</li>
-                       {% if announcement.image_announcement %}
-                           <img src="{{ announcement.image_announcement.url|safe }}" alt="Announcement Image" class="announcementimage1">
-                       {% endif %}
-                       {% if announcement.document_announcement %}
-                           <a href="{{ announcement.document_announcement.url|safe }}" target="_blank">View Document</a>
-                       {% else %}
-
-                       {% endif %}
-                       <a href="{% url 'delete_item' 'announcement' announcement.id %}"><button> Delete </button></a>
-                   {% endif %}
-               {% endfor %}
-           </ul>
-
-        </div>
-        <div class="list-column2">
-            <h2>Recommendation</h2>
-            <form method="post" action="{% url 'delete_all_recommendation' %}">
-                {% csrf_token %}
-                <button type="submit">Delete Recommendation</button>
-            </form>
-            <ul>
-               {% for recommendation in recommendations %}
-                   {% if recommendation.recommendation_list %}
-                       <li>Recommendation: {{ recommendation.recommendation_list }}</li>
-                       {% if recommendation.image_recommendation %}
-                           <img src="{{ recommendation.image_recommendation.url|safe }}" alt="Recommendation Image" class="announcement-image">
-                       {% endif %}
-                       {% if recommendation.document_recommendation %}
-                           <a href="{{ recommendation.document_recommendation.url|safe }}" target="_blank">View Document</a>
-                       {% else %}
-
-                       {% endif %}
-                       <a href="{% url 'delete_item' 'recommendation' recommendation.id %}"><button> Delete </button></a>
-                   {% endif %}
-               {% endfor %}
-           </ul>
-            <p><a href="{% url 'logout' %}">Log Out</a></p>
-        </div>
-
+    <div class="announcement-list list">
+        <h2>Announcements</h2>
+        <form method="post" action="{% url 'delete_all_announcement' %}">
+            {% csrf_token %}
+            <button type="submit" class="delete-button">Delete All Announcement</button>
+        </form>
+        <ul>
+            {% for announcement in announcements %}
+                {% if announcement.announcement_list %}
+                    <li class="list-item announcement-item">
+                        <span class="announcement-text">
+                            News Update: {{ announcement.announcement_list }}
+                        </span>
+                        {% if announcement.image_announcement %}
+                            <img src="{{ announcement.image_announcement.url|safe }}" alt="Announcement Image" class="announcement-image">
+                        {% endif %}
+                        {% if announcement.document_announcement %}
+                            <a href="{{ announcement.document_announcement.url|safe }}" target="_blank" class="announcement-link">View Document</a>
+                        {% endif %}
+                        <a href="{% url 'delete_item' 'announcement' announcement.id %}" class="delete-button announcement-delete-button">Delete</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
     </div>
-    <br> <br>
 
-    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
+    <div class="recommendation-list list">
+        <h2>Recommendations</h2>
+        <form method="post" action="{% url 'delete_all_recommendation' %}">
+            {% csrf_token %}
+            <button type="submit" class="delete-button">Delete Recommendations</button>
+        </form>
+        <ul>
+            {% for recommendation in recommendations %}
+                {% if recommendation.recommendation_list %}
+                    <li class="list-item recommendation-item">
+                        <span class="recommendation-text">
+                            Recommendation: {{ recommendation.recommendation_list }}
+                        </span>
+                        {% if recommendation.image_recommendation %}
+                            <img src="{{ recommendation.image_recommendation.url|safe }}" alt="Recommendation Image" class="recommendation-image">
+                        {% endif %}
+                        {% if recommendation.document_recommendation %}
+                            <a href="{{ recommendation.document_recommendation.url|safe }}" target="_blank" class="recommendation-link">View Document</a>
+                        {% endif %}
+                        <a href="{% url 'delete_item' 'recommendation' recommendation.id %}" class="delete-button recommendation-delete-button">Delete</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
+</div>
 {% endblock %}
-</body>
-</html>

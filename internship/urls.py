@@ -35,6 +35,9 @@ urlpatterns = [
     path('upload_narrative_report/', views.upload_narrative_report, name='upload_narrative_report'),
     path('narrative_report_detail/', views.narrative_report_detail, name='narrative_report_detail'),
 
+    path('upload_dtr_report/', views.upload_dtr_report, name='upload_dtr_report'),
+    path('dtr_detail/', views.dtr_detail, name='dtr_detail'),
+
 #---------------------------Admin Section--------------------------#
     path('admin/interns/', views.intern_list, name='intern_list'),
 ]

@@ -205,7 +205,23 @@ button:hover{
 
 /* Style for the textarea */
 .textarea {
+position: relative;
 width: 100%;
+top: 100px;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+resize: none; /* Disable textarea resizing */
+font-size: 16px;
+line-height: 1.5;
+transition: border-color 0.2s ease-in-out;
+}
+
+.hour_num {
+position: relative;
+width: 32%;
+left: 130px;
+top: 224px;
 padding: 12px;
 border: 1px solid #ccc;
 border-radius: 4px;

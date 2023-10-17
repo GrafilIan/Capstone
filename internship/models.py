@@ -121,7 +121,7 @@ class DailyAccomplishment(models.Model):
     date = models.DateField(null=True)
     is_rest_day = models.BooleanField(default=False)
     text_submission = models.TextField()
-    hours_submission = models.TextField(null=True)
+    hours_submission = models.IntegerField(null=True)
     document_submission = models.FileField(upload_to='documents/',null=True, blank=True)
 
 
@@ -173,3 +173,10 @@ class NarrativeReport(models.Model):
     def __str__(self):
         return f"Narrative Report for {self.user}"
 ### End ###
+class DailyTimeRecord(models.Model):
+    user = models.ForeignKey(intern, on_delete=models.CASCADE)
+    DTR_Number = models.PositiveIntegerField(null=True)
+    DTR_submission = models.FileField(upload_to='documents/',null=True, blank=True)
+
+    def __str__(self):
+        return f"DTR Report for {self.user}"

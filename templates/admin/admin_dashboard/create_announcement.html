@@ -1,57 +1,59 @@
+{% extends 'adminbase.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard Panel | Bulan Campus</title>
-    <link rel="stylesheet" href="{% static 'style/sample.css' %}">
-    <!-------Boxicons CDN link----->
+
+{% block title %}Create Announcement{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/admin/create_announcement.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
-</head>
-<body>
-{% block content %}
-    <h1>Create Announcement</h1>
-    <div class="form-container">
-        <div class="form-column1">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="input-container">
-                 <label class="input-label" for="{{ announcement_form.announcement_list.id_for_label }}">Announcement List:</label>
-                {{ announcement_form.announcement_list }}
-                </div>
-                <br>
-
-                 <label class="label"for="{{ announcement_form.image_announcement.id }}">Image:</label>
-    <!-- File input field -->
-                {{ announcement_form.image_announcement }}
-                </div><br>
-                <label for="{{ announcement_form.document_announcement.id }}">Document</label>
-                {{ announcement_form.document_announcement }}
-
-        </div>
-
-        <div class="form-column2">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ recommendation_form.recommendation_list.label_tag }}
-                {{ recommendation_form.recommendation_list }}
-                <br>
-                <label for="{{ recommendation_form.image_recommendation.id }}">Image</label>
-                {{ recommendation_form.image_recommendation }}
-                <br>
-                <label for="{{ recommendation_form.document_recommendation.id }}">Document</label>
-                {{ recommendation_form.document_recommendation }}
-            <button type="submit" name="all_submit">Post All</button>
-            </form>
-        </div>
-
-    </div>
-    <br> <br>
-    <a href="{% url 'login' %}">Log In</a> <br>
-    <a href="{% url 'create_announcement' %}">Create Announcement</a> <br>
-    <a href="{% url 'time_in_out' %}">Add Time Record</a> <br>
 {% endblock %}
-</body>
-</html>
+
+{% block content %}
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Announcement</span>
+        </div>
+    </section>
+
+    <h1 class="section-title">Create Announcement</h1>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-column">
+                <div class="input-container">
+                    <label class="input-label" for="{{ announcement_form.announcement_list.id_for_label }}">Announcement List:</label>
+                    {{ announcement_form.announcement_list }}
+                </div>
+                <div class="input-container">
+                    <label class="input-label" for="{{ announcement_form.image_announcement.id }}">Image:</label>
+                    {{ announcement_form.image_announcement }}
+                </div>
+                <div class="input-container">
+                    <label class="input-label" for="{{ announcement_form.document_announcement.id }}">Document:</label>
+                    {{ announcement_form.document_announcement }}
+                </div>
+            </div>
+
+            <div class="form-column">
+                <div class="input-container">
+                    <label class="input-label" for="{{ recommendation_form.recommendation_list.id_for_label }}">Recommendation List:</label>
+                    {{ recommendation_form.recommendation_list }}
+                </div>
+                <div class="input-container">
+                    <label class="input-label" for="{{ recommendation_form.image_recommendation.id }}">Image:</label>
+                    {{ recommendation_form.image_recommendation }}
+                </div>
+                <div class="input-container">
+                    <label class="input-label" for="{{ recommendation_form.document_recommendation.id }}">Document:</label>
+                    {{ recommendation_form.document_recommendation }}
+                </div>
+            </div>
+
+            <button type="submit" name="all_submit">Post All</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

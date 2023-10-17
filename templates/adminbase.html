@@ -27,12 +27,12 @@
 
         <ul class="nav-links">
             <li>
-                <a href="AdminDashboard.html">
+                <a href="{% url 'announcement_list' %}">
                     <i class='bx bxs-dashboard'></i>
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="AdminDashboard.html">Dashboard</a></li>
+                    <li><a class="link_name" href="{% url 'announcement_list' %}">Dashboard</a></li>
                 </ul>
             </li>
             <li>
@@ -88,12 +88,7 @@
         </ul>
     </div>
 
-    <section class="home-section">
-        <div class="home-content">
-            <i class='bx bx-menu'></i>
-            <span class="text">Dashboard</span>
-        </div>
-    </section>
+
 
     {% block content %}
     {% endblock %}

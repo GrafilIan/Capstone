@@ -4,14 +4,22 @@
     {% block title %}Interns List{% endblock %}
 
 {% block head %}
+
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'style/admin/internlist.css' %}">
+
 {% endblock %}
 
 
 {% block content %}
+        <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Dashboard</span>
+        </div>
+    </section>
 
-    <h1>Intern List</h1>
+    <h1 class="internhead">Intern List</h1>
     <table>
         <tr>
             <th>Username</th>
@@ -40,5 +48,6 @@
         </tr>
         {% endfor %}
     </table>
+
 
 {% endblock %}

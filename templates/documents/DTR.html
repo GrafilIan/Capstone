@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Narrative Report Panel{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/Daily_time_record.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="box">
+    <div class="h2bx">
+        <h2 class="title">DTR REPORT</h2>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Submitted Successfully!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+
+    <!-- Forms -->
+    <div class="part">
+        <form method="post" action="{% url 'upload_dtr_report' %}" id="DTRForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="DTR_Number">DTR Number</label>
+                <input type="number" name="DTR_Number" id="DTR_Number" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="DTR_submission">Upload Document</label>
+                <input type="file" name="DTR_submission" id="DTR_submission" class="form-control-file">
+            </div>
+            <button type="submit" id="submit-button" class="btn btn-primary">Upload</button>
+        </form>
+    </div>
+
+    <ul class="report-list">
+        {% for report in DTR_reports %}
+            <li class="report-item">
+                <h3 class="narrative-number">DTR {{ report.DTR_Number }}</h3>
+                {% if report.DTR_submission %}
+                    <p>Uploaded Document(s): <a href="{{ report.DTR_submission.url }}" class="document-link" target="_blank">{{ report.DTR_submission.name }}</a></p>
+                    <div class="pdf-preview" id="pdf-preview-{{ report.DTR_submission }}"></div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.4.0/dist/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Add an event listener to the submit button
+    $("#submit-button").click(function(e) {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        const submitUrl = $("#DTRForm").attr("action");
+
+        $.ajax({
+            type: "POST",
+            url: submitUrl,
+            data: new FormData($("#DTRForm")[0]),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    // Reset the form
+                    $('#DTRForm')[0].reset();
+
+                    // Close the modal
+                    $('#exampleModal').modal('show');
+
+                    // Add an event listener to the modal's close event
+                    $('#exampleModal').on('hidden.bs.modal', function (e) {
+                        // Reload the page
+                        location.reload();
+                    });
+                } else {
+                    // Handle errors here if the submission was not successful
+                    alert('Submission failed. Please try again.');
+                }
+            }
+        });
+    });
+});
+
+
+{% endblock %}

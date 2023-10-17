@@ -83,7 +83,7 @@
     text-align: center;
     line-height: 50px;
     color: #fff;
-    font-size: 20px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -387,4 +387,65 @@ progress {
     .dash-content .content-list{
         margin-top: 100px;
         }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        /* Adjust sidebar styles for smaller screens */
+        width: 78px;
+    }
+
+    .sidebar .logo-details .logo_name {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .sidebar .nav-links li i {
+        display: none;
+    }
+
+    .sidebar .nav-links li .sub-menu a {
+        font-size: 15px;
+    }
+
+    .sidebar .profile-details img {
+        border: none;
+        border-radius: 50px;
+    }
+
+    .sidebar .profile-details i,
+    .sidebar .profile-details .profile_name,
+    .sidebar .profile-details .job,
+    .sidebar .profile-details .company {
+        display: none;
+    }
+}
+
+/* Home Section Styles */
+.home-section {
+    /* Adjust home section styles for smaller screens */
+    left: 78px;
+    width: calc(100% - 78px);
+}
+
+.home-section .home-content .bx-menu {
+    font-size: 24px;
+}
+
+.home-section .home-content .text {
+    font-size: 18px;
+    margin-left: 20px;
+}
+
+/* Content Styles */
+.dash-content {
+    /* Content styles for smaller screens */
+    padding-left: 20px;
+}
+
+.dash-content .title {
+    font-size: 24px;
+    padding-left: 20px;
+    width: 100%;
+    border-radius: 0;
 }

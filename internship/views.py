@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import AnnouncementForm, RecommendationForm, DailyAccomplishmentForm, WeeklyReportForm, NarrativeReportForm
+from .forms import DTRForm
 from .models import Announcement, Recommendation, intern, TimeRecord, WeeklyReport, NarrativeReport
-from .models import InternsCalendar, DailyAccomplishment, Document
+from .models import InternsCalendar, DailyAccomplishment, Document, DailyTimeRecord
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib import messages
@@ -129,10 +130,12 @@ def create_announcement(request):
         recommendation_form = RecommendationForm(request.POST, request.FILES, prefix='recommendation')
 
         if 'all_submit' in request.POST:
-            if announcement_form.is_valid() or recommendation_form.is_valid():
+            if announcement_form.is_valid():
                 announcement = announcement_form.save()
+            if recommendation_form.is_valid():
                 recommendation = recommendation_form.save()
-                return redirect('announcement_list')
+            return redirect('announcement_list')
+
 
     else:
         announcement_form = AnnouncementForm(prefix='announcement')
@@ -532,6 +535,27 @@ def narrative_report_detail(request):
 
     return render(request, 'documents/Narrative.html', {'narrative_reports': narrative_reports})
 
+
+###---------------------------------Narrative Report/end----------------------------------###
+
+@login_required
+def upload_dtr_report(request):
+    if request.method == 'POST':
+        form = DTRForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.user = request.user  # Assign the user
+            form.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors})
+    return JsonResponse({'success': False, 'errors': 'Invalid request method'})
+
+
+def dtr_detail(request):
+    # Fetch all WeeklyReport instances from the database
+    DTR_reports = DailyTimeRecord.objects.all()
+
+    return render(request, 'documents/DTR.html', {'DTR_reports': DTR_reports})
 
 #---------------------------------------------------------------------------------------#
 #-------------------------------------ADMIN SIDE----------------------------------------#
