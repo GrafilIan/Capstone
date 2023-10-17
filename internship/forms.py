@@ -65,3 +65,9 @@ class DTRForm(forms.ModelForm):
     class Meta:
         model = DailyTimeRecord
         fields = ['DTR_Number', 'DTR_submission']
+
+class DeleteItemForm(forms.Form):
+    confirm_delete = forms.BooleanField(
+        required=True,
+        widget=forms.HiddenInput(attrs={'value': '1'}),  # Hidden field to confirm deletion
+    )

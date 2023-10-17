@@ -44,6 +44,7 @@
                             <a href="{{ announcement.document_announcement.url|safe }}" target="_blank" class="announcement-link">View Document</a>
                         {% endif %}
                         <a href="{% url 'delete_item' 'announcement' announcement.id %}" class="delete-button announcement-delete-button">Delete</a>
+
                     </li>
                 {% endif %}
             {% endfor %}
@@ -70,6 +71,7 @@
                             <a href="{{ recommendation.document_recommendation.url|safe }}" target="_blank" class="recommendation-link">View Document</a>
                         {% endif %}
                         <a href="{% url 'delete_item' 'recommendation' recommendation.id %}" class="delete-button recommendation-delete-button">Delete</a>
+
                     </li>
                 {% endif %}
             {% endfor %}
@@ -78,4 +80,5 @@
 </div>
 
 </div>
+
 {% endblock %}
