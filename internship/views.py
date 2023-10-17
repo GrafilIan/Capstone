@@ -77,7 +77,7 @@ def loginnn(request):
 
                 if user.is_superuser:
                     # Superuser, redirect to some other page for superusers
-                    return redirect('time_in_out')  # Replace 'superuser_dashboard' with your desired URL name
+                    return redirect('announcement_list')  # Replace 'superuser_dashboard' with your desired URL name
 
                 # Check if the user has calendar records
                 has_calendars = InternsCalendar.objects.filter(user=request.user).exists()
@@ -148,7 +148,21 @@ def create_announcement(request):
 
     return render(request, 'admin/admin_dashboard/create_announcement.html', context)
 
+
 def announcement_list(request):
+    announcements = Announcement.objects.all().order_by('-pub_date')
+    recommendations = Recommendation.objects.all().order_by('-pub_date')
+    total_interns = intern.objects.filter(is_superuser=False).count()
+
+    context = {
+        'announcements': announcements,
+        'recommendations': recommendations,
+        'total_interns': total_interns,
+    }
+
+    return render(request, 'admin/admin_dashboard/announcement_list.html', context)
+
+def student_announcement_list(request):
     announcements = Announcement.objects.all().order_by('-pub_date')
     recommendations = Recommendation.objects.all().order_by('-pub_date')
 
@@ -157,7 +171,7 @@ def announcement_list(request):
         'recommendations': recommendations,
     }
 
-    return render(request, 'admin/admin_dashboard/announcement_list.html', context)
+    return render(request, 'student_dashboard/student_dashboard.html', context)
 
 def delete_item(request, item_type, item_id):
     if item_type == 'announcement':

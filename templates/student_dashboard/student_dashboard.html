@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/student_dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+        <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+            <span class="text">Dashboard</span>
+        </div>
+        </section>
+
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Intern Dashboard</h1>
+        </div>
+
+        <div class="list-container">
+        <div class="announcement-list list">
+            <h2>Announcements</h2>
+
+            <ul>
+                {% for announcement in announcements %}
+                    {% if announcement.announcement_list %}
+                        <li class="list-item announcement-item">
+                            <span class="announcement-text">
+                                News Update: {{ announcement.announcement_list }}
+                            </span>
+                            {% if announcement.image_announcement %}
+                                <img src="{{ announcement.image_announcement.url|safe }}" alt="Announcement Image" class="announcement-image">
+                            {% endif %}
+                            {% if announcement.document_announcement %}
+                                <a href="{{ announcement.document_announcement.url|safe }}" target="_blank" class="announcement-link">View Document</a>
+                            {% endif %}
+
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="recommendation-list list">
+            <h2>Recommendations</h2>
+
+            <ul>
+                {% for recommendation in recommendations %}
+                    {% if recommendation.recommendation_list %}
+                        <li class="list-item recommendation-item">
+                            <span class="recommendation-text">
+                                Recommendation: {{ recommendation.recommendation_list }}
+                            </span>
+                            {% if recommendation.image_recommendation %}
+                                <img src="{{ recommendation.image_recommendation.url|safe }}" alt="Recommendation Image" class="recommendation-image">
+                            {% endif %}
+                            {% if recommendation.document_recommendation %}
+                                <a href="{{ recommendation.document_recommendation.url|safe }}" target="_blank" class="recommendation-link">View Document</a>
+                            {% endif %}
+
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+        </div>
+
+    </div>
+    </div>
+
+
+
+{% endblock %}

@@ -31,12 +31,12 @@
 
         <ul class="nav-links">
             <li>
-                <a href="StudentDashboard.html">
+                <a href="{% url 'student_announcement_list' %}">
                     <i class='bx bxs-dashboard'></i>
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="{% static 'StudentDashboard.html' %}">Dashboard</a></li>
+                    <li><a class="link_name" href="{% url 'student_announcement_list' %}">Dashboard</a></li>
                 </ul>
             </li>
             <li>

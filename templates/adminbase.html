@@ -36,12 +36,12 @@
                 </ul>
             </li>
             <li>
-                <a href="StudentList.html">
+                <a href="{% url 'intern_list' %}">
                     <i class='bx bx-list-ul'></i>
                     <span class="link_name">Student List</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="StudentList.html">Student List</a></li>
+                    <li><a class="link_name" href="{% url 'intern_list' %}">Student List</a></li>
                 </ul>
             <li>
                     <a href="Feedbacks.html">
@@ -62,16 +62,19 @@
                 </ul>
             </li>
             <li>
-                <a href="#">
+                <a href="{% url 'logout' %}">
                     <i class='bx bxs-log-out' ></i>
                     <span class="link_name">Log-out</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Log-out</a></li>
+                    <div><a class="link_name" href="{% url 'logout' %}>Log-out</a></li>
                 </ul>
             </li>
             <li>
+        </ul>
+
         <div class="profile-details">
+
             <div class="profile-content">
                 <a href="#"><img src="{% static 'images/GRACELA__VANESSA_MARIZ_T_1_-removebg-preview.png' %}" alt="profile"></a>
             </div>
@@ -80,18 +83,14 @@
                 <div class="job">SORSU - BC ILDO</div>
                 <div class="company">ILDO COORDINATOR</div>
             </div>
-
-            <i class= ></i>
-
         </div>
-            </li>
-        </ul>
-    </div>
 
+    </div>
 
 
     {% block content %}
     {% endblock %}
+
     <script>
         function updateDateTime() {
             const now = new Date();

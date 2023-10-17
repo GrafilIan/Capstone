@@ -9,6 +9,7 @@ urlpatterns = [
 
     path('create/', views.create_announcement, name='create_announcement'),
     path('list/', views.announcement_list, name='announcement_list'),
+    path('studentlist/', views.student_announcement_list, name='student_announcement_list'),
     path('delete/<str:item_type>/<int:item_id>/', views.delete_item, name='delete_item'),
     path('view_time_records/', views.view_time_records, name='view_time_records'),
     path('delete_all_announcement/', views.delete_all_announcement, name='delete_all_announcement'),
@@ -40,4 +41,5 @@ urlpatterns = [
 
 #---------------------------Admin Section--------------------------#
     path('admin/interns/', views.intern_list, name='intern_list'),
+
 ]
